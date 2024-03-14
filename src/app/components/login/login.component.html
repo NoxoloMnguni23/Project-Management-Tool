@@ -1,7 +1,5 @@
 <div class="container">
     <div class="info-half">
-
-    
     </div>
     <!-- form -->
     <div class="form-half">
@@ -23,10 +21,11 @@
                   <mat-icon matSuffix>password</mat-icon>
               </mat-form-field>
               <!-- buttons -->
-        <p>Forgot <span routerLink="/login/forgotpassword" class="span"> password</span>?</p>
+        <p>Forgot <span routerLink="/forgotpassword" class="span"> password</span>?</p>
           <button mat-raised-button [disabled]="loginForm.invalid" (click)="submit()" color="primary">
             Login
           </button>
         </form>
+        <!-- <router-outlet></router-outlet> -->
     </div>
 </div>
