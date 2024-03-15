@@ -10,11 +10,11 @@ import { UsersComponent } from './components/users/users.component';
 import { TeamMembersComponent } from './components/team-members/team-members.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { ProjectsComponent } from './components/projects/projects.component';
+import { NewProjectComponent } from './components/new-project/new-project.component';
 
 const routes: Routes = [{ path: '', redirectTo: '/login', pathMatch: 'full' },
-{
-  path: 'login', component: LoginComponent
-},
+{ path: 'login', component: LoginComponent },
+{ path: 'dashboard', component: DashboardComponent },
 { path: 'forgotpassword', component: ForgotPasswordComponent },
 {
   path: 'landing', component: LandingComponent, children: [
@@ -23,7 +23,8 @@ const routes: Routes = [{ path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'users', component: UsersComponent },
     { path: 'team-members', component: TeamMembersComponent },
     { path: 'tasks', component: TasksComponent },
-    { path: 'projects', component: ProjectsComponent }]
+    { path: 'projects', component: ProjectsComponent },
+    { path: 'new-project', component: NewProjectComponent }]
 },
 { path: '**', component: PageNotFoundComponent },];
 

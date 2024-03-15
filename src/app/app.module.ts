@@ -23,6 +23,11 @@ import { LandingComponent } from './components/landing/landing.component';
 import { TableComponent } from './components/table/table.component';
 import { AddUserFormComponent } from './components/add-user-form/add-user-form.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { NewProjectComponent } from './components/new-project/new-project.component';
 
 
 
@@ -40,7 +45,8 @@ import { HttpClientModule } from '@angular/common/http';
     PageNotFoundComponent,
     LandingComponent,
     TableComponent,
-    AddUserFormComponent
+    AddUserFormComponent,
+    NewProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +58,11 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatButtonModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
