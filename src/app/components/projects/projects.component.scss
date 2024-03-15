@@ -6,6 +6,10 @@
     .project {
         width: 249px;
         height: 210px;
+
+        .status {
+            position: absolute;
+        }
     }
 
     .add {

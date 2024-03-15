@@ -22,7 +22,7 @@ export class LandingComponent {
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userInfo: UserInfoService) {
     this.user = this.userInfo.get('currentUser', 'session');
 
-    this.router.navigate(['/landing/dashboard'])
+    // this.router.navigate(['/landing/dashboard'])
     if (this.user.role === 'admin') {
       this.menuItems = [
         { label: 'dashboard', icon: 'dashboard', route: '/landing/dashboard' },
