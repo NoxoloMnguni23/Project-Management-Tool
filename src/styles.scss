@@ -1,3 +1,131 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+// flex
+
+.flex {
+    display: flex;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.center-center {
+    align-items: center;
+    justify-content: center;
+}
+
+.start-center {
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.end-center {
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.spacebetween-center {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.spacearound-center {
+    justify-content: space-around;
+    align-items: center;
+}
+
+.a-center {
+    align-items: center;
+}
+
+.j-center {
+    justify-content: center;
+}
+
+.a-end {
+    align-items: end;
+}
+
+.j-end {
+    justify-content: end;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.relative {
+    position: relative;
+}
+
+.space-around {
+    justify-content: space-around;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.z-index {
+    z-index: 1;
+}
+
+.wrap {
+    flex-wrap: wrap;
+}
+
+// spaces
+
+.border-box {
+    box-sizing: border-box;
+}
+
+.gap-1em {
+    gap: 1em;
+}
+
+.gap-2em {
+    gap: 2em;
+}
+
+.gap-05em {
+    gap: .5em;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.half-width {
+    width: 50%;
+}
+
+.half-height {
+    height: 50%;
+}
+
+// text
+
+.pointer {
+    cursor: pointer;
+}
+
+.text-center {
+    text-align: center;
+}
