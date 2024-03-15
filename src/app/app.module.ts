@@ -20,6 +20,9 @@ import { TasksComponent } from './components/tasks/tasks.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { LandingComponent } from './components/landing/landing.component';
+import { TableComponent } from './components/table/table.component';
+import { AddUserFormComponent } from './components/add-user-form/add-user-form.component';
+import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -41,6 +44,8 @@ import { NewProjectComponent } from './components/new-project/new-project.compon
     ProjectsComponent,
     PageNotFoundComponent,
     LandingComponent,
+    TableComponent,
+    AddUserFormComponent,
     NewProjectComponent
   ],
   imports: [
@@ -53,6 +58,7 @@ import { NewProjectComponent } from './components/new-project/new-project.compon
     MatIconModule,
     MatButtonModule,
     MaterialModule,
+    HttpClientModule,
     LayoutModule,
     MatToolbarModule,
     MatSidenavModule,
