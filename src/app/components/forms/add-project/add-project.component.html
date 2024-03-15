@@ -1,0 +1,69 @@
+<div class="main-container flex column gap-1em relative">
+    <h2 class="no-margin text-center">Add Project</h2>
+    <p (click)="close()" class="close absolute pointer">X</p>
+    <form [formGroup]="projectFormGroup" class="flex column">
+        <div class="flex gap-1em">
+            <!-- Project Name -->
+            <mat-form-field class="flex-1">
+                <mat-label>Project Name</mat-label>
+                <input type="text" formControlName="projectName" matInput placeholder="Name of project">
+                <mat-error *ngIf="projectFormGroup.get('projectName')?.hasError('required')">
+                    This field is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+            <!-- Project Manager -->
+            <mat-form-field class="flex-1">
+                <mat-label>Manager</mat-label>
+                <input type="text" formControlName="projectManager" matInput placeholder="Manager of project">
+                <mat-error *ngIf="projectFormGroup.get('projectManager')?.hasError('required')">
+                    This field is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex gap-1em">
+            <!-- Project Description -->
+            <div class="flex flex-1 column textarea-container">
+                <textarea formControlName="projectDescription" name="" id=""
+                    placeholder="Description of project" cols="30" rows="10"></textarea>
+                <small *ngIf="projectFormGroup.get('projectDescription')?.hasError('required') && projectFormGroup.get('projectDescription')?.touched" class="err-msg color-red no-margin">This field is <strong>required</strong></small>
+            </div>
+            <div class="flex column gap-1em">
+                <!-- Start Date -->
+                <mat-form-field appearance="fill">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput formControlName="startDate" readonly (focus)="picker.open()" [matDatepicker]="picker">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="projectFormGroup.get('startDate')?.hasError('required')">
+                        This field is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <!-- End Date -->
+                <mat-form-field appearance="fill">
+                    <mat-label>End Date</mat-label>
+                    <input matInput formControlName="endDate" readonly (focus)="picker2.open()"  [matDatepicker]="picker2">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                    <mat-error *ngIf="projectFormGroup.get('endDate')?.hasError('required')">
+                        This field is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- Team Members -->
+        <mat-form-field class="full-width m-t-1em">
+            <mat-label>Team Members</mat-label>
+            <mat-select formControlName="teamMembers" [formControl]="toppings" multiple>
+                <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="projectFormGroup.get('teamMembers')?.hasError('required')">
+                This field is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <div class="flex gap-1em j-end">
+            <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+        </div>
+    </form>
+</div>

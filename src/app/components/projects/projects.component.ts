@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AddProjectComponent } from '../forms/add-project/add-project.component';
 
 @Component({
   selector: 'app-projects',
@@ -6,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent {
-
+  constructor(private dialog: MatDialog) { }
+  addProject(): void {
+    this.dialog.open(AddProjectComponent,{
+      width: '60%'
+    })
+  }
 }

@@ -1,3 +1,15 @@
-<div class="mat-card">
-    Testing
-</div>
+<mat-card class="mat-card padding-2em">
+    <div class="main-container flex column gap-1em">
+        <div class="flex gap-1em a-center">
+            <h1 class="no-margin">Projects</h1>
+            <div (click)="addProject()" class="add flex center-center pointer">
+                <mat-icon class="color-white">add</mat-icon>
+            </div>
+        </div>
+        <div>
+            <mat-card class="project flex center-center">
+                PROJECT
+            </mat-card>
+        </div>
+    </div>
+</mat-card>

@@ -20,6 +20,7 @@ import { TasksComponent } from './components/tasks/tasks.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { LandingComponent } from './components/landing/landing.component';
+import { AddProjectComponent } from './components/forms/add-project/add-project.component';
 
 
 
@@ -35,7 +36,8 @@ import { LandingComponent } from './components/landing/landing.component';
     TasksComponent,
     ProjectsComponent,
     PageNotFoundComponent,
-    LandingComponent
+    LandingComponent,
+    AddProjectComponent
   ],
   imports: [
     BrowserModule,
