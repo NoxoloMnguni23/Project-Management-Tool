@@ -21,6 +21,8 @@ import { ProjectsComponent } from './components/projects/projects.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { TableComponent } from './components/table/table.component';
+import { AddUserFormComponent } from './components/add-user-form/add-user-form.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -37,7 +39,8 @@ import { TableComponent } from './components/table/table.component';
     ProjectsComponent,
     PageNotFoundComponent,
     LandingComponent,
-    TableComponent
+    TableComponent,
+    AddUserFormComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,8 @@ import { TableComponent } from './components/table/table.component';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MaterialModule
+    MaterialModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

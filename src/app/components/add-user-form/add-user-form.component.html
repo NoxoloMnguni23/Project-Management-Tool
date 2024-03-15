@@ -1,0 +1,66 @@
+<mat-card class="main-container">
+    <form [formGroup]="addUser">
+        <h3 class="flex center-center">Add User Form</h3>
+
+        <div class="gap-1 flex column">
+            <!-- First Name -->
+            <mat-form-field class="example-full-width">
+                <mat-label>First Name</mat-label>
+                <input type="text" matInput formControlName="firstName" placeholder="Noxolo" required>
+                <mat-error *ngIf="addUser.get('firstName')?.hasError('required')">First name is required</mat-error>
+            </mat-form-field>
+
+            <!-- Last Name -->
+            <mat-form-field class="example-full-width">
+                <mat-label>Last Name</mat-label>
+                <input type="text" matInput formControlName="lastName" placeholder="Mnguni" required>
+                <mat-error *ngIf="addUser.get('lastName')?.hasError('required')">Last name is required</mat-error>
+            </mat-form-field>
+
+            <!-- ID Number -->
+            <mat-form-field class="example-full-width">
+                <mat-label>ID Number</mat-label>
+                <input type="text" matInput formControlName="id" placeholder="9801115169080" required maxlength="13">
+                <mat-error *ngIf="addUser.get('id')?.hasError('required')">ID number is required</mat-error>
+                <mat-error *ngIf="addUser.get('id')?.hasError('minlength') || addUser.get('id')?.hasError('maxlength')">ID
+                    Number should have 13 numbers</mat-error>
+            </mat-form-field>
+
+            <!-- Gender -->
+            <mat-form-field class="example-full-width">
+                <mat-label>Gender</mat-label>
+                <mat-select formControlName="gender">
+                    <mat-option *ngFor="let gender of genders" [value]="gender">
+                        {{gender | titlecase}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- Email -->
+            <mat-form-field class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input type="email" matInput formControlName="email" placeholder="Ex. lesetjamaluleka@gmail.com"
+                    required>
+                <mat-error *ngIf="addUser.get('email')?.hasError('required')">Email is required
+                    address</mat-error>
+                <mat-error *ngIf="addUser.get('email')?.hasError('email')">Please enter a valid email
+                    address</mat-error>
+            </mat-form-field>
+
+            <!-- roles -->
+            <mat-form-field class="full-width">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="role">
+                    <mat-option *ngFor="let role of roles" [value]="role">
+                        {{role | titlecase}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field><br>
+        </div>
+
+        <!-- Submit and Cancel Buttons -->
+        <div class="flex center-center gap-1 buttons">
+            <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+            <button mat-raised-button [disabled]="addUser.invalid" (click)="submit()">Submit</button>
+        </div>
+    </form>
+</mat-card>
