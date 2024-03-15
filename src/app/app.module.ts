@@ -20,6 +20,11 @@ import { TasksComponent } from './components/tasks/tasks.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { LandingComponent } from './components/landing/landing.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { NewProjectComponent } from './components/new-project/new-project.component';
 
 
 
@@ -35,7 +40,8 @@ import { LandingComponent } from './components/landing/landing.component';
     TasksComponent,
     ProjectsComponent,
     PageNotFoundComponent,
-    LandingComponent
+    LandingComponent,
+    NewProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +52,11 @@ import { LandingComponent } from './components/landing/landing.component';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MaterialModule
+    MaterialModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,2 +1,42 @@
-<!-- <p>landing works!</p> -->
-<router-outlet></router-outlet>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <div class="flex center-center">
+      <div class="allside">
+        <mat-toolbar class="leftTool flex center-center">
+          <div class="flex column center-center ">
+            <div class="userPic flex center-center">
+              <mat-icon>account_circle</mat-icon>
+            </div>
+            <div class="userDetails flex center-center column">
+              <p>{{user.fullNme | titlecase}}</p>
+              <small>{{user.role |titlecase }}</small>
+            </div>
+          </div>
+        </mat-toolbar>
+        <hr>
+        <mat-nav-list *ngfor="let menu of menuItems">
+          <a mat-list-item class="flex center-center " routerLinkActive="active" [routerLink]="menu.route">
+            <mat-icon>{{menu.icon}}</mat-icon>
+            {{menu.label | titlecase}}</a>
+        </mat-nav-list>
+        <mat-nav-list class="mtop6em">
+          <a mat-list-item class="flex center-center" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Logout</a>
+        </mat-nav-list>
+      </div>
+    </div>
+
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Project Management Tool</span>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
