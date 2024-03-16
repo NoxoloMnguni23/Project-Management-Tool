@@ -20,10 +20,10 @@ export class UsersComponent {
   constructor(public dialog: MatDialog, private api: ApiService, private snackBar: MatSnackBar) { 
     this.userTable =
     {
-      title: '',
+      title: 'Users',
       dataSource: this.api.genericGet('/get-users'),
-      displayedColumns: ['fisrtName', 'lastName', 'gender', 'id', 'email', 'role'],
-      displayedHeaders: ['First Name', 'Last name', 'Gender', 'ID', 'Email', 'Role']
+      displayedColumns: ['firstName', 'lastName', 'gender', 'id', 'email', 'role'],
+      displayedHeaders: ['First Name', 'Last Name', 'Gender', 'ID', 'Email', 'Role']
     }
   }
   
@@ -45,6 +45,11 @@ export class UsersComponent {
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { raw: false });
       this.users = jsonData;
       console.log("file data", this.users);
+      // Add password field for every user
+      this.users.forEach((fileUser: any,indx: any) => {
+        this.users[indx]['password'] = 'test123';
+      })
+      console.log("file data users with passwords", this.users);
       this.api.genericGet('/get-users').subscribe({
         next: (res: any) => {
           this.users.forEach((fileUser: any) => {
@@ -76,7 +81,7 @@ export class UsersComponent {
   addUserApi(fileUserToStore: any) {
     this.api.genericPost('/add-user', fileUserToStore).subscribe({
       next: (res) => {
-        console.log('User added successfully:', res);
+        this.snackBar.open('File uploaded successfully','Ok',{duration: 3000});
       },
       error: (err) => {
         console.error('Error adding user:', err);
