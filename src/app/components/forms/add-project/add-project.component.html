@@ -1,5 +1,5 @@
 <div class="main-container flex column gap-1em relative">
-    <h2 class="no-margin text-center">Add Project</h2>
+    <h2 class="no-margin text-center">{{!onEditProject ? 'Add' : 'Edit'}} Project</h2>
     <p (click)="close()" class="close absolute pointer">X</p>
     <form [formGroup]="projectFormGroup" class="flex column">
         <div class="flex gap-1em">
@@ -63,7 +63,7 @@
             </mat-error>
         </mat-form-field>
         <div class="flex gap-1em j-end">
-            <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+            <button mat-raised-button color="primary" (click)="submit()">{{!onEditProject ? 'Submit' : 'Save'}}</button>
         </div>
     </form>
 </div>

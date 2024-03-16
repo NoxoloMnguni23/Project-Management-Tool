@@ -1,24 +1,55 @@
+$blue: blue;
+
 .padding-2em {
     padding: 2em;
 }
 
 .main-container {
+
+    .project-container {
+        height: calc(100dvh - 120px);
+    }
+
     .project {
         width: 249px;
         height: 210px;
+        background-color: ghostwhite;
 
         .status {
             position: absolute;
+            right: 11px;
+            padding: 5px;
+            border-radius: 7px;
+            background-color: $blue;
+            color: white;
+            bottom: 11px;
         }
     }
 
     .add {
-        background-color: blue;
+        background-color: $blue;
         padding: 14px;
         border-radius: 50%;
     }
+
+    .no-projects {
+        font-size: x-large;
+    }
+}
+
+.padding-10px {
+    padding: 10px;
 }
 
 .color-white {
     color: white;
+}
+
+.color-red {
+    color: red;
+}
+
+.mdc-card {
+    display: flex;
+    flex-direction: row !important;
 }
