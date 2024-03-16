@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AddUserFormComponent } from '../add-user-form/add-user-form.component';
-import *as XLSX from 'xlsx';
+import * as XLSX from 'xlsx';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-users',
@@ -12,10 +12,27 @@ import *as XLSX from 'xlsx';
 })
 export class UsersComponent {
 
-  constructor(public dialog: MatDialog) {}
+  users: any = [];
 
-  openDialog(){this.dialog.open(AddUserFormComponent)}
 
+  userTable: any;
+
+  constructor(public dialog: MatDialog, private api: ApiService, private snackBar: MatSnackBar) { 
+    this.userTable =
+    {
+      title: '',
+      dataSource: this.api.genericGet('/get-users'),
+      displayedColumns: ['fisrtName', 'lastName', 'gender', 'id', 'email', 'role'],
+      displayedHeaders: ['First Name', 'Last name', 'Gender', 'ID', 'Email', 'Role']
+    }
+  }
+  
+  // add user form
+  openDialog() { 
+    this.dialog.open(AddUserFormComponent);
+  }
+
+  // add user via excel spreadsheet
   onFileChange(event: any): void {
     const file = event.target.files[0];
     const fileReader = new FileReader();
@@ -26,25 +43,49 @@ export class UsersComponent {
       const workbook = XLSX.read(data, { type: 'array' });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { raw: false });
-      console.log(jsonData);
-
+      this.users = jsonData;
+      console.log("file data", this.users);
+      this.api.genericGet('/get-users').subscribe({
+        next: (res: any) => {
+          this.users.forEach((fileUser: any) => {
+            let userExists = false;
+            res.forEach((user: any) => {
+              if (fileUser.id === user.id) {
+                console.log('User already exists:', fileUser.id);
+                userExists = true;
+                return;
+              }
+            });
+            if (!userExists) {
+              console.log('Adding user:', fileUser.id);
+              this.addUserApi(fileUser);
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Error fetching users:', err);
+        },
+        complete: () => {
+          console.log('Completed fetching users.');
+        }
+      });
     };
-
     fileReader.readAsArrayBuffer(file);
   }
-  // constructor(private apiUserService : ApiService){}
-  // role : any ; 
 
-  // displayedColumns: string[] = ['firstName', 'lastName','gender', 'id','email','role','password'];
-  // dataSource = this.apiUserService.getUsers(Users);
-
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-
-  //   if (this.dataSource.paginator) {
-  //     this.dataSource.paginator.firstPage();
-  //   }
-  // }
-
+  addUserApi(fileUserToStore: any) {
+    this.api.genericPost('/add-user', fileUserToStore).subscribe({
+      next: (res) => {
+        console.log('User added successfully:', res);
+      },
+      error: (err) => {
+        console.error('Error adding user:', err);
+      },
+      complete: () => {
+        console.log('Completed adding user.');
+      }
+    });
+  }
+  
 }
+
