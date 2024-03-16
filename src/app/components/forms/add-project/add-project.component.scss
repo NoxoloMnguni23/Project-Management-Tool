@@ -1,0 +1,34 @@
+.main-container {
+    padding: 10px;
+
+    .close {
+        right: 13px;
+        top: -13px;
+        font-size: x-large;
+    }
+
+    form {
+        .err-msg {
+            padding-left: 21px;
+            padding-top: 3px;
+        }
+
+        .textarea-container {
+            height: 175px;
+            textarea {
+                &:focus {
+                    outline: none;
+                }
+            }
+
+        }
+    }
+}
+
+.m-t-1em {
+    margin-top: 1em;
+}
+
+.color-red {
+    color: red;
+}
