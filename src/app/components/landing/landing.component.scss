@@ -65,6 +65,10 @@ a:hover {
   background-color: #7575ff;
   color: white;
 }
+button:hover{
+  background-color: #7575ff;
+  color: white;
+}
 
 a:hover mat-icon {
   color: white;
@@ -197,4 +201,13 @@ a:hover mat-icon {
   height: 95%;
   // overflow: hidden;
 }
+img{
+  width: 5%;
+  border-radius: 2px;
+}
 
+.active {
+  background-color: #7575ff !important;
+  color: white !important;
+  border-radius: 5px;
+}
