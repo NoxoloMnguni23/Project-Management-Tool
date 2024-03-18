@@ -1,7 +1,7 @@
 $blue: blue;
 
-.padding-10px {
-    padding: 10px;
+.padding-05em {
+    padding: .5em;
 }
 
 .color-blue {
@@ -13,11 +13,16 @@ $blue: blue;
 }
 
 .main-container {
+  height: 300px;
     .tasks-list {
         &:hover {
             text-decoration: underline;
             color: $blue;
         }
+    }
+
+    .assignHeading {
+      height: 36px;
     }
 }
 
@@ -55,11 +60,15 @@ $blue: blue;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
     box-sizing: border-box;
     cursor: move;
     background: white;
     font-size: 14px;
+
+    // p {
+      // font-size: ;
+      // font-weight: 500;
+    // }
   }
   
   .cdk-drag-preview {

@@ -17,4 +17,8 @@ export class ApiService {
   genericPost(endpointUrl: string,payload: any){
     return this.http.post(this.url + endpointUrl , payload)
   }
+
+  genericDelete(endpointUrl: string){
+    return this.http.delete(this.url + endpointUrl);
+  }
 }

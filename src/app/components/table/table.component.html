@@ -1,6 +1,6 @@
 <mat-form-field class="filter-box margin-bottom">
   <mat-label>Search {{ isAdmin ? 'Users' : 'Tasks' }}</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+  <input matInput (focus)="setupFilter()" (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
 </mat-form-field>
 
 <div class="mat-elevation-z8">
@@ -11,7 +11,12 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">
         <b>{{ displayedHeaders[i] }}</b>
       </th>
-      <td mat-cell *matCellDef="let row" class="text-center">{{ row[header] }}</td>
+      <td mat-cell *matCellDef="let row" class="text-center">
+        <div class="flex">
+          <p class="no-margin" *ngIf="header === 'taskDeadline'">{{ row[header] | date }}</p>
+          <p class="no-margin" *ngIf="header !== 'taskDeadline'">{{ row[header] | titlecase }}</p>
+        </div>
+      </td>
     </ng-container>
 
     <!-- Header row -->
@@ -21,11 +26,11 @@
 
     <!-- Row shown when there is no matching data //colspan This is often used for table cells that need to span multiple columns. -->
     <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data matching the filter "{{ input.value }}"</td>    </tr>
+      <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data matching the filter "{{ input.value }}"</td>
+    </tr>
 
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons aria-label="Select page of tableData.dataSource"></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons
+    aria-label="Select page of tableData.dataSource"></mat-paginator>
 </div>
-
-

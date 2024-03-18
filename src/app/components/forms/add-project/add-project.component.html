@@ -24,7 +24,7 @@
             <!-- Project Description -->
             <div class="flex flex-1 column textarea-container">
                 <textarea formControlName="projectDescription" name="" id=""
-                    placeholder="Description of project" cols="30" rows="10"></textarea>
+                    placeholder="Description of project" cols="30" rows="8"></textarea>
                 <small *ngIf="projectFormGroup.get('projectDescription')?.hasError('required') && projectFormGroup.get('projectDescription')?.touched" class="err-msg color-red no-margin">This field is <strong>required</strong></small>
             </div>
             <div class="flex column gap-1em">
@@ -55,8 +55,12 @@
         <!-- Team Members -->
         <mat-form-field class="full-width m-t-1em">
             <mat-label>Team Members</mat-label>
-            <mat-select formControlName="teamMembers" [formControl]="toppings" multiple>
-                <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+            <mat-select formControlName="teamMembers" multiple>
+                <mat-option *ngFor="let user of usersList" [value]="user.email"><div class="flex gap-1em">
+                    <!-- <strong><p class="no-margin">{{user.email | lowercase}}</p></strong> -->
+                    <p class="no-margin">{{user.lastName | titlecase}}</p>
+                </div>
+            </mat-option>
             </mat-select>
             <mat-error *ngIf="projectFormGroup.get('teamMembers')?.hasError('required')">
                 This field is <strong>required</strong>
