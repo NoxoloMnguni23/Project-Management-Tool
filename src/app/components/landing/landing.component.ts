@@ -37,7 +37,7 @@ export class LandingComponent {
         { label: 'team-members', icon: 'event_available', route: '/landing/team-members' },
         { label: 'projects', icon: 'person', route: '/landing/projects' },
         { label: 'new-project', icon: 'group', route: '/landing/new-project' },
- 
+
       ]
     } else if (this.user.role === 'team-member') {
       this.menuItems = [
@@ -52,4 +52,3 @@ export class LandingComponent {
     this.router.navigate(['/login']);
   }
 }
-
