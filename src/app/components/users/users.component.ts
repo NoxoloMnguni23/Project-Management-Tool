@@ -50,6 +50,8 @@ export class UsersComponent {
       // Add password field for every user
       this.users.forEach((fileUser: any, indx: any) => {
         this.users[indx]['password'] = 'test123';
+
+
       })
       console.log("file data users with passwords", this.users);
       this.api.genericGet('/get-users').subscribe({
@@ -68,6 +70,9 @@ export class UsersComponent {
               this.addUserApi(fileUser);
               this.sharedService.updateUsersWatch();
               // Update users table
+              this.sendEmailApi(fileUser);
+              console.log(fileUser)
+
             }
           });
         },
@@ -95,5 +100,16 @@ export class UsersComponent {
       }
     });
   }
+
+  sendEmailApi(email: any) {
+    this.api.genericPost('/sendPassword', email)
+      .subscribe({
+        next: (res) => { console.log(res) },
+        error: (err) => { console.log(err) },
+        complete: () => { }
+      })
+  }
 }
+
+
 
