@@ -6,7 +6,7 @@
                 <mat-toolbar class="leftTool flex center-center">
                     <div class="flex column center-center ">
                         <div class="userPic flex center-center">
-                            <mat-icon>account_circle</mat-icon>
+                            <mat-icon [routerLink]="'profile'">account_circle</mat-icon>
                         </div>
                         <div class="userDetails flex center-center column">
                             <p>{{user.fullNme | titlecase}}</p>
@@ -15,21 +15,42 @@
                     </div>
                 </mat-toolbar>
                 <hr>
-                <mat-nav-list *ngfor="let menu of menuItems">
-                    <a mat-list-item class="flex center-center " routerLinkActive="active" [routerLink]="menu.route">
-                        <mat-icon>{{menu.icon}}</mat-icon>
-                        {{menu.label | titlecase}}</a>
-                </mat-nav-list>
-                <mat-nav-list class="mtop6em">
+                <mat-nav-list class="mtop6em flex column gap1em">
+                    <button *ngIf="user.role === 'manager' || user.role==='admin' || user.role==='team-member'" mat-raised-button color="warm" routerLinkActive="active"
+                        [routerLink]="'dashboard'">Dashboard</button>
+                    <button *ngIf="user.role === 'manager' || user.role==='admin'" routerLinkActive="active"
+                        mat-raised-button color="warm" [routerLink]="'projects'">Projects</button>
+                    <button *ngIf="user.role === 'manager'" mat-raised-button color="warm" routerLinkActive="active"
+                        [routerLink]="'new-project'">New Project</button>
+                    <button *ngIf="user.role === 'admin'" mat-raised-button color="warm" routerLinkActive="active"
+                        [routerLink]="'users'">Users</button>
+                    <button *ngIf="user.role === 'team-member'" mat-raised-button color="warm" routerLinkActive="active"
+                        [routerLink]="'tasks'">Task </button>
+                    <button *ngIf="user.role === 'manager'" mat-raised-button color="warm" routerLinkActive="active"
+                        [routerLink]="'team-members'">Team Members</button>
+                    <button *ngIf="user.role === 'manager' || user.role==='admin' || user.role==='team-member'" mat-raised-button color="warm" [routerLink]="'profile'">Profile</button>
                     <a mat-list-item class="flex center-center" (click)="logout()">
                         <mat-icon>logout</mat-icon>
-                        Logout</a>
+                        Logout
+                    </a>
                 </mat-nav-list>
             </div>
         </div>
     </mat-sidenav>
     <mat-sidenav-content>
+        <mat-toolbar class="gap1em ">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+                *ngIf="isHandset$ | async">
+                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            </button>
+            <div>
+                <span class="systemName">Project Management Tool</span>
+
+            </div>
+
+        </mat-toolbar>
         <router-outlet></router-outlet>
         <!-- Add Content Here -->
+
     </mat-sidenav-content>
 </mat-sidenav-container>
