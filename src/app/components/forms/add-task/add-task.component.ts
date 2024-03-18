@@ -27,6 +27,9 @@ export class AddTaskComponent {
         res.forEach((task: any, indx: any) => {
           this.priorities.push(indx + 1);
         })
+        if(res.length === 0) {
+          this.priorities.push(1);
+        }
       },
       error: (err) => console.log(err),
       complete: () => { }
