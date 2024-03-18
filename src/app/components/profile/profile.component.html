@@ -1,1 +1,20 @@
-<p>profile works!</p>
+<div class="half-width flex center-center">
+    <mat-card>
+        <mat-card-content>
+            <div class="flex column center-center">
+                <h1 class="title">Users Details</h1>
+                <div class="profile-img">
+                    <img src="../../../assets/profileImage/images.png" alt="">
+                </div>
+                <div class="profile-details">
+                    <p><b class="title">ID :</b>{{user.id}}</p>
+                    <p><b class="title">Name :</b>{{user.Name}}</p>
+                    <p><b class="title">Gender :</b>{{user.Gender}} </p>
+                    <p><b class="title">Mobile Number :</b>{{user.phoneNumber}}</p>
+                    <p><b class="title">Email :</b>{{user.Email}}</p>
+                </div>
+            </div>
+            <button mat-raised-button color="accent" (click)="changePassword()">Change Password</button>
+        </mat-card-content>
+    </mat-card>
+</div>

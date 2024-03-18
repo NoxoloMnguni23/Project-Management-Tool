@@ -20,11 +20,19 @@ import { TasksComponent } from './components/tasks/tasks.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { LandingComponent } from './components/landing/landing.component';
+import { AddProjectComponent } from './components/forms/add-project/add-project.component';
+import { TableComponent } from './components/table/table.component';
+import { AddUserFormComponent } from './components/add-user-form/add-user-form.component';
+import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { NewProjectComponent } from './components/new-project/new-project.component';
+import { ProjectComponent } from './components/project/project.component';
+import { CdkTreeModule } from '@angular/cdk/tree';
+import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+
 
 
 
@@ -41,7 +49,12 @@ import { NewProjectComponent } from './components/new-project/new-project.compon
     ProjectsComponent,
     PageNotFoundComponent,
     LandingComponent,
-    NewProjectComponent
+    AddProjectComponent,
+    TableComponent,
+    AddUserFormComponent,
+    NewProjectComponent,
+    ProjectComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -53,10 +66,15 @@ import { NewProjectComponent } from './components/new-project/new-project.compon
     MatIconModule,
     MatButtonModule,
     MaterialModule,
+    HttpClientModule,
     LayoutModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    CdkDropListGroup,
+    CdkDrag,
+    CdkDropList
+
   ],
   providers: [],
   bootstrap: [AppComponent]

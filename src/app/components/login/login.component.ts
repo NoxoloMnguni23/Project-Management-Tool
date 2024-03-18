@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { UserInfoService } from 'src/app/services/user-info.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   user: any;
 
-  constructor(private sharedService: UserInfoService, private router: Router, private snackBar: MatSnackBar) {
+  constructor(private sharedService: SharedService, private router: Router, private snackBar: MatSnackBar) {
     this.user = this.sharedService.get('users', 'local')
     if (!this.user.length) {
       this.sharedService.store([{
