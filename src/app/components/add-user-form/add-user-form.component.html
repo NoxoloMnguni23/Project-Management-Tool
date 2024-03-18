@@ -1,6 +1,6 @@
 <mat-card class="main-container">
     <form [formGroup]="addUser">
-        <h3 class="flex center-center">Add User Form</h3>
+        <h3 class="flex center-center">{{isEditting ? 'Edit User': 'Add User'}}</h3>
 
         <div class="gap-1 flex column">
             <!-- First Name -->
@@ -58,9 +58,9 @@
         </div>
 
         <!-- Submit and Cancel Buttons -->
-        <div class="flex center-center gap-1 buttons">
+        <div class="flex center-center gap-1em buttons">
             <button mat-raised-button color="warn" (click)="close()">Cancel</button>
-            <button mat-raised-button [disabled]="addUser.invalid" (click)="submit()">Submit</button>
+            <button mat-raised-button [disabled]="addUser.invalid" (click)="submit()">{{isEditting ? 'Save': 'Submit'}}</button>
         </div>
     </form>
 </mat-card>
