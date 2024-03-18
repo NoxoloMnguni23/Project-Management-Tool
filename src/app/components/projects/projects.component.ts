@@ -17,9 +17,11 @@ export class ProjectsComponent {
     // console.log("_project",_project)
     this.api.genericGet('/get-projects')
       .subscribe({
-        next: (res) => {
+        next: (res: any) => {
           this.managerProjects = res;
-          this.hasAddedProjects = true;
+          if (res.length > 0) {
+            this.hasAddedProjects = true
+          }
         },
         error: (err) => console.log(err),
         complete: () => { }

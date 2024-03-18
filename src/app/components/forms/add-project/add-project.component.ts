@@ -13,10 +13,23 @@ import { ApiService } from 'src/app/services/api.service';
 
 export class AddProjectComponent {
   projectFormGroup: FormGroup;
-  onEditProject: boolean = false
+  onEditProject: boolean = false;
+  toppings = new FormControl('');
+  usersList!: any;
+
 
   constructor(private dialogRef: MatDialogRef<AddProjectComponent>,
     private api: ApiService, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) private _project: any) {
+
+    this.api.genericGet('/get-users')
+      .subscribe({
+        next: (res) => {
+          console.log("res", res)
+          this.usersList = res;
+        },
+        error: (err) => console.log(err),
+        complete: () => { }
+      })
 
     if (_project) {
       const projectToEdit = _project._project;
@@ -43,9 +56,6 @@ export class AddProjectComponent {
       status: new FormControl('Pending', [Validators.required]),
     })
   }
-
-  toppings = new FormControl('');
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
 
   close(): void {
     this.dialogRef.close();

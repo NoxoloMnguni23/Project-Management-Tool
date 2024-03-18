@@ -10,10 +10,13 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class ProfileComponent {
   user: any
+
   constructor(private service: SharedService, private matDialog: MatDialog) {
     this.user = this.service.get('currentUser', 'session')
-
+    // console.log("user",this.user);
   }
+
+  
   changePassword(){
     this.matDialog.open(ForgotPasswordComponent)
   }

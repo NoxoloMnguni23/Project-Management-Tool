@@ -1,0 +1,50 @@
+<div class="main-container flex column gap-1em relative">
+    <h2 class="no-margin text-center">{{!onEditTask ? 'Add' : 'Edit'}} Task</h2>
+    <p (click)="close()" class="close absolute pointer">X</p>
+    <form [formGroup]="taskFormGroup" class="flex column">
+        <!-- Task Title -->
+        <mat-form-field class="flex-1">
+            <mat-label>Title</mat-label>
+            <input type="text" formControlName="taskTitle" matInput placeholder="Title of task">
+            <mat-error *ngIf="taskFormGroup.get('taskTitle')?.hasError('required')">
+                This field is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <!-- Task Description -->
+        <div class="flex flex-1 column textarea-container">
+            <textarea formControlName="taskDescription" name="" id="" placeholder="Description of task" cols="30"
+                rows="10"></textarea>
+            <small
+                *ngIf="taskFormGroup.get('taskDescription')?.hasError('required') && taskFormGroup.get('taskTitle')?.touched"
+                class="err-msg color-red no-margin">This field is <strong>required</strong></small>
+        </div>
+        <!-- Task Priority -->
+        <mat-form-field class="flex-1">
+            <mat-label>Select Priority</mat-label>
+            <mat-select formControlName="taskPriority" matInput placeholder="Priority of task">
+                <mat-option *ngFor="let priority of priorities" [value]="priority">
+                    {{priority}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="taskFormGroup.get('taskPriority')?.hasError('required')">
+                This field is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <!-- Task Deadline -->
+        <mat-form-field appearance="fill">
+            <mat-label>Deadline</mat-label>
+            <input matInput formControlName="taskDeadline" [min]="openProject.startDate" [max]="openProject.endDate"
+                readonly (focus)="picker.open()" [matDatepicker]="picker">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="taskFormGroup.get('taskDeadline')?.hasError('required')">
+                This field is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <div class="flex gap-1em j-end">
+            <button mat-raised-button color="primary"
+                (click)="submit()">{{!onEditTask ? 'Submit' : 'Save'}}</button>
+        </div>
+    </form>
+</div>

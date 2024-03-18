@@ -22,8 +22,8 @@ export class UsersComponent {
     {
       title: 'Users',
       dataSource: this.api.genericGet('/get-users'),
-      displayedColumns: ['firstName', 'lastName', 'gender', 'id', 'email', 'role'],
-      displayedHeaders: ['First Name', 'Last Name', 'Gender', 'ID', 'Email', 'Role']
+      displayedColumns: ['firstName', 'lastName', 'gender', 'id', 'email', 'role','action'],
+      displayedHeaders: ['First Name', 'Last Name', 'Gender', 'ID', 'Email', 'Role','Action']
     }
   }
   
@@ -91,6 +91,7 @@ export class UsersComponent {
       }
     });
   }
+  
   
 }
 

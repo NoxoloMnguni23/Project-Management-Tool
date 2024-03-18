@@ -21,31 +21,7 @@ export class LandingComponent {
 
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userInfo: SharedService) {
     this.user = this.userInfo.get('currentUser', 'session');
-
-    this.router.navigate(['/landing/dashboard'])
-    if (this.user.role === 'admin') {
-      this.menuItems = [ 
-        { label: 'dashboard', icon: 'dashboard', route: '/landing/dashboard' },
-        { label: 'profile', icon: 'person', route: '/landing/profile' },
-        { label: 'users', icon: 'group', route: '/landing/users' },
-        { label: 'projects', icon: 'group_work', route: '/landing/projects' },
-      ]
-    } else if (this.user.role === 'manager') {
-      this.menuItems = [
-        { label: 'dashboard', icon: 'dashboard', route: '/landing/dashboard' },
-        { label: 'profile', icon: 'person', route: '/landing/profile' },
-        { label: 'team-members', icon: 'group', route: '/landing/team-members' },
-        { label: 'projects', icon: 'group_work', route: '/landing/projects' },
-        { label: 'new-project', icon: 'group_work', route: '/landing/new-project' },
- 
-      ]
-    } else if (this.user.role === 'team-member') {
-      this.menuItems = [
-        { label: 'dashboard', icon: 'dashboard', route: '/landing/dashboard' },
-        { label: 'profile', icon: 'person', route: '/landing/profile' },
-        { label: 'tasks', icon: 'group_work', route: '/landing/tasks' },
-      ]
-    }
+    console.log(this.user)
   }
   logout(): void {
     sessionStorage.clear();

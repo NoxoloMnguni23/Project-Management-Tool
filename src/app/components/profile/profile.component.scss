@@ -3,6 +3,7 @@
     font-size: 18px;
     color: #333;
     letter-spacing: .54px;
+    text-align: center;
 
 }
 
@@ -30,6 +31,9 @@
 
 .gap-2em {
     gap: 2em;
+}
+.gap1em{
+    gap:1em;
 }
 
 .wrap {
@@ -76,6 +80,10 @@
 }
 .column{
     flex-direction: column;
+}
+button:hover{
+    background-color: #7575FF;
+    color: white;
 }
 
 
