@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators, FormsModule, Form } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -11,7 +12,7 @@ export class ForgotPasswordComponent {
 
   forgotPasswordForm: FormGroup;
 
-  constructor( private snackBar: MatSnackBar) {
+  constructor( private snackBar: MatSnackBar, private apiService : ApiService) {
 
     this.forgotPasswordForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -19,7 +20,15 @@ export class ForgotPasswordComponent {
     })
   }
 
-  sendEmail(){}
+  sendForgotEmail(email: any){
+    console.log("email", email)
+      this.apiService.genericPost('/forgotPassword', this.forgotPasswordForm.value)
+        .subscribe({
+          next: (res) => { console.log(res) },
+          error: (err) => { console.log(err) },
+          complete: () => { }
+        })
+  }
   resetForm() {
     this.forgotPasswordForm.reset();
   }
