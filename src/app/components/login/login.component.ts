@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
@@ -14,7 +15,22 @@ export class LoginComponent {
   loginForm: FormGroup;
   user: any;
 
-  constructor(private sharedService: SharedService, private router: Router, private snackBar: MatSnackBar) {
+  constructor(private sharedService: SharedService, private router: Router, private snackBar: MatSnackBar,
+    private api: ApiService) {
+
+    const Admin = {
+      "firstName": "Administrator",
+      "lastName": "Admin",
+      "gender": "male",
+      "id": "4564545645645",
+      "email": "admin@gmail.com",
+      "role": "admin",
+      "password": "123"
+    }
+
+    this.api.genericPost('/add-user', Admin)
+      .subscribe((res) => console.log('Admin acc added.'))
+
     this.user = this.sharedService.get('users', 'local')
     if (!this.user.length) {
       this.sharedService.store([{

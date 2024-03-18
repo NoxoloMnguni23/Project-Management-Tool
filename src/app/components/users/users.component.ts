@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddUserFormComponent } from '../add-user-form/add-user-form.component';
 import * as XLSX from 'xlsx';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-users',
@@ -17,18 +18,19 @@ export class UsersComponent {
 
   userTable: any;
 
-  constructor(public dialog: MatDialog, private api: ApiService, private snackBar: MatSnackBar) { 
+  constructor(public dialog: MatDialog, private api: ApiService, private snackBar: MatSnackBar,
+    private sharedService: SharedService) {
     this.userTable =
     {
       title: 'Users',
       dataSource: this.api.genericGet('/get-users'),
-      displayedColumns: ['firstName', 'lastName', 'gender', 'id', 'email', 'role','action'],
-      displayedHeaders: ['First Name', 'Last Name', 'Gender', 'ID', 'Email', 'Role','Action']
+      displayedColumns: ['firstName', 'lastName', 'gender', 'id', 'email', 'role', 'action'],
+      displayedHeaders: ['First Name', 'Last Name', 'Gender', 'ID', 'Email', 'Role', 'Action']
     }
   }
-  
+
   // add user form
-  openDialog() { 
+  openDialog() {
     this.dialog.open(AddUserFormComponent);
   }
 
@@ -46,7 +48,7 @@ export class UsersComponent {
       this.users = jsonData;
       console.log("file data", this.users);
       // Add password field for every user
-      this.users.forEach((fileUser: any,indx: any) => {
+      this.users.forEach((fileUser: any, indx: any) => {
         this.users[indx]['password'] = 'test123';
       })
       console.log("file data users with passwords", this.users);
@@ -64,6 +66,8 @@ export class UsersComponent {
             if (!userExists) {
               console.log('Adding user:', fileUser.id);
               this.addUserApi(fileUser);
+              this.sharedService.updateUsersWatch();
+              // Update users table
             }
           });
         },
@@ -81,7 +85,7 @@ export class UsersComponent {
   addUserApi(fileUserToStore: any) {
     this.api.genericPost('/add-user', fileUserToStore).subscribe({
       next: (res) => {
-        this.snackBar.open('File uploaded successfully','Ok',{duration: 3000});
+        this.snackBar.open('File uploaded successfully', 'Ok', { duration: 3000 });
       },
       error: (err) => {
         console.error('Error adding user:', err);
@@ -91,7 +95,5 @@ export class UsersComponent {
       }
     });
   }
-  
-  
 }
 

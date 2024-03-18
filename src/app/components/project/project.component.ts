@@ -197,25 +197,4 @@ export class ProjectComponent implements OnInit {
   downloadSpreadsheet(): void {
     this.sharedService.downloadSpreadsheet('Project-Spreadsheet', this.dataSource);
   }
-
-  sendEmail(): void {
-    (function () {
-      emailjs.init("-zPelKc0E3npVguLF");
-    })();
-    const params = {
-      sender_name: "Project Management System",
-      subject: "Task Assignment",
-      message: "You have a pending assigned task",
-      toEmail: "oh34swlling@gmail.com",
-      reply_to: "Disabled"
-    }
-    const sendElement = document.getElementById('send')
-    console.log("sendElement", sendElement)
-    function send() {
-      emailjs.sendForm('service_as60pvf', 'template_8387uqw', params)
-        .then((res: any) => {
-          console.log('res', res)
-        })
-    }
-  }
 }
