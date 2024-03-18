@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { UserInfoService } from 'src/app/services/user-info.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   user: any;
 
-  constructor(private sharedService: UserInfoService, private router: Router, private snackBar: MatSnackBar) {
+  constructor(private sharedService: SharedService, private router: Router, private snackBar: MatSnackBar) {
     this.user = this.sharedService.get('users', 'local')
     if (!this.user.length) {
       this.sharedService.store([{
@@ -41,12 +41,12 @@ export class LoginComponent {
       // Check if user exists
       const foundUser = users.find((user: any) => user.email === this.loginForm.controls["email"].value);
 
-      this.sharedService.currentUser = '';
+      // this.sharedService.currentUser = '';
 
       if (!foundUser) {
-        this.snackBar.open('User does not exist.', 'OK', {duration: 3000});
+        this.snackBar.open('User does not exist.', 'OK', { duration: 3000 });
       } else if (foundUser.password !== this.loginForm.controls['password'].value) {
-        this.snackBar.open('Password incorrect', 'OK', {duration : 3000});
+        this.snackBar.open('Password incorrect', 'OK', { duration: 3000 });
       } else {
         sessionStorage.setItem('currentUser', JSON.stringify(foundUser));
         this.router.navigate(['/landing'])
@@ -54,7 +54,7 @@ export class LoginComponent {
       }
     }
   }
-  resetForm(){
+  resetForm() {
     this.loginForm.reset()
   }
 

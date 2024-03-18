@@ -32,6 +32,10 @@ export class TableComponent implements OnChanges {
       this.refreshUsers()
     } else if (this.tableData.title === 'Tasks') {
       this.isAdmin = false;
+      this.apiService.genericGet('/get-tasks').subscribe((res: any) => {
+        console.log("res tasks", res)
+        this.dataSource = new MatTableDataSource<any>(res);
+      });
       // Fetch tasks data from API
       this.refreshTasks();
     }
@@ -46,8 +50,6 @@ export class TableComponent implements OnChanges {
     this.dataSource.paginator = this.paginator;
   }
 
-
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -55,6 +57,17 @@ export class TableComponent implements OnChanges {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+  // On input focus: setup filterPredicate to only filter by input column
+  setupFilter() {
+    const columnArr = ['taskTitle', 'taskPriority', 'status', 'taskDeadline'];
+    this.dataSource.filterPredicate = (data: any, filter: any) => {
+      const lowercaseFilter = filter.toLowerCase();
+      return columnArr.some(column => {
+        const textToSearch = data[column] && data[column].toLowerCase() || '';
+        return textToSearch.includes(lowercaseFilter);
+      });
+    };
   }
 
   deleteRow(row: any) {

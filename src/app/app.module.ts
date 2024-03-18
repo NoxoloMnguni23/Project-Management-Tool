@@ -32,6 +32,7 @@ import { NewProjectComponent } from './components/new-project/new-project.compon
 import { ProjectComponent } from './components/project/project.component';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { AddTaskComponent } from './components/forms/add-task/add-task.component';
 
 
 
@@ -52,7 +53,8 @@ import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
     TableComponent,
     AddUserFormComponent,
     NewProjectComponent,
-    ProjectComponent
+    ProjectComponent,
+    AddTaskComponent
   ],
   imports: [
     BrowserModule,

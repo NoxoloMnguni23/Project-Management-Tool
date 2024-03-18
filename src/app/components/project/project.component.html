@@ -1,15 +1,16 @@
-<div class="main-container padding-10px flex column gap-1em">
-    <div class="flex j-center">
+<div class="main-container padding-05em flex column gap-1em">
+    <div class="flex j-center ">
         <div class="flex a-center gap-1em">
-            <h2 class="no-margin text-center">Project Name</h2>
+            <h2 class="no-margin text-center">{{viewedProject.projectName | titlecase}}</h2>
             <mat-icon (click)="editProject()" class="color-blue pointer">edit</mat-icon>
         </div>
+        <button id="send" (click)="sendEmail()">Send Email</button>
     </div>
     <div class="tasks flex column">
         <div class="teamMembers">
             <div class="flex column">
                 <div class="flex a-center gap-1em">
-                    <h2 class="no-margin color-blue">Assign Tasks</h2>
+                    <h2 class="no-margin color-blue assignHeading">Assign Tasks</h2>
                     <button *ngIf="hasChangedAssignments" (click)="saveTaskAssignments()" mat-raised-button
                         color="primary" class="color-blue pointer">Save</button>
                 </div>
@@ -17,42 +18,55 @@
                     <div cdkDropListGroup>
                         <div class="example-container">
                             <h3>Team Members</h3>
-                            <div cdkDropList [cdkDropListData]="todo" class="example-list"
+                            <div cdkDropList [cdkDropListData]="usersList" class="example-list"
                                 (cdkDropListDropped)="drop($event)">
-                                <div *ngFor="let item of todo" class="example-box" cdkDrag>{{item}}</div>
+                                <div *ngFor="let user of usersList" class="example-box gap-2em" cdkDrag>
+                                    <p class="no-margin">{{user.firstName | titlecase}}</p>
+                                    <p class="no-margin">{{user.lastName | titlecase}}</p>
+                                </div>
                             </div>
                         </div>
                         <div class="example-container">
                             <div class="flex gap-1em a-center">
                                 <h3 (click)="seeProjectTasks()" class="tasks-list pointer">Tasks List</h3>
-                                <div class="add-container pointer flex center-center">
+                                <div (click)="addNewTask()" class="add-container pointer flex center-center">
                                     <mat-icon>add</mat-icon>
                                 </div>
                             </div>
-                            <div cdkDropList [cdkDropListData]="done" (cdkDropListDropped)="drop($event)"
+                            <div cdkDropList [cdkDropListData]="tasksList" (cdkDropListDropped)="drop($event)"
                                 class="example-list">
-                                <div *ngFor="let item of done; track item" class="example-box" cdkDrag>{{item}}</div>
+                                <div *ngFor="let task of tasksList; track task" class="example-box" cdkDrag>
+                                    {{task.taskTitle | titlecase}}</div>
                             </div>
                         </div>
                     </div>
                     <div class="actions j-end flex column gap-1em">
-                        <button mat-stroked-button color="primary" >Download Report</button>
-                        <button mat-raised-button disabled>Completed 1/5 Tasks</button>
+                        <button (click)="downloadSpreadsheet()" mat-stroked-button color="primary">Download
+                            Report</button>
+                        <button mat-raised-button
+                            [color]="pendingProjectTasksCount === projectTasksCount ? 'primary': 'warn'"
+                            [disabled]="pendingProjectTasksCount !== projectTasksCount">{{pendingProjectTasksCount}}/{{projectTasksCount}}
+                            Tasks
+                            Completed</button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
     <div class="flex gap-1em">
         <div class="flex column gap-1em">
             <p class="no-margin">Start Date</p>
-            <h4 class="no-margin">21/21/23</h4>
+            <h4 class="no-margin">{{viewedProject.startDate | date}}</h4>
         </div>
         <p class="no-margin">/</p>
         <div class="flex column gap-1em">
             <p class="no-margin">End Date</p>
-            <h4 class="no-margin">21/21/23</h4>
+            <h4 class="no-margin">{{viewedProject.endDate | date}}</h4>
         </div>
     </div>
 </div>
+
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"> </script>
+<script type="text/javascript">
+</script>

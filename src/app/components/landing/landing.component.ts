@@ -3,7 +3,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { UserInfoService } from 'src/app/services/user-info.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-landing',
@@ -19,7 +19,7 @@ export class LandingComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userInfo: UserInfoService) {
+  constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userInfo: SharedService) {
     this.user = this.userInfo.get('currentUser', 'session');
 
     // this.router.navigate(['/landing/dashboard'])
