@@ -1,10 +1,22 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import * as XLSX from 'xlsx';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
+  usersUpdated: boolean = false;
+  usersUpdatedSubject = new Subject<any>();
+
+  updateUsersWatch(): void {
+    this.usersUpdated = true;
+    this.usersUpdatedSubject.next(this.usersUpdated);
+  }
+
+  watchUsersUpdate(): Observable<any> {
+    return this.usersUpdatedSubject.asObservable();
+  }
 
   get(key: string, sessionType: string): any {
     let data = sessionType === 'session' ? sessionStorage.getItem(key) : localStorage.getItem(key);

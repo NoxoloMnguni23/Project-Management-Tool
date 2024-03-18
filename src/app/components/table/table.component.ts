@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddUserFormComponent } from '../add-user-form/add-user-form.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-table',
@@ -23,8 +24,14 @@ export class TableComponent implements OnChanges {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private apiService: ApiService, private snackBar: MatSnackBar, private dialog: MatDialog) { }
-
+  constructor(private apiService: ApiService, private snackBar: MatSnackBar, private dialog: MatDialog,
+    private sharedService: SharedService) {
+    this.sharedService.watchUsersUpdate().subscribe((usersUpdated: boolean) => {
+      this.apiService.genericGet('/get-users').subscribe((res: any) => {
+        this.dataSource = res;
+      });
+    })
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.tableData.title === 'Users') {
       this.isAdmin = true;
@@ -117,7 +124,7 @@ export class TableComponent implements OnChanges {
   refreshUsers(): void {
     // Fetch user data from API
     this.apiService.genericGet('/get-users').subscribe((res: any) => {
-      this.dataSource = new MatTableDataSource<any>(res);
+      this.dataSource = res;
     });
   }
 
