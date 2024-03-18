@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { UserInfoService } from 'src/app/services/user-info.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +12,7 @@ export class DashboardComponent {
   projects:any;
   noOfUsers:any;  
 
-  constructor( private userService: UserInfoService, private dialog:MatDialog ){
+  constructor( private userService: SharedService, private dialog:MatDialog ){
     this.user = sessionStorage.getItem('currentUser')
     this.user = JSON.parse(this.user)
     
