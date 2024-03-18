@@ -15,19 +15,25 @@ export class LoginComponent {
   loginForm: FormGroup;
   user: any;
 
-  constructor(private sharedService: SharedService, private router: Router, private snackBar: MatSnackBar,private api: ApiService) {
-    this.user = this.sharedService.get('users', 'local')
-    if (!this.user.length) {
-      this.sharedService.store([{
-        fullName: 'Built-In Admin',
-        email: 'admin@medicalcenter.ac.za',
-        role: 'admin',
-        phoneNumber: null,
-        address: null,
-        password: 'admin@12'
-      }], 'users', 'local')
+  constructor(private sharedService: SharedService, private router: Router, private snackBar: MatSnackBar,
+    private api: ApiService) {
+
+    const Admin = {
+      "firstName": "Administrator",
+      "lastName": "Admin",
+      "gender": "male",
+      "id": "4564545645645",
+      "email": "admin@gmail.com",
+      "role": "admin",
+      "password": "123"
     }
 
+    this.api.genericGet('/get-users').subscribe((res: any) => {
+      const isAdminFound = res.find((user: any) => user.email === Admin.email)
+      if (isAdminFound) return;
+      this.api.genericPost('/add-user', Admin)
+        .subscribe((res) => console.log('Admin acc added.'))
+    })
 
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -36,35 +42,18 @@ export class LoginComponent {
   }
 
   submit(): void {
-    // this.api.genericGet('/get-users')
-    // .subscribe({
-    //   next:(res:any) =>{
-    //     this.user=res;
-    //     if(res.length >0){
-    //       this.user=res
-    //     }
-    //   },
-    //   complete:()=>{}
-    // })
-
-    let _users = localStorage.getItem('users');
-    const users = _users ? JSON.parse(_users) : [];
-    if (this.loginForm.valid) {
-      // Check if user exists
-      const foundUser = users.find((user: any) => user.email === this.loginForm.controls["email"].value);
-
-      // this.sharedService.currentUser = '';
-
-      if (!foundUser) {
-        this.snackBar.open('User does not exist.', 'OK', { duration: 3000 });
-      } else if (foundUser.password !== this.loginForm.controls['password'].value) {
-        this.snackBar.open('Password incorrect', 'OK', { duration: 3000 });
-      } else {
-        sessionStorage.setItem('currentUser', JSON.stringify(foundUser));
-        this.router.navigate(['/landing'])
-
+    this.api.genericGet(`/login/${this.loginForm.value.email}/${this.loginForm.value.password}`).subscribe((res: any) => {
+      console.log("res", res)
+      if (!res.emailExists) {
+        this.snackBar.open("Account does not exist", 'Ok', { duration: 3000 });
       }
-    }
+      if (!res.passwordMatches) {
+        this.snackBar.open("Password does not match", 'Ok', { duration: 3000 });
+        return;
+      }
+      this.sharedService.store(res.userAcc, 'currentUser', 'session')
+      this.router.navigate(['/landing/dashboard']);
+    })
   }
   resetForm() {
     this.loginForm.reset()

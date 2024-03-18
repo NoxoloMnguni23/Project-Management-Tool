@@ -31,7 +31,7 @@
                 <!-- Start Date -->
                 <mat-form-field appearance="fill">
                     <mat-label>Start Date</mat-label>
-                    <input matInput formControlName="startDate" readonly (focus)="picker.open()" [matDatepicker]="picker">
+                    <input matInput formControlName="startDate" [min]="today" readonly (focus)="picker.open()" [matDatepicker]="picker">
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
@@ -42,7 +42,7 @@
                 <!-- End Date -->
                 <mat-form-field appearance="fill">
                     <mat-label>End Date</mat-label>
-                    <input matInput formControlName="endDate" readonly (focus)="picker2.open()"  [matDatepicker]="picker2">
+                    <input matInput formControlName="endDate" [min]="today" readonly (focus)="picker2.open()"  [matDatepicker]="picker2">
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
@@ -62,8 +62,11 @@
                 </div>
             </mat-option>
             </mat-select>
-            <mat-error *ngIf="projectFormGroup.get('teamMembers')?.hasError('required')">
+            <mat-error *ngIf="projectFormGroup.get('teamMembers')?.hasError('required') && usersList.length > 0">
                 This field is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="projectFormGroup.get('teamMembers')?.hasError('required') && usersList.length === 0">
+                0 team members on system <strong>Contact Admin</strong>
             </mat-error>
         </mat-form-field>
         <div class="flex gap-1em j-end">

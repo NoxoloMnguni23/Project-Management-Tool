@@ -16,11 +16,13 @@ export class AddProjectComponent {
   onEditProject: boolean = false;
   toppings = new FormControl('');
   usersList!: any;
+  today: any;
 
 
   constructor(private dialogRef: MatDialogRef<AddProjectComponent>,
     private api: ApiService, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) private _project: any) {
-
+    this.today = new Date();
+    console.log("this.today", this.today)
     this.api.genericGet('/get-users')
       .subscribe({
         next: (res) => {
@@ -62,6 +64,7 @@ export class AddProjectComponent {
   }
 
   submit(): void {
+    console.log(this.projectFormGroup.value)
     if (this._project) {
       this.api.genericPost('/update-project', this.projectFormGroup.value)
         .subscribe({
