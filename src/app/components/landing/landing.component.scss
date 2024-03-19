@@ -11,8 +11,8 @@
 }
 
 .mat-toolbar {
-  background-color: #7575ff;
-  color: white;
+ 
+  color: #e87033;
 }
 #drawer{
   display: flex;
@@ -21,7 +21,7 @@
 }
 .leftTool{
   height: 190px;
-  color: black;
+  color:  #e87033;
 
   .userPic{
       height: 20%;
@@ -54,7 +54,14 @@
       }
   }
 }
-
+mat-nav-list{
+  button{
+    color:#e87033;
+  }
+  &:hover{
+    color: #fff !important;;
+  }
+}
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;
@@ -62,11 +69,11 @@
 }
 
 a:hover {
-  background-color: #7575ff;
+  background-color: #f19a6f;
   color: white;
 }
 button:hover{
-  background-color: #7575ff;
+  background-color: #f19a6f;
   color: white;
 }
 
@@ -85,7 +92,7 @@ a:hover mat-icon {
 }
 
 .active {
-  background-color: #7575ff !important;
+  background-color: #f19a6f!important;
   color: white !important;
   border-radius: 5px;
 }
@@ -207,7 +214,7 @@ img{
 }
 
 .active {
-  background-color: #7575ff !important;
+  background-color: #f19a6f;
   color: white !important;
   border-radius: 5px;
 }
