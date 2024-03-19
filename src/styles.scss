@@ -1,6 +1,16 @@
+html,
+body {
+    height: 100%;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.color-white {
+    color: white;
+}
 
 
 // flex
@@ -128,4 +138,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .text-center {
     text-align: center;
+}
+
+.hide {
+    display: none;
+}
+
+// material
+
+.mdc-circular-progress {
+    position: absolute !important;
+    z-index: 1 !important;
 }

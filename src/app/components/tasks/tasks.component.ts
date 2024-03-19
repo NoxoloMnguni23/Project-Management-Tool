@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from 'src/app/services/api.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -11,13 +11,15 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class TasksComponent {
   tableData: any;
-  constructor(private api: ApiService, private snackbar: MatSnackBar, 
-    private dialogRef: MatDialogRef<TasksComponent>, private sharedService: SharedService) {
+  constructor(private api: ApiService, private snackbar: MatSnackBar,
+    private dialogRef: MatDialogRef<TasksComponent>, private sharedService: SharedService,
+    @Inject(MAT_DIALOG_DATA) private data: any) {
     this.tableData = {
       title: 'Tasks',
-      displayedColumns: ['taskTitle', 'taskPriority', 'taskDeadline', 'status'],
-      displayedHeaders: ['Title', 'Priority', 'Deadline', 'Status']
+      displayedColumns: ['taskTitle', 'taskPriority', 'taskDeadline', 'status', 'action'],
+      displayedHeaders: ['Title', 'Priority', 'Deadline', 'Status', 'Actions']
     }
+    this.sharedService.watchNoTasksUpdate().subscribe((isNoTasks: any) => this.close())
   }
 
   close(): void {
@@ -30,7 +32,7 @@ export class TasksComponent {
     this.api.genericGet('/get-tasks')
       .subscribe({
         next: (res: any) => {
-          this.sharedService.downloadSpreadsheet('Project-Tasks-Spreadsheet',res);
+          this.sharedService.downloadSpreadsheet('Project-Tasks-Spreadsheet', res);
         },
         error: (err) => console.log(err),
         complete: () => { }

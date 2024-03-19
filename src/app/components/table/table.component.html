@@ -1,13 +1,21 @@
-<div class="main-container">
-  <mat-form-field>
-    <mat-label>Search {{ isAdmin ? 'Users' : 'Tasks' }}</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
-  </mat-form-field>
-  
-
+<div class="main-container relative">
+  <mat-spinner id="spinner" class="absolute spinner hide"></mat-spinner>
+  <div class="flex space-between a-center">
+    <mat-form-field>
+      <mat-label>Search {{ isAdmin ? 'Users' : 'Tasks' }}</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
+    </mat-form-field>
+    <div *ngIf="!tableDataAvailable" class="flex a-center gap-1em">
+      <div (click)="openDialog()" title="Upload One" class="add flex center-center pointer">
+        <mat-icon class="color-white">person</mat-icon>
+        <mat-icon class="color-white">add</mat-icon>
+      </div>
+      <input class="relative" title="Upload multiple" matSuffix type="file" (change)="onFileChange($event)">
+    </div>
+  </div>
+  <p *ngIf="!tableDataAvailable" class="no-margin no-table-data color-red">0 system users added.</p>
   <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort>
-
+    <table *ngIf="tableDataAvailable" mat-table [dataSource]="dataSource" matSort>
       <!--Columns -->
       <ng-container [matColumnDef]="header" *ngFor="let header of displayedColumns; let i = index">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">
@@ -15,9 +23,16 @@
         </th>
         <td mat-cell *matCellDef="let row" class="text-center">
           <div class="flex">
-            <p class="no-margin">{{ row[header] |titlecase }}</p>
-            <mat-icon *ngIf="header === 'action'" (click)="editRow(row)">edit</mat-icon>
-            <mat-icon *ngIf="header === 'action'" (click)="deleteRow(row)">delete</mat-icon>
+            <p *ngIf="header !== 'status' && header !== 'taskDeadline' && header !== 'email'" class="no-margin">{{ row[header] |titlecase }}
+            </p>
+            <p *ngIf="header === 'taskDeadline'" class="no-margin">{{ row[header] | date }}</p>
+            <p *ngIf="header === 'email'" class="no-margin">{{ row[header] | lowercase }}</p>
+            <div *ngIf="header === 'status'" [class.status-pending]="row[header] === 'Completed'"
+              class="status-container">
+              <p class="no-margin">{{ row[header] |titlecase }}</p>
+            </div>
+            <mat-icon class="pointer" *ngIf="header === 'action'" (click)="editRow(row)">edit</mat-icon>
+            <mat-icon class="pointer" *ngIf="header === 'action'" (click)="deleteRow(row)">delete</mat-icon>
           </div>
         </td>
       </ng-container>
@@ -43,10 +58,9 @@
       <!-- Row shown when there is no matching data //colspan This is often used for table cells that need to span multiple columns. -->
       <!-- <tr class="mat-row" *matNoDataRow> -->
       <!-- <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data matching the filter "{{ input.value }}"</td>    </tr> -->
-
     </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons
+    <mat-paginator *ngIf="tableDataAvailable" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons
       aria-label="Select page of tableData.dataSource"></mat-paginator>
   </div>
 </div>

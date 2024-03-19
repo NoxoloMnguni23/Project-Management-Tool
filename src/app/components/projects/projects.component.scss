@@ -1,14 +1,7 @@
 $blue: blue;
 
-.padding-2em {
-    padding: 2em;
-}
-
 .main-container {
-
-    .project-container {
-        height: calc(100dvh - 120px);
-    }
+    padding: 1em;
 
     .project {
         width: 249px;
@@ -17,13 +10,27 @@ $blue: blue;
 
         .status {
             position: absolute;
-            right: 11px;
+            left: 9px;
+            top: 6px;
             padding: 5px;
             border-radius: 7px;
             background-color: $blue;
             color: white;
-            bottom: 11px;
         }
+
+        .project-health {
+            position: absolute;
+            height: 45px;
+            right: 9px;
+            width: 45px;
+            bottom: 7px;
+            border-radius: 50%;
+        }
+    }
+
+    .project-name {
+        font-size: larger;
+        font-weight: 500;
     }
 
     .add {
@@ -37,10 +44,6 @@ $blue: blue;
     }
 }
 
-.padding-10px {
-    padding: 10px;
-}
-
 .color-white {
     color: white;
 }
@@ -49,7 +52,24 @@ $blue: blue;
     color: red;
 }
 
+.color-unset-health {
+    background-color: #cbcbcb;
+}
+
+.color-good {
+    background-color: #8dc252;
+}
+
+.color-at-risk {
+    background-color: #fec02f;
+}
+
+.color-need-attension {
+    background-color: #f2453d;
+}
+
 .mdc-card {
     display: flex;
     flex-direction: row !important;
+    position: relative;
 }

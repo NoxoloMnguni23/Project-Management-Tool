@@ -25,6 +25,7 @@ declare let emailjs: any;
 export class ProjectComponent implements OnInit {
 
   displayedColumns: string[] = ['todayDate', 'projectName', 'startDate', 'endDate', 'status', 'teamMembers', 'tasks'];
+  projectHealths: string[] = ['Good', 'At Risk', 'Needs Attension'];
   dataSource!: any;
   hasChangedAssignments: boolean = false;
   projectTasks: any;
@@ -35,6 +36,8 @@ export class ProjectComponent implements OnInit {
   existingMembersTasksList: any[] = [];
   membersTasksList: any[] = [];
   viewedProject: any;
+  projectHealth: any = 'Needs Attension';
+  spinnerElement: any;
   constructor(@Inject(MAT_DIALOG_DATA) private _project: any, private dialog: MatDialog,
     private api: ApiService, private snackbar: MatSnackBar, private sharedService: SharedService) {
     this.viewedProject = _project._project;
@@ -67,7 +70,7 @@ export class ProjectComponent implements OnInit {
     this.api.genericGet('/get-users')
       .subscribe({
         next: (res: any) => {
-          this.usersList = res;
+          this.usersList = res.filter((user: any) => user.role.toLowerCase() === 'team member');
         },
         error: (err) => console.log(err),
         complete: () => { }
@@ -84,6 +87,7 @@ export class ProjectComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinnerElement = document.getElementById('spinner') as HTMLElement | undefined;
   }
 
   editProject(): void {
@@ -129,15 +133,23 @@ export class ProjectComponent implements OnInit {
   }
 
   seeProjectTasks(): void {
-    this.dialog.open(TasksComponent)
+    // Get all tasks
+    this.api.genericGet('/get-tasks')
+      .subscribe({
+        next: (res: any) => {
+          if (res.length < 1) {
+            this.snackbar.open('You need to add tasks', 'Ok', { duration: 3000 });
+            return;
+          };
+          this.dialog.open(TasksComponent, { data: this.viewedProject })
+        },
+        error: (err) => console.log(err),
+        complete: () => { }
+      })
   }
 
   addNewTask(): void {
-    this.dialog.open(AddTaskComponent, {
-      data: {
-        _project: this.viewedProject
-      }
-    });
+    this.dialog.open(AddTaskComponent, { data: this.viewedProject });
   }
 
   getAssignedTasks(): void {
@@ -196,5 +208,32 @@ export class ProjectComponent implements OnInit {
 
   downloadSpreadsheet(): void {
     this.sharedService.downloadSpreadsheet('Project-Spreadsheet', this.dataSource);
+  }
+
+  changeHealth(health: any): void {
+    this.projectHealth = health;
+    this.viewedProject.projectHealth = health;
+    // Get all tasks
+    this.api.genericPost('/update-project', this.viewedProject)
+      .subscribe({
+        next: (res: any) => {
+          this.snackbar.open('Health updated successfully', 'Ok', { duration: 3000 });
+        },
+        error: (err) => console.log(err),
+        complete: () => { }
+      })
+  }
+
+  progressSpinner(action: any) {
+    switch (action) {
+      case 'show':
+        this.spinnerElement.classList.remove('hide');
+        break;
+      case 'hide':
+        this.spinnerElement.classList.add('hide');
+        break;
+      default:
+        break;
+    }
   }
 }

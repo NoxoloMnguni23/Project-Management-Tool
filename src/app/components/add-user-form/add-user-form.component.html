@@ -42,7 +42,7 @@
                     required>
                 <mat-error *ngIf="addUser.get('email')?.hasError('required')">Email is required
                     address</mat-error>
-                <mat-error *ngIf="addUser.get('email')?.hasError('email')">Please enter a valid email
+                <mat-error *ngIf="addUser.get('email')?.hasError('pattern')">Please enter a valid email
                     address</mat-error>
             </mat-form-field>
 
@@ -58,7 +58,7 @@
         </div>
 
         <!-- Submit and Cancel Buttons -->
-        <div class="flex center-center gap-1em buttons">
+        <div class="flex j-center gap-1em buttons">
             <button mat-raised-button color="warn" (click)="close()">Cancel</button>
             <button mat-raised-button [disabled]="addUser.invalid" (click)="submit()">{{isEditting ? 'Save': 'Submit'}}</button>
         </div>

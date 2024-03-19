@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from 'src/app/services/api.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-add-project',
@@ -17,17 +18,21 @@ export class AddProjectComponent {
   toppings = new FormControl('');
   usersList!: any;
   today: any;
+  loggedInUser: any;
+  userName: any;
 
-
-  constructor(private dialogRef: MatDialogRef<AddProjectComponent>,
-    private api: ApiService, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) private _project: any) {
+  constructor(private dialogRef: MatDialogRef<AddProjectComponent>, private sharedService: SharedService,
+    private api: ApiService, private snackbar: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) private _project: any) {
     this.today = new Date();
-    console.log("this.today", this.today)
+    this.loggedInUser = sharedService.get('currentUser','session');
+    this.userName = `${this.loggedInUser.firstName} ${this.loggedInUser.lastName}`
     this.api.genericGet('/get-users')
       .subscribe({
-        next: (res) => {
+        next: (res: any) => {
           console.log("res", res)
-          this.usersList = res;
+          this.usersList = res.filter((user: any) => user.role.toLowerCase() !== 'admin');
+          this.usersList = this.usersList.filter((user: any) => user.role.toLowerCase() !== 'project manager');
         },
         error: (err) => console.log(err),
         complete: () => { }
@@ -45,17 +50,20 @@ export class AddProjectComponent {
         endDate: new FormControl(projectToEdit.endDate, [Validators.required]),
         teamMembers: new FormControl(projectToEdit.teamMembers, [Validators.required]),
         status: new FormControl(projectToEdit.status, [Validators.required]),
+        projectHealth: new FormControl(projectToEdit.projectHealth, [Validators.required]),
       })
       return;
     }
     this.projectFormGroup = new FormGroup({
       projectName: new FormControl('', [Validators.required]),
-      projectManager: new FormControl('', [Validators.required]),
+      projectManager: new FormControl(this.userName, [Validators.required]),
       projectDescription: new FormControl('', [Validators.required]),
       startDate: new FormControl('', [Validators.required]),
       endDate: new FormControl('', [Validators.required]),
       teamMembers: new FormControl('', [Validators.required]),
       status: new FormControl('Pending', [Validators.required]),
+      projectHealth: new FormControl('Not Set', [Validators.required]),
+      createDate: new FormControl(this.today, [Validators.required]),
     })
   }
 
@@ -84,6 +92,7 @@ export class AddProjectComponent {
         next: (res) => {
           console.log("res", res)
           this.snackbar.open('Project added succesfully', 'OK', { duration: 3000 });
+          this.sharedService.updateProjectsWatch();
           this.dialogRef.close();
         },
         error: (err) => console.log(err),

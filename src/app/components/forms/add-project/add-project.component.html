@@ -14,7 +14,7 @@
             <!-- Project Manager -->
             <mat-form-field class="flex-1">
                 <mat-label>Manager</mat-label>
-                <input type="text" formControlName="projectManager" matInput placeholder="Manager of project">
+                <input readonly type="text" formControlName="projectManager" matInput placeholder="Manager of project">
                 <mat-error *ngIf="projectFormGroup.get('projectManager')?.hasError('required')">
                     This field is <strong>required</strong>
                 </mat-error>
@@ -23,15 +23,18 @@
         <div class="flex gap-1em">
             <!-- Project Description -->
             <div class="flex flex-1 column textarea-container">
-                <textarea formControlName="projectDescription" name="" id=""
-                    placeholder="Description of project" cols="30" rows="8"></textarea>
-                <small *ngIf="projectFormGroup.get('projectDescription')?.hasError('required') && projectFormGroup.get('projectDescription')?.touched" class="err-msg color-red no-margin">This field is <strong>required</strong></small>
+                <textarea formControlName="projectDescription" name="" id="" placeholder="Description of project"
+                    cols="30" rows="8"></textarea>
+                <small
+                    *ngIf="projectFormGroup.get('projectDescription')?.hasError('required') && projectFormGroup.get('projectDescription')?.touched"
+                    class="err-msg color-red no-margin">This field is <strong>required</strong></small>
             </div>
             <div class="flex column gap-1em">
                 <!-- Start Date -->
                 <mat-form-field appearance="fill">
                     <mat-label>Start Date</mat-label>
-                    <input matInput formControlName="startDate" [min]="today" readonly (focus)="picker.open()" [matDatepicker]="picker">
+                    <input matInput formControlName="startDate" [min]="today" readonly (focus)="picker.open()"
+                        [matDatepicker]="picker">
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
@@ -42,7 +45,8 @@
                 <!-- End Date -->
                 <mat-form-field appearance="fill">
                     <mat-label>End Date</mat-label>
-                    <input matInput formControlName="endDate" [min]="today" readonly (focus)="picker2.open()"  [matDatepicker]="picker2">
+                    <input matInput formControlName="endDate" [min]="today" readonly (focus)="picker2.open()"
+                        [matDatepicker]="picker2">
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
@@ -56,11 +60,12 @@
         <mat-form-field class="full-width m-t-1em">
             <mat-label>Team Members</mat-label>
             <mat-select formControlName="teamMembers" multiple>
-                <mat-option *ngFor="let user of usersList" [value]="user.email"><div class="flex gap-1em">
-                    <!-- <strong><p class="no-margin">{{user.email | lowercase}}</p></strong> -->
-                    <p class="no-margin">{{user.lastName | titlecase}}</p>
-                </div>
-            </mat-option>
+                <mat-option *ngFor="let user of usersList" [value]="user.email">
+                    <div class="flex gap-1em">
+                        <!-- <strong><p class="no-margin">{{user.email | lowercase}}</p></strong> -->
+                        <p class="no-margin">{{user.lastName | titlecase}}</p>
+                    </div>
+                </mat-option>
             </mat-select>
             <mat-error *ngIf="projectFormGroup.get('teamMembers')?.hasError('required') && usersList.length > 0">
                 This field is <strong>required</strong>
