@@ -74,7 +74,7 @@ import { AddTaskComponent } from './components/forms/add-task/add-task.component
     MatListModule,
     CdkDropListGroup,
     CdkDrag,
-    CdkDropList
+    CdkDropList,
 
   ],
   providers: [],

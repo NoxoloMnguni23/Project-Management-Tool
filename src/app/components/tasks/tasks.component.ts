@@ -11,8 +11,7 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class TasksComponent {
   tableData: any;
-  constructor(private api: ApiService, private snackbar: MatSnackBar, 
-    private dialogRef: MatDialogRef<TasksComponent>, private sharedService: SharedService) {
+  constructor(private api: ApiService, private snackbar: MatSnackBar, private sharedService: SharedService) {
     this.tableData = {
       title: 'Tasks',
       displayedColumns: ['taskTitle', 'taskPriority', 'taskDeadline', 'status'],
@@ -20,9 +19,7 @@ export class TasksComponent {
     }
   }
 
-  close(): void {
-    this.dialogRef.close();
-  }
+  
 
   downloadSpreadsheet(): void {
 
