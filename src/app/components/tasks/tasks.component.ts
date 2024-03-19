@@ -13,18 +13,16 @@ export class TasksComponent {
   tableData: any;
   constructor(private api: ApiService, private snackbar: MatSnackBar,
     private dialogRef: MatDialogRef<TasksComponent>, private sharedService: SharedService,
-    @Inject(MAT_DIALOG_DATA) private data: any) {
+    @Inject(MAT_DIALOG_DATA) private data: any,) {
     this.tableData = {
       title: 'Tasks',
       displayedColumns: ['taskTitle', 'taskPriority', 'taskDeadline', 'status', 'action'],
       displayedHeaders: ['Title', 'Priority', 'Deadline', 'Status', 'Actions']
     }
-    this.sharedService.watchNoTasksUpdate().subscribe((isNoTasks: any) => this.close())
+    this.sharedService.watchNoTasksUpdate().subscribe((isNoTasks: any) => { console.log('tasks updated') })
   }
 
-  close(): void {
-    this.dialogRef.close();
-  }
+
 
   downloadSpreadsheet(): void {
 

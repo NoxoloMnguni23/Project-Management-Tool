@@ -1,1 +1,60 @@
-<p>dashboard works.!</p>
+<h1 class="flex center-center column">Statistics</h1>
+<div class="container">
+    <div class="half column">
+
+        <div class="containers" *ngIf="user.role === 'project manager' || user.role==='admin'">
+            <mat-card class="project-container padding-10px gap-1em">
+                <h3 class="no-margin flex center-center column ">Number of projects:</h3>
+                <div class="status flex center-center column">
+                    <p class="no-margin">{{numberOfProjects}}</p>
+                </div>
+            </mat-card>
+        </div>
+
+        <div *ngIf="user.role === 'project manager'">
+            <mat-card class="project-container padding-10px gap-1em">
+                <h3 class="no-margin flex center-center column ">Number of Team Members:</h3>
+                <div class="status flex center-center column">
+                    <p class="no-margin">{{usersTeamMembers.length}}</p>
+                </div>
+            </mat-card>
+        </div>
+
+        <div *ngIf="user.role === 'admin'">
+            <mat-card class="project-container padding-10px gap-1em">
+                <h3 class="no-margin flex center-center column ">Number Users:</h3>
+                <div class="status flex center-center column">
+                    <p class="no-margin">{{usersMembers.length}}</p>
+                </div>
+            </mat-card>
+        </div>
+
+
+        <div *ngIf="user.role === 'project manager' || user.role==='admin'">
+            <mat-card class="project-container padding-10px gap-1em">
+                <h3 class="no-margin flex center-center column ">Number of Projects Completed:</h3>
+                <div class="status flex center-center column">
+                    <p class="no-margin"></p>
+                </div>
+            </mat-card>
+        </div>
+
+        <div *ngIf="user.role === 'team member'">
+            <mat-card class="project-container padding-10px gap-1em">
+                <h3 class="no-margin flex center-center column ">Number of Tasks:</h3>
+                <div class="status flex center-center column">
+                    <p class="no-margin">{{userNumTasks.length}}</p>
+                </div>
+            </mat-card>
+        </div>
+
+    </div>
+    <div class="half">
+        <div class="chart" *ngIf="user.role === 'project manager' || user.role==='admin'" style="display: block;">
+                <canvas #lineChart></canvas>
+            </div>
+        <div class="pie" *ngIf="user.role === 'team member'" style="display: block;">
+            <canvas #pieChart></canvas>
+        </div>
+    </div>
+</div>
