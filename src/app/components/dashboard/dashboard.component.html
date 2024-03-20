@@ -27,6 +27,8 @@
                     <p class="no-margin">{{usersMembers.length}}</p>
                 </div>
             </mat-card>
+
+
         </div>
 
 
@@ -44,6 +46,24 @@
                 <h3 class="no-margin flex center-center column ">Number of Tasks:</h3>
                 <div class="status flex center-center column">
                     <p class="no-margin">{{userNumTasks.length}}</p>
+                </div>
+            </mat-card>
+            <mat-card class="project-container padding-10px gap-1em">
+                <h3 class="no-margin flex center-center column ">Number of Tasks Completed:</h3>
+                <div class="status flex center-center column">
+                    <p class="no-margin">{{numberOfCompletedTasks?.length}}</p>
+                </div>
+            </mat-card>
+            <mat-card class="project-container padding-10px gap-1em">
+                <h3 class="no-margin flex center-center column ">Number of Tasks Pending:</h3>
+                <div class="status flex center-center column">
+                    <p class="no-margin">{{numberOfPendingTasks.length}}</p>
+                </div>
+            </mat-card>
+            <mat-card class="project-container padding-10px gap-1em">
+                <h3 class="no-margin flex center-center column ">Number of Tasks In-progress:</h3>
+                <div class="status flex center-center column">
+                    <p class="no-margin">{{numberOfInProgressTasks.length}}</p>
                 </div>
             </mat-card>
         </div>

@@ -33,6 +33,7 @@ import { ProjectComponent } from './components/project/project.component';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { AddTaskComponent } from './components/forms/add-task/add-task.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 
 
@@ -55,7 +56,8 @@ import { AddTaskComponent } from './components/forms/add-task/add-task.component
     AddUserFormComponent,
     NewProjectComponent,
     ProjectComponent,
-    AddTaskComponent
+    AddTaskComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

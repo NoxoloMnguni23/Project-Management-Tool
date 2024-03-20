@@ -6,10 +6,8 @@ $blue: blue;
 .container {
     display: flex;
     .half {
-      flex: 1; // Each half will take up equal space
+      flex: 1; 
       display: flex;
-    //   justify-content: center; // Center content horizontally
-    //   align-items: center; // Center content vertically
     }
   }
 
@@ -29,7 +27,7 @@ $blue: blue;
     display: flex;
     flex-direction: row !important;
     width: 300px;
-    height: 120px;
+    height: 100px;
     margin: 15px;
 }
 
