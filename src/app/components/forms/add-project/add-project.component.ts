@@ -18,6 +18,7 @@ export class AddProjectComponent {
   toppings = new FormControl('');
   usersList!: any;
   today: any = new Date().getMonth();
+  todayDate: any = new Date();
   loggedInUser: any;
   userName: any;
 

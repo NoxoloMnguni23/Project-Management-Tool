@@ -4,6 +4,7 @@ import { AddProjectComponent } from '../forms/add-project/add-project.component'
 import { ApiService } from 'src/app/services/api.service';
 import { ProjectComponent } from '../project/project.component';
 import { SharedService } from 'src/app/services/shared.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-projects',
@@ -13,7 +14,8 @@ import { SharedService } from 'src/app/services/shared.service';
 export class ProjectsComponent {
   hasAddedProjects: boolean = false;
   managerProjects: any;
-  constructor(private dialog: MatDialog, private api: ApiService, private sharedService: SharedService) {
+  constructor(private dialog: MatDialog, private api: ApiService,
+    private sharedService: SharedService, private snackbar: MatSnackBar) {
     this.sharedService.watchProjectsUpdate().subscribe((projectsUpdated: boolean) => {
       this.api.genericGet('/get-projects')
         .subscribe({
@@ -47,6 +49,11 @@ export class ProjectsComponent {
   }
 
   showProject(project: any): void {
+    const currentUser = this.sharedService.get('currentUser', 'session');
+    if (currentUser.role === 'admin') {
+      this.snackbar.open('View only admin permissions', 'Ok', { duration: 3000 });
+      return;
+    }
     this.dialog.open(ProjectComponent, {
       data: {
         _project: project

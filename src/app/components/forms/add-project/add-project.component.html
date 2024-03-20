@@ -33,7 +33,7 @@
                 <!-- Start Date -->
                 <mat-form-field appearance="fill">
                     <mat-label>Start Date</mat-label>
-                    <input matInput formControlName="startDate" [min]="today" readonly (focus)="picker.open()"
+                    <input matInput formControlName="startDate" [min]="todayDate" readonly (focus)="picker.open()"
                         [matDatepicker]="picker">
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -45,7 +45,7 @@
                 <!-- End Date -->
                 <mat-form-field appearance="fill">
                     <mat-label>End Date</mat-label>
-                    <input matInput formControlName="endDate" [min]="today" readonly (focus)="picker2.open()"
+                    <input matInput formControlName="endDate" [min]="todayDate" readonly (focus)="picker2.open()"
                         [matDatepicker]="picker2">
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>

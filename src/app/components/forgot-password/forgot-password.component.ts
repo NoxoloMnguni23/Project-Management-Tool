@@ -12,22 +12,34 @@ export class ForgotPasswordComponent {
 
   forgotPasswordForm: FormGroup;
 
-  constructor( private snackBar: MatSnackBar, private apiService : ApiService) {
+  constructor(private snackBar: MatSnackBar, private apiService: ApiService) {
 
     this.forgotPasswordForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      id: new FormControl('', [Validators.required, Validators.minLength(13), Validators.maxLength(13)]),
+      email: new FormControl('', [Validators.required, Validators.pattern(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/)])
     })
   }
 
-  sendForgotEmail(email: any){
-    console.log("email", email)
-      this.apiService.genericPost('/forgotPassword', this.forgotPasswordForm.value)
+  sendForgotEmail() {
+    console.log("email", this.forgotPasswordForm.value)
+    this.apiService.genericGet('/get-users').subscribe((res: any) => {
+      const isFound = res.filter((user: any) => user.email === this.forgotPasswordForm.value.email);
+      if (isFound.length === 0) {
+        this.snackBar.open("Account doesn't exist", 'Ok', { duration: 3000 });
+        return;
+      }
+      console.log("isFound", isFound)
+      const sendPoints = {
+        "subject": "Reset Password",
+        "firstName": isFound[0].firstName,
+        "user": this.forgotPasswordForm.value
+      }
+      this.apiService.genericPost('/forgotPassword', sendPoints)
         .subscribe({
           next: (res) => { console.log(res) },
           error: (err) => { console.log(err) },
           complete: () => { }
         })
+    })
   }
   resetForm() {
     this.forgotPasswordForm.reset();

@@ -40,7 +40,8 @@ export class ProjectComponent implements OnInit {
   projectHealth: any = 'Needs Attension';
   spinnerElement: any;
   constructor(@Inject(MAT_DIALOG_DATA) private _project: any, private dialog: MatDialog,
-    private api: ApiService, private snackbar: MatSnackBar, private sharedService: SharedService) {
+    private api: ApiService, private apiService: ApiService,
+    private snackbar: MatSnackBar, private sharedService: SharedService) {
     this.viewedProject = _project._project;
     // To download
 
@@ -118,11 +119,25 @@ export class ProjectComponent implements OnInit {
   }
 
   addAssignedTasks(): void {
-    this.newMembersTasksList.forEach((memberAndTask: any) => {
+    this.membersTasksList.forEach((memberAndTask: any) => {
       // Save member task
       this.api.genericPost('/assign-task', memberAndTask)
         .subscribe({
-          next: (res: any) => { },
+          next: (res: any) => {
+            const sendPoints: any = {
+              "subject": "Task Assignment",
+              "firstName": memberAndTask.teamMember.firstName,
+              "email": memberAndTask.teamMember.email
+            }
+            this.api.genericPost('/forgotPassword', sendPoints)
+              .subscribe({
+                next: (res) => {
+                  this.snackbar.open('Tasks assigment emails sent successfully', 'Ok', { duration: 3000 });
+                },
+                error: (err) => { console.log(err) },
+                complete: () => { }
+              })
+          },
           error: (err) => console.log(err),
           complete: () => { }
         })
@@ -200,6 +215,7 @@ export class ProjectComponent implements OnInit {
     })
     this.api.genericGet('/assigned-tasks').subscribe((res: any) => {
       this.newMembersTasksList = [];
+      // Try swap loops
       console.log("assinged task res", this.membersTasksList)
       this.membersTasksList.forEach((memberTaskList: any) => {
         res.forEach((res: any) => {

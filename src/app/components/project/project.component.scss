@@ -8,12 +8,15 @@ $blue: blue;
   display: none;
 }
 
-.color-need-attension, .color-good, .color-at-risk, .color-unset-health {
+.color-need-attension,
+.color-good,
+.color-at-risk,
+.color-unset-health {
   color: white;
 }
 
 .color-unset-health {
-  background-color:  #cbcbcb;
+  background-color: #cbcbcb;
 }
 
 .color-good {
@@ -44,14 +47,16 @@ $blue: blue;
   z-index: 1;
 }
 
+.color-white {
+  color: white;
+}
+
 .main-container {
   overflow: hidden;
 
   .tasks-list {
-    &:hover {
-      text-decoration: underline;
-      color: $blue;
-    }
+    text-decoration: underline;
+    color: $blue;
   }
 
   .assignHeading {
@@ -67,6 +72,7 @@ $blue: blue;
 
 .actions {
   margin-top: 3em;
+  gap: 8em;
 
   .title {
     font-weight: 500;

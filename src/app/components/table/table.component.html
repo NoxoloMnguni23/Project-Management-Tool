@@ -5,12 +5,14 @@
       <mat-label>Search {{ isAdmin ? 'Users' : 'Tasks' }}</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
     </mat-form-field>
-    <div *ngIf="tableDataAvailable && !usersTableDataOnly" class="flex a-center gap-1em">
-      <div (click)="openDialog()" title="Upload One" class="add flex center-center pointer">
-        <mat-icon class="color-white">person</mat-icon>
-        <mat-icon class="color-white">add</mat-icon>
+    <div *ngIf="tableDataAvailable === 'Users'" class="flex a-center gap-1em">
+      <div class="flex a-center gap-1em">
+        <div (click)="openDialog()" title="Upload One" class="add flex center-center pointer">
+          <mat-icon class="color-white">person</mat-icon>
+          <mat-icon class="color-white">add</mat-icon>
+        </div>
+        <input class="relative" title="Upload multiple" matSuffix type="file" (change)="onFileChange($event)">
       </div>
-      <input class="relative" title="Upload multiple" matSuffix type="file" (change)="onFileChange($event)">
     </div>
   </div>
   <p *ngIf="!tableDataAvailable" class="no-margin no-table-data color-red">0 system users added.</p>

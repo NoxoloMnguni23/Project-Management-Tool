@@ -24,7 +24,7 @@ export class TableComponent implements OnChanges, OnInit {
   displayedHeaders: string[] = [];
   dataSource!: MatTableDataSource<any>;
   spinnerElement: any;
-  tableDataAvailable: boolean = false;
+  tableDataAvailable: any;
   canEditTask: boolean = false;
   taskStatuses: string[] = ['In-Progress', 'Completed'];
   currentUser: any;
@@ -79,7 +79,7 @@ export class TableComponent implements OnChanges, OnInit {
             this.progressSpinner('hide');
             res = res.filter((user: any) => user.role.toLowerCase() !== 'admin');
             this.dataSource = new MatTableDataSource<any>(res);
-            this.tableDataAvailable = true;
+            this.tableDataAvailable = 'Users';
           });
           this.snackBar.open('File uploaded successfully', 'Ok', { duration: 3000 });
         },
@@ -94,9 +94,20 @@ export class TableComponent implements OnChanges, OnInit {
   }
 
   addUserApi(fileUserToStore: any) {
+    console.log("fileUserToStore", fileUserToStore)
     this.api.genericPost('/add-user', fileUserToStore).subscribe({
       next: (res) => {
-        console.log(res);
+        const sendPoints = {
+          "subject": "Account Created",
+          "firstName": fileUserToStore.firstName,
+          "email": fileUserToStore.email
+        }
+        this.apiService.genericPost('/forgotPassword', sendPoints)
+          .subscribe({
+            next: (res) => { console.log(res) },
+            error: (err) => { console.log(err) },
+            complete: () => { }
+          })
       },
       error: (err) => {
         console.error('Error adding user:', err);
@@ -131,7 +142,7 @@ export class TableComponent implements OnChanges, OnInit {
         this.progressSpinner('hide');
         res = res.filter((user: any) => user.role.toLowerCase() !== 'admin');
         this.dataSource = new MatTableDataSource<any>(res);
-        this.tableDataAvailable = true;
+        this.tableDataAvailable = 'Users';
       });
     })
   }
@@ -155,8 +166,7 @@ export class TableComponent implements OnChanges, OnInit {
           this.dataSource = new MatTableDataSource<any>(res);
         });
       }
-      this.usersTableDataOnly = true;
-      this.tableDataAvailable = true;
+      this.tableDataAvailable = 'Tasks';
     }
     if (changes['tableData']) {
       this.dataSource = new MatTableDataSource(this.tableData.dataSource);
@@ -260,12 +270,12 @@ export class TableComponent implements OnChanges, OnInit {
 
   changeStatus(taskStatus: any) {
     this.foundUser[0].task.status = taskStatus;
-    this.api.genericPost('/update-assigned-task',this.foundUser[0]).subscribe((res: any) => {
+    this.api.genericPost('/update-assigned-task', this.foundUser[0]).subscribe((res: any) => {
       console.log(res);
     })
     console.log(this.foundUser[0].task)
-    this.api.genericPost('/update-task',this.foundUser[0].task).subscribe((res: any) => {
-      console.log("update res",res);
+    this.api.genericPost('/update-task', this.foundUser[0].task).subscribe((res: any) => {
+      console.log("update res", res);
     })
   }
   refreshTasks(): void {
