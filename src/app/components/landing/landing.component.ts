@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/services/shared.service';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-landing',
@@ -19,9 +20,9 @@ export class LandingComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userInfo: SharedService) {
-    this.user = this.userInfo.get('currentUser', 'session');
-    console.log(this.user)
+  constructor(private breakpointObserver: BreakpointObserver, private router: Router, private userInfo: SharedService, private api:ApiService) {
+    this.user =this.userInfo.get('currentUser','session')
+    console.log("current user",this.user)
   }
   logout(): void {
     sessionStorage.clear();

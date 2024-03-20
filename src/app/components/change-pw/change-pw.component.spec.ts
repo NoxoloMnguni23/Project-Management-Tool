@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TeamMembersComponent } from './team-members.component';
+import { ChangePwComponent } from './change-pw.component';
 
-describe('TeamMembersComponent', () => {
-  let component: TeamMembersComponent;
-  let fixture: ComponentFixture<TeamMembersComponent>;
+describe('ChangePwComponent', () => {
+  let component: ChangePwComponent;
+  let fixture: ComponentFixture<ChangePwComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TeamMembersComponent ]
+      declarations: [ ChangePwComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TeamMembersComponent);
+    fixture = TestBed.createComponent(ChangePwComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

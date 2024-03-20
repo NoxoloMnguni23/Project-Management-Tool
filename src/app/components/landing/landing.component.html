@@ -4,31 +4,44 @@
         <div class="flex center-center">
             <div class="allside">
                 <mat-toolbar class="leftTool flex center-center">
-                    <div class="flex column center-center ">
-                        <div class="userPic flex center-center">
+                    <div class="flex column width60 center-center ">
+                        <div class="userPic flex center-center ">
                             <mat-icon [routerLink]="'profile'">account_circle</mat-icon>
                         </div>
                         <div class="userDetails flex center-center column">
-                            <p>{{user.fullNme | titlecase}}</p>
+                            <p>{{user.firstName | titlecase}} {{user.lastName | titlecase}} </p>
                             <small>{{user.role |titlecase }}</small>
                         </div>
                     </div>
                 </mat-toolbar>
                 <hr>
                 <mat-nav-list class="mtop6em flex column gap1em">
-                    <button *ngIf="user.role === 'manager' || user.role==='admin' || user.role==='team-member'" mat-raised-button color="warm" routerLinkActive="active"
-                        [routerLink]="'dashboard'">Dashboard</button>
-                    <button *ngIf="user.role === 'manager' || user.role==='admin'" routerLinkActive="active"
-                        mat-raised-button color="warm" [routerLink]="'projects'">Projects</button>
-                    <button *ngIf="user.role === 'manager'" mat-raised-button color="warm" routerLinkActive="active"
-                        [routerLink]="'new-project'">New Project</button>
+                    <button *ngIf="user.role === 'project manager' || user.role==='admin' || user.role==='team member'"
+                        mat-raised-button color="warm" routerLinkActive="active" [routerLink]="'dashboard'">
+                        Dashboard<mat-icon class="icons" aria-hidden="false" aria-label="Example home icon"
+                            fontIcon="home"></mat-icon></button>
+                    <button *ngIf="user.role === 'project manager' || user.role==='admin' || user.role==='team member'"
+                        mat-raised-button color="warm" [routerLink]="'profile'"><mat-icon class="icons2"
+                            aria-hidden="false" aria-label="Example home icon" fontIcon="account_box"></mat-icon>
+                        Profile</button>
+                    <button *ngIf="user.role === 'project manager' || user.role==='admin'" routerLinkActive="active"
+                        mat-raised-button color="warm" [routerLink]="'projects'"><mat-icon class="icons3"
+                            aria-hidden="false" aria-label="Example home icon" fontIcon="hub"></mat-icon>
+                        Projects</button>
                     <button *ngIf="user.role === 'admin'" mat-raised-button color="warm" routerLinkActive="active"
-                        [routerLink]="'users'">Users</button>
-                    <button *ngIf="user.role === 'team-member'" mat-raised-button color="warm" routerLinkActive="active"
-                        [routerLink]="'tasks'">Task </button>
-                    <button *ngIf="user.role === 'manager'" mat-raised-button color="warm" routerLinkActive="active"
-                        [routerLink]="'team-members'">Team Members</button>
-                    <button *ngIf="user.role === 'manager' || user.role==='admin' || user.role==='team-member'" mat-raised-button color="warm" [routerLink]="'profile'">Profile</button>
+                        [routerLink]="'users'"><mat-icon class="icons4" aria-hidden="false"
+                            aria-label="Example home icon" fontIcon="group"></mat-icon>
+                        Users</button>
+                 
+                    <button *ngIf="user.role ==='team member'" mat-raised-button color="warm" [routerLink]="'tasks'"
+                        routerLinkActive="active"><mat-icon class="icons6" aria-hidden="false"
+                            aria-label="Example home icon" fontIcon="task"></mat-icon>Task </button>
+
+                    <button *ngIf="user.role === 'project manager'" mat-raised-button color="warm"
+                        routerLinkActive="active" [routerLink]="'team-members'"> <mat-icon class="icons5"
+                            aria-hidden="false" aria-label="Example home icon" fontIcon="task"></mat-icon> Team
+                        Members</button>
+
                     <a mat-list-item class="flex center-center" (click)="logout()">
                         <mat-icon>logout</mat-icon>
                         Logout

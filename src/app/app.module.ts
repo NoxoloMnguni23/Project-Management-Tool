@@ -15,7 +15,6 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UsersComponent } from './components/users/users.component';
-import { TeamMembersComponent } from './components/team-members/team-members.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -33,6 +32,7 @@ import { ProjectComponent } from './components/project/project.component';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { AddTaskComponent } from './components/forms/add-task/add-task.component';
+import { ChangePwComponent } from './components/change-pw/change-pw.component';
 
 
 
@@ -45,7 +45,6 @@ import { AddTaskComponent } from './components/forms/add-task/add-task.component
     DashboardComponent,
     ProfileComponent,
     UsersComponent,
-    TeamMembersComponent,
     TasksComponent,
     ProjectsComponent,
     PageNotFoundComponent,
@@ -55,7 +54,8 @@ import { AddTaskComponent } from './components/forms/add-task/add-task.component
     AddUserFormComponent,
     NewProjectComponent,
     ProjectComponent,
-    AddTaskComponent
+    AddTaskComponent,
+    ChangePwComponent
   ],
   imports: [
     BrowserModule,

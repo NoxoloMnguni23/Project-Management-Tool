@@ -7,21 +7,19 @@ import { LandingComponent } from './components/landing/landing.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UsersComponent } from './components/users/users.component';
-import { TeamMembersComponent } from './components/team-members/team-members.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
+import { LandingGuard } from './guards/landing.guard';
 
 const routes: Routes = [{ path: '', redirectTo: '/login', pathMatch: 'full' },
 { path: 'login', component: LoginComponent },
-{ path: 'dashboard', component: DashboardComponent },
 { path: 'forgotpassword', component: ForgotPasswordComponent },
 {
-  path: 'landing', component: LandingComponent, children: [
+  path: 'landing', component: LandingComponent,canActivate:[LandingGuard], children: [
     { path: 'dashboard', component: DashboardComponent },
     { path: 'profile', component: ProfileComponent },
     { path: 'users', component: UsersComponent },
-    { path: 'team-members', component: TeamMembersComponent },
     { path: 'tasks', component: TasksComponent },
     { path: 'projects', component: ProjectsComponent },
     { path: 'new-project', component: NewProjectComponent }]
