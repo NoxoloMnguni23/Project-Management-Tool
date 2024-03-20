@@ -8,7 +8,7 @@ import Chart from 'chart.js/auto';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements AfterViewInit{
+export class DashboardComponent implements AfterViewInit {
 
   @ViewChild('lineChart') private lineChartRef!: ElementRef;
   @ViewChild('pieChart') private pieChartRef!: ElementRef;
@@ -17,13 +17,23 @@ export class DashboardComponent implements AfterViewInit{
 
   usersTeamMembers: any = [];
   usersMembers: any = [];
-  userNumTasks  : any = [];
+  userNumTasks: any = [];
+  numberOfCompletedTasks: any = [];
+  numberOfPendingTasks: any = [];
+  numberOfInProgressTasks: any = [];
+
+
+  jan: any = 2;
+  feb: any = 3;
+  april: any = 4;
+  march: any = 4;
+
 
 
 
   ngAfterViewInit(): void {
     this.createLineChart();
-    this.createPieChart();
+   
   }
 
   user: any;
@@ -35,8 +45,9 @@ export class DashboardComponent implements AfterViewInit{
 
   constructor(private userInfo: SharedService, private apiService: ApiService) {
     this.numUsers()
+    this.numOfTaskCompleted()
     this.user = this.userInfo.get('currentUser', 'session');
-    console.log("user",this.user)
+    console.log("user", this.user)
 
     this.apiService.genericGet('/get-projects')
       .subscribe({
@@ -61,14 +72,21 @@ export class DashboardComponent implements AfterViewInit{
       }
     })
   }
-  numTasksUser(){
+ 
+
+  numOfTaskCompleted() {
     this.apiService.genericGet('/assigned-tasks').subscribe({
-      next: (res: any) => {
-        this.userNumTasks = res.filter((user: any) => user.id ===  this.user.id.value)
+      next : (res: any) => {
+        this.userNumTasks = res.filter((user: any) => user.teamMember.id.value === this.user.id.value)
+        this.numberOfCompletedTasks = res.filter((user: any) => user.task.status === 'Completed')
+        this.numberOfPendingTasks = res.filter((user: any) => user.task.status === 'Pending')
+        this.numberOfInProgressTasks = res.filter((user: any) => user.task.status === 'In-Progress')
+        this.createPieChart();
       }
     })
   }
 
+  
 
   private createLineChart(): void {
     const ctx = this.lineChartRef?.nativeElement?.getContext('2d');
@@ -99,10 +117,10 @@ export class DashboardComponent implements AfterViewInit{
     this.pieChart = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: ['Completed','Pending','In-Progress'],
         datasets: [{
-          label: 'Sample Pie Data',
-          data: [12, 19, 3, 5, 2, 3],
+          label: 'Progress',
+          data: [this.numberOfCompletedTasks.length, this.numberOfPendingTasks.length, this.numberOfInProgressTasks.length],
           backgroundColor: [
             'rgba(255, 99, 132, 0.6)',
             'rgba(54, 162, 235, 0.6)',

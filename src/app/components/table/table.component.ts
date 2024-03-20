@@ -129,7 +129,7 @@ export class TableComponent implements OnChanges {
   }
 
   refreshTasks(): void {
-    this.apiService.genericGet('/get-members-tasks').subscribe((res: any) => {
+    this.apiService.genericGet('/get-tasks').subscribe((res: any) => {
       this.dataSource = new MatTableDataSource<any>(res);
     });
   }
