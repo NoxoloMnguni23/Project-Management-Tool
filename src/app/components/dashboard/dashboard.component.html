@@ -15,7 +15,7 @@
             <mat-card class="project-container padding-10px gap-1em">
                 <h3 class="no-margin flex center-center column ">Number of Team Members:</h3>
                 <div class="status flex center-center column">
-                    <p class="no-margin">{{usersTeamMembers.length}}</p>
+                    <p class="no-margin">{{usersTeamMembers?.length}}</p>
                 </div>
             </mat-card>
         </div>
@@ -24,7 +24,7 @@
             <mat-card class="project-container padding-10px gap-1em">
                 <h3 class="no-margin flex center-center column ">Number Users:</h3>
                 <div class="status flex center-center column">
-                    <p class="no-margin">{{usersMembers.length}}</p>
+                    <p class="no-margin">{{usersMembers?.length}}</p>
                 </div>
             </mat-card>
         </div>
@@ -32,9 +32,9 @@
 
         <div *ngIf="user.role === 'project manager' || user.role==='admin'">
             <mat-card class="project-container padding-10px gap-1em">
-                <h3 class="no-margin flex center-center column ">Number of Projects Completed:</h3>
+                <h3 class="no-margin flex center-center column ">Number of Projects Completed: </h3>
                 <div class="status flex center-center column">
-                    <p class="no-margin"></p>
+                    <p class="no-margin">{{onlyCompleteProjects}}</p>
                 </div>
             </mat-card>
         </div>
@@ -43,7 +43,7 @@
             <mat-card class="project-container padding-10px gap-1em">
                 <h3 class="no-margin flex center-center column ">Number of Tasks:</h3>
                 <div class="status flex center-center column">
-                    <p class="no-margin">{{userNumTasks.length}}</p>
+                    <p class="no-margin">{{userNumTasks?.length}}</p>
                 </div>
             </mat-card>
         </div>

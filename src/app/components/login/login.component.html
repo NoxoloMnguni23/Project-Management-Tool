@@ -1,41 +1,11 @@
-<<<<<<< HEAD
 <div class="container relative">
-  <div class="info-half">
-  </div>
-  <mat-spinner id="spinner" class="absolute hide"></mat-spinner>
-  <!-- form -->
-  <div class="form-half">
-    <h1 class="">Login</h1><br>
-    <form [formGroup]="loginForm">
-      <!-- email -->
-      <mat-form-field class="center">
-        <mat-label>Enter your email</mat-label>
-        <input matInput type="email" placeholder="pat@example.com" name="email" formControlName="email">
-        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Field is required</mat-error>
-        <mat-error *ngIf="loginForm.get('email')?.hasError('pattern')">Invalid email</mat-error>
-        <mat-icon matSuffix>email</mat-icon>
-      </mat-form-field>
-      <!-- password -->
-      <mat-form-field class="center">
-        <mat-label>Enter your password</mat-label>
-        <input matInput type="password" placeholder="1234" name="password" formControlName="password">
-        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
-        <mat-icon matSuffix>password</mat-icon>
-      </mat-form-field>
-      <!-- buttons -->
-      <p>Forgot <span routerLink="/forgotpassword" class="span"> password</span>?</p>
-      <button mat-raised-button [disabled]="loginForm.invalid" (click)="submit()" color="primary">
-        Login
-      </button>
-    </form>
-    <!-- <router-outlet></router-outlet> -->
-  </div>
-</div>
-=======
-<div class="container">
     <div class="info-half">
+
+
+
       <img src="../../../assets/login/Best-Task-Management-Software-Platforms.webp" alt="">
     </div>
+    <mat-spinner id="spinner" class="absolute hide"></mat-spinner>
     <!-- form -->
     <div class="form-half">
         <h1  class="">Login</h1><br>
@@ -45,7 +15,7 @@
                 <mat-label>Enter your email</mat-label>
                 <input matInput  type="email" placeholder="pat@example.com"  name = "email" formControlName = "email">
                 <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Field is required</mat-error>
-                <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Invalid email</mat-error>
+                <mat-error *ngIf="loginForm.get('email')?.hasError('pattern')">Invalid email</mat-error>
                 <mat-icon  matSuffix>email</mat-icon>
               </mat-form-field>
             <!-- password -->
@@ -64,4 +34,3 @@
         <!-- <router-outlet></router-outlet> -->
     </div>
 </div>
->>>>>>> 7b7eb0d4d43bbda44c795c931e693d69ea115bc5

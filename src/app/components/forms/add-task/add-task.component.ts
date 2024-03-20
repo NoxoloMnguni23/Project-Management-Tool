@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from 'src/app/services/api.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-add-task',
@@ -18,7 +19,8 @@ export class AddTaskComponent {
   projectDetails: any;
 
   constructor(private dialogRef: MatDialogRef<AddTaskComponent>, private api: ApiService,
-    @Inject(MAT_DIALOG_DATA) private row: any, private snackbar: MatSnackBar) {
+    @Inject(MAT_DIALOG_DATA) private row: any, private snackbar: MatSnackBar,
+    private sharedService: SharedService) {
     this.projectDetails = row;
     if (row.taskDeadline) {
       console.log("row edit", row)
@@ -88,6 +90,7 @@ export class AddTaskComponent {
           next: (res) => {
             console.log("res", res)
             this.snackbar.open('Task added succesfully', 'OK', { duration: 3000 });
+            this.sharedService.updateNoTasksWatch();
             this.dialogRef.close();
           },
           error: (err) => console.log(err),

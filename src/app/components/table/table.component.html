@@ -23,14 +23,23 @@
         </th>
         <td mat-cell *matCellDef="let row" class="text-center">
           <div class="flex">
-            <p *ngIf="header !== 'status' && header !== 'taskDeadline' && header !== 'email'" class="no-margin">{{ row[header] |titlecase }}
+            <p *ngIf="header !== 'status' && header !== 'taskDeadline' && header !== 'email'" class="no-margin">{{
+              row[header] |titlecase }}
             </p>
             <p *ngIf="header === 'taskDeadline'" class="no-margin">{{ row[header] | date }}</p>
             <p *ngIf="header === 'email'" class="no-margin">{{ row[header] | lowercase }}</p>
-            <div *ngIf="header === 'status'" [class.status-pending]="row[header] === 'Completed'"
+            <div *ngIf="header === 'status'  && !canEditTask" [class.status-pending]="row[header] === 'Completed'"
               class="status-container">
               <p class="no-margin">{{ row[header] |titlecase }}</p>
             </div>
+            <div *ngIf="header === 'status' && canEditTask" [matMenuTriggerFor]="menu"
+              [class.status-pending]="row[header] === 'Completed'" class="status-container">
+              <p class="no-margin">{{ row[header] |titlecase }}</p>
+            </div>
+            <mat-menu class="absolute" #menu="matMenu">
+              <button mat-menu-item (click)="changeStatus(taskStatus)"
+                *ngFor="let taskStatus of taskStatuses">{{taskStatus}}</button>
+            </mat-menu>
             <mat-icon class="pointer" *ngIf="header === 'action'" (click)="editRow(row)">edit</mat-icon>
             <mat-icon class="pointer" *ngIf="header === 'action'" (click)="deleteRow(row)">delete</mat-icon>
           </div>

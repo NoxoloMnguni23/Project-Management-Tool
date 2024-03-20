@@ -43,6 +43,17 @@ export class ProjectComponent implements OnInit {
     this.viewedProject = _project._project;
     // To download
 
+    this.sharedService.watchNoTasksUpdate().subscribe((tasksUpdated: boolean) => {
+      this.api.genericGet('/get-tasks')
+        .subscribe({
+          next: (res: any) => {
+            this.tasksList = res;
+          },
+          error: (err) => console.log(err),
+          complete: () => { }
+        })
+    })
+
     this.getAssignedTasks();
 
     // Get all tasks
@@ -199,6 +210,9 @@ export class ProjectComponent implements OnInit {
             task: task
           })
       })
+    })
+    this.api.genericGet('assigned-tasks').subscribe((res: any) => {
+      console.log("assinged task res", res)
     })
     console.log("this.membersTasksList", this.membersTasksList)
     // No changes made

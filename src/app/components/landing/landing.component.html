@@ -15,13 +15,11 @@
                 </mat-toolbar>
                 <hr>
                 <mat-nav-list class="mtop6em flex column gap1em">
-                    <button *ngIf="user.role === 'project manager' || user.role==='admin' || user.role==='team-member'" mat-raised-button color="warm" routerLinkActive="active"
-                    <button  mat-raised-button color="warm" routerLinkActive="active"
+                    <button mat-raised-button color="warm" routerLinkActive="active"
+                    mat-raised-button color="warm" routerLinkActive="active"
                         [routerLink]="'dashboard'">Dashboard</button>
                     <button *ngIf="user.role === 'project manager' || user.role==='admin'" routerLinkActive="active"
                         mat-raised-button color="warm" [routerLink]="'projects'">Projects</button>
-                    <button *ngIf="user.role === 'project manager'" mat-raised-button color="warm" routerLinkActive="active"
-                        [routerLink]="'new-project'">New Project</button>
                     <button *ngIf="user.role === 'admin'" mat-raised-button color="warm" routerLinkActive="active"
                         [routerLink]="'users'">Users</button>
                     <button *ngIf="user.role === 'team member'" mat-raised-button color="warm" routerLinkActive="active"
@@ -29,7 +27,6 @@
                     <button *ngIf="user.role === 'project manager'" mat-raised-button color="warm" routerLinkActive="active"
                         [routerLink]="'team-members'">Team Members</button>
                     <button *ngIf="user.role === 'project manager' || user.role==='admin' || user.role==='team-member'" mat-raised-button color="warm" [routerLink]="'profile'">Profile</button>
-                    <button *ngIf="user.role === 'project manager' || user.role==='admin' || user.role==='team member'" mat-raised-button color="warm" [routerLink]="'profile'">Profile</button>
                     <a mat-list-item class="flex center-center" (click)="logout()">
                         <mat-icon>logout</mat-icon>
                         Logout

@@ -13,7 +13,7 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./add-user-form.component.scss']
 })
 export class AddUserFormComponent {
-  roles: string[] = [' project manager', 'admin', 'team member']
+  roles: string[] = ['project manager', 'team member']
   genders: string[] = ['male', 'female']
   isEditting: boolean = false;
   users: any = [];

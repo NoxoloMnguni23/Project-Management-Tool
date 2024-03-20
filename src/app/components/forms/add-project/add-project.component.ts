@@ -17,22 +17,20 @@ export class AddProjectComponent {
   onEditProject: boolean = false;
   toppings = new FormControl('');
   usersList!: any;
-  today: any;
+  today: any = new Date().getMonth();
   loggedInUser: any;
   userName: any;
 
   constructor(private dialogRef: MatDialogRef<AddProjectComponent>, private sharedService: SharedService,
     private api: ApiService, private snackbar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) private _project: any) {
-    this.today = new Date();
     this.loggedInUser = sharedService.get('currentUser','session');
     this.userName = `${this.loggedInUser.firstName} ${this.loggedInUser.lastName}`
     this.api.genericGet('/get-users')
       .subscribe({
         next: (res: any) => {
           console.log("res", res)
-          this.usersList = res.filter((user: any) => user.role.toLowerCase() !== 'admin');
-          this.usersList = this.usersList.filter((user: any) => user.role.toLowerCase() !== 'project manager');
+          this.usersList = res.filter((user: any) => user.role.toLowerCase() === 'team member');
         },
         error: (err) => console.log(err),
         complete: () => { }

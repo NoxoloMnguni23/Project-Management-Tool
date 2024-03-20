@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { from } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -11,21 +12,29 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class TasksComponent {
   tableData: any;
-  constructor(private api: ApiService, private snackbar: MatSnackBar,
-    private dialogRef: MatDialogRef<TasksComponent>, private sharedService: SharedService,
-    @Inject(MAT_DIALOG_DATA) private data: any,) {
-    this.tableData = {
-      title: 'Tasks',
-      displayedColumns: ['taskTitle', 'taskPriority', 'taskDeadline', 'status', 'action'],
-      displayedHeaders: ['Title', 'Priority', 'Deadline', 'Status', 'Actions']
+  constructor(private api: ApiService, private snackbar: MatSnackBar, private sharedService: SharedService,
+    @Inject(MAT_DIALOG_DATA) private _data: any) {
+    console.log("fromProject", _data)
+    const currentUser = this.sharedService.get('currentUser','session');
+    console.log("currentUser",currentUser)
+    if(currentUser.role === 'team member') {
+      this.tableData = {
+        title: 'Tasks',
+        displayedColumns: ['taskTitle', 'taskPriority', 'taskDeadline', 'status'],
+        displayedHeaders: ['Title', 'Priority', 'Deadline', 'Status']
+      }
+    } else {
+      this.tableData = {
+        title: 'Tasks',
+        displayedColumns: ['taskTitle', 'taskPriority', 'taskDeadline', 'status','action'],
+        displayedHeaders: ['Title', 'Priority', 'Deadline', 'Status','Actions']
+      }
+
     }
     this.sharedService.watchNoTasksUpdate().subscribe((isNoTasks: any) => { console.log('tasks updated') })
   }
 
-
-
   downloadSpreadsheet(): void {
-
     // Get all tasks
     this.api.genericGet('/get-tasks')
       .subscribe({

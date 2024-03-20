@@ -25,6 +25,10 @@ export class TableComponent implements OnChanges, OnInit {
   dataSource!: MatTableDataSource<any>;
   spinnerElement: any;
   tableDataAvailable: boolean = false;
+  canEditTask: boolean = false;
+  taskStatuses: string[] = ['In-Progress', 'Completed'];
+  currentUser: any;
+  foundUser: any;
 
   // add user form
   openDialog() {
@@ -115,6 +119,11 @@ export class TableComponent implements OnChanges, OnInit {
 
   constructor(private apiService: ApiService, private snackBar: MatSnackBar, private dialog: MatDialog,
     private sharedService: SharedService, private snackbar: MatSnackBar, private api: ApiService) {
+    this.currentUser = this.sharedService.get('currentUser', 'session');
+    console.log("currentUser", this.currentUser)
+    if (this.currentUser.role === 'team member') {
+      this.canEditTask = true;
+    }
     this.sharedService.watchUsersUpdate().subscribe((usersUpdated: boolean) => {
       this.progressSpinner('show')
       this.apiService.genericGet('/get-users').subscribe((res: any) => {
@@ -132,10 +141,20 @@ export class TableComponent implements OnChanges, OnInit {
       this.refreshUsers()
     } else if (this.tableData.title === 'Tasks') {
       this.isAdmin = false;
+      if (this.currentUser.role === 'team member') {
+        this.apiService.genericGet('/assigned-tasks').subscribe((res: any) => {
+          this.foundUser = res.filter((assignedTask: any) => assignedTask.teamMember._id === this.currentUser._id)
+          // One task per user
+          let tableData = []
+          tableData.push(this.foundUser[0].task)
+          this.dataSource = new MatTableDataSource<any>(tableData);
+        });
+      } else {
+        this.apiService.genericGet('/get-tasks').subscribe((res: any) => {
+          this.dataSource = new MatTableDataSource<any>(res);
+        });
+      }
       this.tableDataAvailable = true;
-      this.apiService.genericGet('/get-tasks').subscribe((res: any) => {
-        this.dataSource = new MatTableDataSource<any>(res);
-      });
     }
     if (changes['tableData']) {
       this.dataSource = new MatTableDataSource(this.tableData.dataSource);
@@ -235,5 +254,16 @@ export class TableComponent implements OnChanges, OnInit {
       default:
         break;
     }
+  }
+
+  changeStatus(taskStatus: any) {
+    this.foundUser[0].task.status = taskStatus;
+    this.api.genericPost('/update-assigned-task',this.foundUser[0]).subscribe((res: any) => {
+      console.log(res);
+    })
+    console.log(this.foundUser[0].task)
+    this.api.genericPost('/update-task',this.foundUser[0].task).subscribe((res: any) => {
+      console.log("update res",res);
+    })
   }
 }
