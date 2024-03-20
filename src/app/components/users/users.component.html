@@ -1,8 +1,1 @@
-<div class="button-contain">
-
-<div class="buttons">
-    <button mat-raised-button color="primary" matSuffix (click)="openDialog()">Add User</button>
-<input matSuffix type="file" style="display: inline-block;" (change)="onFileChange($event)" placeholder="Upload file">
-</div>
-</div>
-<app-table [tableData]="userTable"></app-table> 
+<app-table class="flex-1" [tableData]="userTable"></app-table>

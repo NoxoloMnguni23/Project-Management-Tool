@@ -1,5 +1,5 @@
 <div class="main-container flex column gap-1em relative">
-    <h2 class="no-margin text-center">{{!onEditTask ? 'Add' : 'Edit'}} Task</h2>
+    <h2 class="no-margin text-center">{{onEditTask ? 'Edit' : 'Add'}} Task</h2>
     <p (click)="close()" class="close absolute pointer">X</p>
     <form [formGroup]="taskFormGroup" class="flex column">
         <!-- Task Title -->
@@ -33,8 +33,8 @@
         <!-- Task Deadline -->
         <mat-form-field appearance="fill">
             <mat-label>Deadline</mat-label>
-            <input matInput formControlName="taskDeadline" [min]="openProject.startDate" [max]="openProject.endDate"
-                readonly (focus)="picker.open()" [matDatepicker]="picker">
+            <input matInput formControlName="taskDeadline" [min]="projectDetails.startDate" [max]="projectDetails.endDate" readonly
+                (focus)="picker.open()" [matDatepicker]="picker">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -43,8 +43,7 @@
             </mat-error>
         </mat-form-field>
         <div class="flex gap-1em j-end">
-            <button mat-raised-button color="primary"
-                (click)="submit()">{{!onEditTask ? 'Submit' : 'Save'}}</button>
+            <button mat-raised-button color="primary" (click)="submit()">{{onEditTask ? 'Save' : 'Submit'}}</button>
         </div>
     </form>
 </div>

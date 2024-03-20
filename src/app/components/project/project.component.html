@@ -1,9 +1,12 @@
-<div class="main-container padding-05em flex column gap-1em">
-    <div class="flex j-center ">
+<div class="main-container padding-05em relative flex column gap-1em">
+    <!-- <mat-spinner id="spinner" class="absolute"></mat-spinner> -->
+    <div class="flex a-center j-center relative">
         <div class="flex a-center gap-1em">
             <h2 class="no-margin text-center">{{viewedProject.projectName | titlecase}}</h2>
             <mat-icon (click)="editProject()" class="color-blue pointer">edit</mat-icon>
         </div>
+        <img class="project-health absolute"
+            src="https://support.teamwork.com/desk/file/10638282/project health options.gif" alt="">
     </div>
     <div class="tasks flex column">
         <div class="teamMembers">
@@ -11,7 +14,7 @@
                 <div class="flex a-center gap-1em">
                     <h2 class="no-margin color-blue assignHeading">Assign Tasks</h2>
                     <button *ngIf="hasChangedAssignments" (click)="saveTaskAssignments()" mat-raised-button
-                        color="primary" class="color-blue pointer">Save</button>
+                        color="primary" class="color-white pointer">Save</button>
                 </div>
                 <div class="flex">
                     <div cdkDropListGroup>
@@ -39,28 +42,48 @@
                             </div>
                         </div>
                     </div>
-                    <div class="actions j-end flex column gap-1em">
-                        <button (click)="downloadSpreadsheet()" mat-stroked-button color="primary">Download
-                            Report</button>
-                        <button mat-raised-button
-                            [color]="pendingProjectTasksCount === projectTasksCount ? 'primary': 'warn'"
-                            [disabled]="pendingProjectTasksCount !== projectTasksCount">{{pendingProjectTasksCount}}/{{projectTasksCount}}
-                            Tasks
-                            Completed</button>
+                    <div class="actions flex column space-between">
+                        <div class="flex column gap-1em">
+                            <div class="flex column gap-05em">
+                                <div class="flex j-end">
+                                    <p class="no-margin">Project Health</p>
+                                </div>
+                                <button mat-raised-button [matMenuTriggerFor]="menu"
+                                    [class]="viewedProject.projectHealth === 'Not Set' ? 'color-unset-health': viewedProject.projectHealth === 'Good' ? 'color-good':
+                                viewedProject.projectHealth === 'Needs Attension' ? 'color-need-attension': 'color-at-risk'">{{viewedProject.projectHealth}}</button>
+                                <mat-menu class="absolute" #menu="matMenu">
+                                    <button mat-menu-item (click)="changeHealth(health)"
+                                        *ngFor="let health of projectHealths">{{health}}</button>
+                                </mat-menu>
+                            </div>
+                            <div class="flex column gap-05em">
+                                <div class="flex j-end">
+                                    <p class="no-margin">Completion</p>
+                                </div>
+                                <button mat-stroked-button
+                                    [color]="pendingProjectTasksCount === projectTasksCount ? 'primary': 'warn'"
+                                    [disabled]="pendingProjectTasksCount !== projectTasksCount">{{pendingProjectTasksCount}}/{{projectTasksCount}}
+                                    <mat-icon>tasks</mat-icon>Tasks</button>
+                            </div>
+                            <button (click)="downloadSpreadsheet()" mat-stroked-button color="primary">
+                                <mat-icon>download</mat-icon>
+                                Download
+                                Report</button>
+                        </div>
+                        <div class="flex gap-1em">
+                            <div class="flex column gap-1em">
+                                <p class="no-margin">Start Date</p>
+                                <h4 class="no-margin">{{viewedProject.startDate | date}}</h4>
+                            </div>
+                            <p class="no-margin">/</p>
+                            <div class="flex column gap-1em">
+                                <p class="no-margin">End Date</p>
+                                <h4 class="no-margin">{{viewedProject.endDate | date}}</h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="flex gap-1em">
-        <div class="flex column gap-1em">
-            <p class="no-margin">Start Date</p>
-            <h4 class="no-margin">{{viewedProject.startDate | date}}</h4>
-        </div>
-        <p class="no-margin">/</p>
-        <div class="flex column gap-1em">
-            <p class="no-margin">End Date</p>
-            <h4 class="no-margin">{{viewedProject.endDate | date}}</h4>
         </div>
     </div>
 </div>

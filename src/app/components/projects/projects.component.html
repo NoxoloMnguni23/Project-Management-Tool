@@ -1,4 +1,4 @@
-<div class="mat-card padding-2em">
+<div class="mat-card">
     <div class="main-container flex column gap-1em">
         <div class="flex gap-1em a-center">
             <h1 class="no-margin">Projects</h1>
@@ -6,14 +6,18 @@
                 <mat-icon class="color-white">add</mat-icon>
             </div>
         </div>
-        <mat-card class="project-container padding-10px gap-1em">
+        <div class="flex-1 flex gap-1em">
             <p *ngIf="!hasAddedProjects" class="no-margin no-projects color-red">0 project added.</p>
-            <mat-card (click)="showProject(project)" *ngFor="let project of managerProjects" class="project pointer relative flex center-center">
-                <p class="no-margin">{{project.projectName | titlecase}}</p>
+            <mat-card (click)="showProject(project)" *ngFor="let project of managerProjects"
+                class="project pointer relative flex center-center">
+                <p class="no-margin project-name">{{project.projectName | titlecase}}</p>
                 <div class="status">
                     <p class="no-margin">{{project.status | titlecase}}</p>
                 </div>
+                <div [title]="project.projectHealth" class="project-health" [class]="project.projectHealth === 'Not Set' ? 'color-unset-health': project.projectHealth === 'Good' ? 'color-good':
+                project.projectHealth === 'Needs Attension' ? 'color-need-attension': 'color-at-risk'">
+                </div>
             </mat-card>
-        </mat-card>
+        </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from '../change-password/change-password.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { ChangePwComponent } from '../change-pw/change-pw.component';
 
@@ -12,14 +12,14 @@ import { ChangePwComponent } from '../change-pw/change-pw.component';
 export class ProfileComponent {
   user: any
 
-  constructor(private service: SharedService, private matDialog: MatDialog) {
-    this.user = this.service.get('currentUser', 'session')
-    // console.log("user",this.user);
+  constructor(private userInfo: SharedService, private matDialog: MatDialog) {
+    this.user = this.userInfo.get('currentUser', 'session')
+    
   }
 
   
   changePassword(){
-    this.matDialog.open(ChangePwComponent)
+    this.matDialog.open(ChangePasswordComponent)
   }
 
 }

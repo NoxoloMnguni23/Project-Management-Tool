@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Data } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./add-user-form.component.scss']
 })
 export class AddUserFormComponent {
-  roles: string[] = [' project manager', 'admin', 'team member']
+  roles: string[] = ['project manager', 'team member']
   genders: string[] = ['male', 'female']
   isEditting: boolean = false;
   users: any = [];
@@ -21,7 +22,7 @@ export class AddUserFormComponent {
 
 
 
-  constructor(private dialogRef: MatDialogRef<AddUserFormComponent>,
+  constructor(private dialogRef: MatDialogRef<AddUserFormComponent>, private sharedService: SharedService,
     private api: ApiService, private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) private data: any) {
     console.log("sharedData", data)
     if (data) {
@@ -32,7 +33,7 @@ export class AddUserFormComponent {
         lastName: new FormControl(data.lastName, [Validators.required]),
         id: new FormControl(data.id, [Validators.required, Validators.minLength(13), Validators.maxLength(13)]),
         gender: new FormControl(data.gender, [Validators.required]),
-        email: new FormControl(data.email, [Validators.required, Validators.email]),
+        email: new FormControl(data.email, [Validators.required, Validators.pattern(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/)]),
         role: new FormControl(data.role, [Validators.required]),
         password: new FormControl('123', [Validators.required]),
       })
@@ -42,7 +43,7 @@ export class AddUserFormComponent {
         lastName: new FormControl('', [Validators.required]),
         id: new FormControl('', [Validators.required, Validators.minLength(13), Validators.maxLength(13)]),
         gender: new FormControl('', [Validators.required]),
-        email: new FormControl('', [Validators.required, Validators.email]),
+        email: new FormControl('', [Validators.required, Validators.pattern(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/)]),
         role: new FormControl('', [Validators.required]),
         password: new FormControl('123', [Validators.required]),
       })
@@ -101,7 +102,9 @@ export class AddUserFormComponent {
           this.snackbar.open('User add succesfully', 'OK');
         },
         error: (err) => console.log(err),
-        complete: () => { }
+        complete: () => {
+          this.sharedService.updateUsersWatch();
+        }
       })
     this.dialogRef.close();
   }

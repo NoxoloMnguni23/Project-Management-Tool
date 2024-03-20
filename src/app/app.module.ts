@@ -1,6 +1,5 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,7 +31,10 @@ import { ProjectComponent } from './components/project/project.component';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { AddTaskComponent } from './components/forms/add-task/add-task.component';
-import { ChangePwComponent } from './components/change-pw/change-pw.component';
+import { LineComponent } from './components/charts/line/line.component';
+import { NgChartsModule } from 'ng2-charts';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 
 
@@ -55,7 +57,8 @@ import { ChangePwComponent } from './components/change-pw/change-pw.component';
     NewProjectComponent,
     ProjectComponent,
     AddTaskComponent,
-    ChangePwComponent
+    LineComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -74,10 +77,11 @@ import { ChangePwComponent } from './components/change-pw/change-pw.component';
     MatListModule,
     CdkDropListGroup,
     CdkDrag,
-    CdkDropList
-
+    CdkDropList,
+    NgChartsModule
   ],
-  providers: [],
+  providers: [{provide: MAT_DIALOG_DATA, useValue: {}}],
+  // schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

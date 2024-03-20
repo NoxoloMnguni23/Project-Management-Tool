@@ -8,6 +8,10 @@ import * as XLSX from 'xlsx';
 export class SharedService {
   usersUpdated: boolean = false;
   usersUpdatedSubject = new Subject<any>();
+  projectsUpdated: boolean = false;
+  projectsUpdatedSubject = new Subject<any>();
+  noTasks: boolean = false;
+  noTasksSubject = new Subject<any>();
 
   updateUsersWatch(): void {
     this.usersUpdated = true;
@@ -16,6 +20,24 @@ export class SharedService {
 
   watchUsersUpdate(): Observable<any> {
     return this.usersUpdatedSubject.asObservable();
+  }
+
+  updateNoTasksWatch(): void {
+    this.noTasks = true;
+    this.noTasksSubject.next(this.noTasks);
+  }
+
+  watchNoTasksUpdate(): Observable<any> {
+    return this.noTasksSubject.asObservable();
+  }
+
+  updateProjectsWatch(): void {
+    this.projectsUpdated = true;
+    this.projectsUpdatedSubject.next(this.usersUpdated);
+  }
+
+  watchProjectsUpdate(): Observable<any> {
+    return this.projectsUpdatedSubject.asObservable();
   }
 
   get(key: string, sessionType: string): any {

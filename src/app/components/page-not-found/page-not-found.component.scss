@@ -2,7 +2,11 @@
     width: 100vw; 
     height: 100vh;
     object-fit: cover;
+    position: relative;
 }
-.btn{
-    width: 20%;
+.button{
+    position:absolute;
+margin-left: 10px;
+   top: 10px;
+   left: 0;
 }
