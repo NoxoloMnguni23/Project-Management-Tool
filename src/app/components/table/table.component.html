@@ -5,7 +5,7 @@
       <mat-label>Search {{ isAdmin ? 'Users' : 'Tasks' }}</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
     </mat-form-field>
-    <div *ngIf="!tableDataAvailable" class="flex a-center gap-1em">
+    <div *ngIf="tableDataAvailable && !usersTableDataOnly" class="flex a-center gap-1em">
       <div (click)="openDialog()" title="Upload One" class="add flex center-center pointer">
         <mat-icon class="color-white">person</mat-icon>
         <mat-icon class="color-white">add</mat-icon>

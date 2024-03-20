@@ -29,6 +29,7 @@ export class TableComponent implements OnChanges, OnInit {
   taskStatuses: string[] = ['In-Progress', 'Completed'];
   currentUser: any;
   foundUser: any;
+  usersTableDataOnly: boolean = false;
 
   // add user form
   openDialog() {
@@ -154,6 +155,7 @@ export class TableComponent implements OnChanges, OnInit {
           this.dataSource = new MatTableDataSource<any>(res);
         });
       }
+      this.usersTableDataOnly = true;
       this.tableDataAvailable = true;
     }
     if (changes['tableData']) {

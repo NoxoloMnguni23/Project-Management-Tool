@@ -34,6 +34,7 @@ export class ProjectComponent implements OnInit {
   usersList: any[] = [];
   tasksList: any[] = [];
   existingMembersTasksList: any[] = [];
+  newMembersTasksList: any[] = [];
   membersTasksList: any[] = [];
   viewedProject: any;
   projectHealth: any = 'Needs Attension';
@@ -110,20 +111,6 @@ export class ProjectComponent implements OnInit {
   }
 
   saveTaskAssignments(): void {
-    this.existingMembersTasksList.forEach((existingMemberTask: any) => {
-      console.log("this.membersTasksList", this.membersTasksList)
-      const isFound = this.membersTasksList.find((newMemberTask: any) => existingMemberTask.task._id === newMemberTask.task._id)
-      // Clear member task on collection
-      console.log("isFound", isFound)
-      if (isFound) {
-        this.api.genericDelete('/delete-assigned-task/' + existingMemberTask._id)
-          .subscribe({
-            next: (res: any) => { console.log('Deleted') },
-            error: (err) => console.log(err),
-            complete: () => { }
-          })
-      }
-    })
     this.addAssignedTasks();
     this.snackbar.open('Tasks assigned successfully', 'Ok', { duration: 3000 });
     // Refresh
@@ -131,7 +118,7 @@ export class ProjectComponent implements OnInit {
   }
 
   addAssignedTasks(): void {
-    this.membersTasksList.forEach((memberAndTask: any) => {
+    this.newMembersTasksList.forEach((memberAndTask: any) => {
       // Save member task
       this.api.genericPost('/assign-task', memberAndTask)
         .subscribe({
@@ -211,12 +198,22 @@ export class ProjectComponent implements OnInit {
           })
       })
     })
-    this.api.genericGet('assigned-tasks').subscribe((res: any) => {
-      console.log("assinged task res", res)
+    this.api.genericGet('/assigned-tasks').subscribe((res: any) => {
+      this.newMembersTasksList = [];
+      console.log("assinged task res", this.membersTasksList)
+      this.membersTasksList.forEach((memberTaskList: any) => {
+        res.forEach((res: any) => {
+          if (memberTaskList.teamMember.email === res.teamMember.email && memberTaskList.task.taskDescription === memberTaskList.task.taskDescription) {
+          } else {
+            this.newMembersTasksList.push(memberTaskList);
+          }
+        })
+      })
     })
-    console.log("this.membersTasksList", this.membersTasksList)
+    console.log("this.membersTasksList whick", this.membersTasksList)
+    console.log("this.newMembersTasksList which", this.newMembersTasksList)
     // No changes made
-    if (this.membersTasksList === prevMembersTasksList) return;
+    // if (this.membersTasksList === prevMembersTasksList) return;
     this.hasChangedAssignments = true;
   }
 
