@@ -36,6 +36,7 @@ import { AddTaskComponent } from './components/forms/add-task/add-task.component
 import { LineComponent } from './components/charts/line/line.component';
 import { NgChartsModule } from 'ng2-charts';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 
 
@@ -59,7 +60,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
     NewProjectComponent,
     ProjectComponent,
     AddTaskComponent,
-    LineComponent
+    LineComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

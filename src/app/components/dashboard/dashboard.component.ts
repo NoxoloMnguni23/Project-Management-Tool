@@ -19,6 +19,16 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   usersMembers: any = [];
   userNumTasks: any = [];
   onlyCompleteProjects: any = 0;
+  numberOfCompletedTasks: any = [];
+  numberOfPendingTasks: any = [];
+  numberOfInProgressTasks: any = [];
+
+
+  jan: any = 2;
+  feb: any = 3;
+  april: any = 4;
+  march: any = 4;
+
 
 
   ngOnInit(): void {
@@ -28,6 +38,8 @@ export class DashboardComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit(): void {
     this.createPieChart();
+    this.createLineChart();
+   
   }
 
   user: any;
@@ -38,13 +50,11 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   monthlyProjects: any[] = [];
   monthlyProjectsCounts: any;
   lineDataArr: any[] = []
-  jan: any = 0;
-  feb: any = 0;
-  march: any = 0;
 
 
   constructor(private userInfo: SharedService, private apiService: ApiService) {
     this.numUsers()
+    this.numOfTaskCompleted()
     this.user = this.userInfo.get('currentUser', 'session');
     console.log("user", this.user)
 
@@ -121,9 +131,22 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       next: (res: any) => {
         this.userNumTasks = res.filter((user: any) => user.id === this.user.id.value)
       }
+ 
+    })
+  }
+  numOfTaskCompleted() {
+    this.apiService.genericGet('/assigned-tasks').subscribe({
+      next : (res: any) => {
+        this.userNumTasks = res.filter((user: any) => user.teamMember.id.value === this.user.id.value)
+        this.numberOfCompletedTasks = res.filter((user: any) => user.task.status === 'Completed')
+        this.numberOfPendingTasks = res.filter((user: any) => user.task.status === 'Pending')
+        this.numberOfInProgressTasks = res.filter((user: any) => user.task.status === 'In-Progress')
+        this.createPieChart();
+      }
     })
   }
 
+  
 
   private createLineChart(): void {
     const ctx = this.lineChartRef?.nativeElement?.getContext('2d');
@@ -156,10 +179,10 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     this.pieChart = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: ['Completed','Pending','In-Progress'],
         datasets: [{
-          label: 'Sample Pie Data',
-          data: [12, 19, 3, 5, 2, 3],
+          label: 'Progress',
+          data: [this.numberOfCompletedTasks.length, this.numberOfPendingTasks.length, this.numberOfInProgressTasks.length],
           backgroundColor: [
             'rgba(255, 99, 132, 0.6)',
             'rgba(54, 162, 235, 0.6)',

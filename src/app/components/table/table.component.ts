@@ -268,4 +268,9 @@ export class TableComponent implements OnChanges, OnInit {
       console.log("update res",res);
     })
   }
+  refreshTasks(): void {
+    this.apiService.genericGet('/get-tasks').subscribe((res: any) => {
+      this.dataSource = new MatTableDataSource<any>(res);
+    });
+  }
 }
