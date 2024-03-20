@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { SharedService } from 'src/app/services/shared.service';
 import Chart from 'chart.js/auto';
@@ -8,7 +8,7 @@ import Chart from 'chart.js/auto';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements AfterViewInit {
+export class DashboardComponent implements AfterViewInit, OnInit {
 
   @ViewChild('lineChart') private lineChartRef!: ElementRef;
   @ViewChild('pieChart') private pieChartRef!: ElementRef;
@@ -18,6 +18,7 @@ export class DashboardComponent implements AfterViewInit {
   usersTeamMembers: any = [];
   usersMembers: any = [];
   userNumTasks: any = [];
+  onlyCompleteProjects: any = 0;
   numberOfCompletedTasks: any = [];
   numberOfPendingTasks: any = [];
   numberOfInProgressTasks: any = [];
@@ -30,8 +31,13 @@ export class DashboardComponent implements AfterViewInit {
 
 
 
+  ngOnInit(): void {
+    this.createLineChart();
+    this.createPieChart();
+  }
 
   ngAfterViewInit(): void {
+    this.createPieChart();
     this.createLineChart();
    
   }
@@ -39,8 +45,11 @@ export class DashboardComponent implements AfterViewInit {
   user: any;
   hasProjects: boolean = false;
   hasUsers: boolean = false;
-  numberOfProjects: any;
+  numberOfProjects: any = 0;
   numberOfUsers: any;
+  monthlyProjects: any[] = [];
+  monthlyProjectsCounts: any;
+  lineDataArr: any[] = []
 
 
   constructor(private userInfo: SharedService, private apiService: ApiService) {
@@ -55,7 +64,52 @@ export class DashboardComponent implements AfterViewInit {
           if (res.length > 0) {
             this.hasProjects = true;
             this.numberOfProjects = res.length;
+            this.onlyCompleteProjects = res.filter((project: any) => project.status.toLowerCase() === 'completed').length;
             console.log("num", this.numberOfProjects)
+
+
+            let projectDates: any = [];
+            this.monthlyProjectsCounts = {
+              jan: 0,
+              feb: 0,
+              mar: 0,
+              apr: 0,
+              may: 0,
+              jun: 0,
+              july: 0,
+            }
+            // Get projects months
+            res.forEach((project: any) => {
+              projectDates.push(project.createDate)
+            })
+
+            projectDates.forEach((month: any) => {
+              switch (Number(month)) {
+                case 0:
+                  this.monthlyProjectsCounts.jan++;
+                  break;
+                case 1:
+                  this.monthlyProjectsCounts.feb++;
+                  break;
+                case 2:
+                  this.monthlyProjectsCounts.mar++;
+                  console.log("this.monthlyProjectsCounts", this.monthlyProjectsCounts)
+                  break;
+                case 3:
+                  this.monthlyProjectsCounts.apr++;
+                  break;
+                case 4:
+                  this.monthlyProjectsCounts.may++;
+                  break;
+                case 5:
+                  this.monthlyProjectsCounts.jun++;
+                  break;
+                case 6:
+                  this.monthlyProjectsCounts.july++;
+                  break;
+              }
+            })
+            this.createLineChart();
           }
         },
         error: (err) => console.log(err),
@@ -72,8 +126,14 @@ export class DashboardComponent implements AfterViewInit {
       }
     })
   }
+  numTasksUser() {
+    this.apiService.genericGet('/assigned-tasks').subscribe({
+      next: (res: any) => {
+        this.userNumTasks = res.filter((user: any) => user.id === this.user.id.value)
+      }
  
-
+    })
+  }
   numOfTaskCompleted() {
     this.apiService.genericGet('/assigned-tasks').subscribe({
       next : (res: any) => {
@@ -91,15 +151,17 @@ export class DashboardComponent implements AfterViewInit {
   private createLineChart(): void {
     const ctx = this.lineChartRef?.nativeElement?.getContext('2d');
     this.lineChart = new Chart(ctx, {
-      type: 'line',
+      type: 'bar',
       data: {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         datasets: [{
-          label: 'Sample Line Data',
-          data: [65, 59, 80, 81, 56, 55, 40],
-          fill: false,
+          label: 'Monthly Projects',
+          data: [this.monthlyProjectsCounts.jan, this.monthlyProjectsCounts.feb, this.monthlyProjectsCounts.mar,
+          this.monthlyProjectsCounts.apr, this.monthlyProjectsCounts.may, this.monthlyProjectsCounts.jun,
+          this.monthlyProjectsCounts.july],
+          // fill: false,
           borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
+          // tension: 0.1
         }]
       },
       options: {

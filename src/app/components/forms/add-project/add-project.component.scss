@@ -21,7 +21,7 @@
                 border-radius: 5px;
                 border: 1px solid #8e8e8e;
             }
-            
+
             textarea {
                 &:focus {
                     outline: none;
@@ -38,4 +38,8 @@
 
 .color-red {
     color: red;
+}
+
+.hide {
+    display: none;
 }

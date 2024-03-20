@@ -25,6 +25,7 @@ declare let emailjs: any;
 export class ProjectComponent implements OnInit {
 
   displayedColumns: string[] = ['todayDate', 'projectName', 'startDate', 'endDate', 'status', 'teamMembers', 'tasks'];
+  projectHealths: string[] = ['Good', 'At Risk', 'Needs Attension'];
   dataSource!: any;
   hasChangedAssignments: boolean = false;
   projectTasks: any;
@@ -33,12 +34,27 @@ export class ProjectComponent implements OnInit {
   usersList: any[] = [];
   tasksList: any[] = [];
   existingMembersTasksList: any[] = [];
+  newMembersTasksList: any[] = [];
   membersTasksList: any[] = [];
   viewedProject: any;
+  projectHealth: any = 'Needs Attension';
+  spinnerElement: any;
   constructor(@Inject(MAT_DIALOG_DATA) private _project: any, private dialog: MatDialog,
-    private api: ApiService, private snackbar: MatSnackBar, private sharedService: SharedService) {
+    private api: ApiService, private apiService: ApiService,
+    private snackbar: MatSnackBar, private sharedService: SharedService) {
     this.viewedProject = _project._project;
     // To download
+
+    this.sharedService.watchNoTasksUpdate().subscribe((tasksUpdated: boolean) => {
+      this.api.genericGet('/get-tasks')
+        .subscribe({
+          next: (res: any) => {
+            this.tasksList = res;
+          },
+          error: (err) => console.log(err),
+          complete: () => { }
+        })
+    })
 
     this.getAssignedTasks();
 
@@ -67,7 +83,7 @@ export class ProjectComponent implements OnInit {
     this.api.genericGet('/get-users')
       .subscribe({
         next: (res: any) => {
-          this.usersList = res;
+          this.usersList = res.filter((user: any) => user.role.toLowerCase() === 'team member');
         },
         error: (err) => console.log(err),
         complete: () => { }
@@ -84,6 +100,7 @@ export class ProjectComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinnerElement = document.getElementById('spinner') as HTMLElement | undefined;
   }
 
   editProject(): void {
@@ -95,20 +112,6 @@ export class ProjectComponent implements OnInit {
   }
 
   saveTaskAssignments(): void {
-    this.existingMembersTasksList.forEach((existingMemberTask: any) => {
-      console.log("this.membersTasksList", this.membersTasksList)
-      const isFound = this.membersTasksList.find((newMemberTask: any) => existingMemberTask.task._id === newMemberTask.task._id)
-      // Clear member task on collection
-      console.log("isFound", isFound)
-      if (isFound) {
-        this.api.genericDelete('/delete-assigned-task/' + existingMemberTask._id)
-          .subscribe({
-            next: (res: any) => { console.log('Deleted') },
-            error: (err) => console.log(err),
-            complete: () => { }
-          })
-      }
-    })
     this.addAssignedTasks();
     this.snackbar.open('Tasks assigned successfully', 'Ok', { duration: 3000 });
     // Refresh
@@ -120,7 +123,21 @@ export class ProjectComponent implements OnInit {
       // Save member task
       this.api.genericPost('/assign-task', memberAndTask)
         .subscribe({
-          next: (res: any) => { },
+          next: (res: any) => {
+            const sendPoints: any = {
+              "subject": "Task Assignment",
+              "firstName": memberAndTask.teamMember.firstName,
+              "email": memberAndTask.teamMember.email
+            }
+            this.api.genericPost('/forgotPassword', sendPoints)
+              .subscribe({
+                next: (res) => {
+                  this.snackbar.open('Tasks assigment emails sent successfully', 'Ok', { duration: 3000 });
+                },
+                error: (err) => { console.log(err) },
+                complete: () => { }
+              })
+          },
           error: (err) => console.log(err),
           complete: () => { }
         })
@@ -129,15 +146,23 @@ export class ProjectComponent implements OnInit {
   }
 
   seeProjectTasks(): void {
-    this.dialog.open(TasksComponent)
+    // Get all tasks
+    this.api.genericGet('/get-tasks')
+      .subscribe({
+        next: (res: any) => {
+          if (res.length < 1) {
+            this.snackbar.open('You need to add tasks', 'Ok', { duration: 3000 });
+            return;
+          };
+          this.dialog.open(TasksComponent, { data: this.viewedProject })
+        },
+        error: (err) => console.log(err),
+        complete: () => { }
+      })
   }
 
   addNewTask(): void {
-    this.dialog.open(AddTaskComponent, {
-      data: {
-        _project: this.viewedProject
-      }
-    });
+    this.dialog.open(AddTaskComponent, { data: this.viewedProject });
   }
 
   getAssignedTasks(): void {
@@ -188,13 +213,54 @@ export class ProjectComponent implements OnInit {
           })
       })
     })
-    console.log("this.membersTasksList", this.membersTasksList)
+    this.api.genericGet('/assigned-tasks').subscribe((res: any) => {
+      this.newMembersTasksList = [];
+      // Try swap loops
+      console.log("assinged task res", this.membersTasksList)
+      this.membersTasksList.forEach((memberTaskList: any) => {
+        res.forEach((res: any) => {
+          if (memberTaskList.teamMember.email === res.teamMember.email && memberTaskList.task.taskDescription === memberTaskList.task.taskDescription) {
+          } else {
+            this.newMembersTasksList.push(memberTaskList);
+          }
+        })
+      })
+    })
+    console.log("this.membersTasksList whick", this.membersTasksList)
+    console.log("this.newMembersTasksList which", this.newMembersTasksList)
     // No changes made
-    if (this.membersTasksList === prevMembersTasksList) return;
+    // if (this.membersTasksList === prevMembersTasksList) return;
     this.hasChangedAssignments = true;
   }
 
   downloadSpreadsheet(): void {
     this.sharedService.downloadSpreadsheet('Project-Spreadsheet', this.dataSource);
+  }
+
+  changeHealth(health: any): void {
+    this.projectHealth = health;
+    this.viewedProject.projectHealth = health;
+    // Get all tasks
+    this.api.genericPost('/update-project', this.viewedProject)
+      .subscribe({
+        next: (res: any) => {
+          this.snackbar.open('Health updated successfully', 'Ok', { duration: 3000 });
+        },
+        error: (err) => console.log(err),
+        complete: () => { }
+      })
+  }
+
+  progressSpinner(action: any) {
+    switch (action) {
+      case 'show':
+        this.spinnerElement.classList.remove('hide');
+        break;
+      case 'hide':
+        this.spinnerElement.classList.add('hide');
+        break;
+      default:
+        break;
+    }
   }
 }

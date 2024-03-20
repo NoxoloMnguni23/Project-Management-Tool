@@ -11,6 +11,8 @@ import { TeamMembersComponent } from './components/team-members/team-members.com
 import { TasksComponent } from './components/tasks/tasks.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
+import { ManagerGuard } from './guards/manager.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [{ path: '', redirectTo: '/login', pathMatch: 'full' },
 { path: 'login', component: LoginComponent },

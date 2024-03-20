@@ -1,4 +1,44 @@
+$status-color: blue;
+$blue: blue;
 
 .main-container {
     padding: 5px;
+    height: 87%;
+    overflow-y: auto;
+}
+
+.spinner {
+    right: 44%;
+    top: 42%;
+}
+
+.hide {
+    display: none;
+}
+
+.add {
+    height: 46px;
+    width: 49px;
+    background-color: $blue;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.status-container {
+    background-color: #474749;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: white;
+}
+
+.status-pending {
+    background-color: $status-color !important;
+}
+
+.color-red {
+    color: red;
+}
+
+.no-table-data {
+    font-size: x-large;
 }
