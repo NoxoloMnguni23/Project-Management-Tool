@@ -1,6 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +14,6 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UsersComponent } from './components/users/users.component';
-import { TeamMembersComponent } from './components/team-members/team-members.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -49,7 +47,6 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     DashboardComponent,
     ProfileComponent,
     UsersComponent,
-    TeamMembersComponent,
     TasksComponent,
     ProjectsComponent,
     PageNotFoundComponent,
@@ -81,7 +78,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     CdkDropListGroup,
     CdkDrag,
     CdkDropList,
-    NgChartsModule
+    NgChartsModule,
+    CdkTreeModule
   ],
   providers: [{provide: MAT_DIALOG_DATA, useValue: {}}],
   // schemas: [CUSTOM_ELEMENTS_SCHEMA],
