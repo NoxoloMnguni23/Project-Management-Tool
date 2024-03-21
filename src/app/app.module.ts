@@ -78,7 +78,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     CdkDropListGroup,
     CdkDrag,
     CdkDropList,
-    NgChartsModule
+    NgChartsModule,
+    CdkTreeModule
   ],
   providers: [{provide: MAT_DIALOG_DATA, useValue: {}}],
   // schemas: [CUSTOM_ELEMENTS_SCHEMA],

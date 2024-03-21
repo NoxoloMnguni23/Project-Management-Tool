@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from '../change-password/change-password.component';
 import { SharedService } from 'src/app/services/shared.service';
-import { ChangePwComponent } from '../change-pw/change-pw.component';
+
 
 @Component({
   selector: 'app-profile',
