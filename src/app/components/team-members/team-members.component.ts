@@ -9,7 +9,13 @@ import { ApiService } from 'src/app/services/api.service';
 export class TeamMembersComponent implements AfterViewInit {
 
   user: any;
-  teamMembers: any = {}
+  teamMembers: any = {
+    title: 'Users',
+    dataSource: [],
+    displayedColumns: ['firstName', 'lastName', 'gender', 'id', 'email', 'role'],
+    displayedHeaders: ['First Name', 'Last Name', 'Gender', 'ID', 'Email', 'Role']
+  }
+
   teamMemberData: any;
 
   ngAfterViewInit(): void {
@@ -29,15 +35,7 @@ export class TeamMembersComponent implements AfterViewInit {
     
   }
   teamMemberFunction(){
-
-    this.teamMembers =
-    {
-      title: 'Users',
-      dataSource: this.teamMemberData,
-      displayedColumns: ['firstName', 'lastName', 'gender', 'id', 'email', 'role'],
-      displayedHeaders: ['First Name', 'Last Name', 'Gender', 'ID', 'Email', 'Role']
-    }
-
+    this.teamMembers.dataSource = this.teamMemberData;
   }
 
 
