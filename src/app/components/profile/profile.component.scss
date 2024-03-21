@@ -6,7 +6,9 @@
     text-align: center;
 
 }
-
+mat-card{
+    box-shadow: 0 4px 8px #f19a6f;
+}
 .flex {
     display: flex;
 }
@@ -82,7 +84,7 @@
     flex-direction: column;
 }
 button:hover{
-    background-color: #7575FF;
+    background-color:  #e87033;
     color: white;
 }
 

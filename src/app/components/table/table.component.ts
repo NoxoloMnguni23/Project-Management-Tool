@@ -17,6 +17,8 @@ import * as XLSX from 'xlsx';
 export class TableComponent implements OnChanges, OnInit {
 
   @Input() tableData: any;
+
+  
   users: any;
   isAdmin: boolean = false;
   isTeamMember: boolean = false;
@@ -31,6 +33,8 @@ export class TableComponent implements OnChanges, OnInit {
   foundUser: any;
   usersTableDataOnly: boolean = false;
 
+
+  
   // add user form
   openDialog() {
     this.dialog.open(AddUserFormComponent);
