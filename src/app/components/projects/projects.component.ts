@@ -43,6 +43,11 @@ export class ProjectsComponent {
   }
 
   addProject(): void {
+    const currentUser = this.sharedService.get('currentUser', 'session');
+    if (currentUser.role === 'admin') {
+      this.snackbar.open('View only admin permissions', 'Ok', { duration: 3000 });
+      return;
+    }
     this.dialog.open(AddProjectComponent, {
       width: '60%'
     })

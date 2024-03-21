@@ -137,3 +137,35 @@ $blue: blue;
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+// Kanban
+
+
+.column-cont {
+  flex: 1;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+}
+.column h2 {
+  margin-top: 0;
+}
+.card {
+  background-color: #fff;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.board {
+    display: flex;
+    padding: 20px;
+}
+
+.comment {
+  &:hover {
+    color: blue;
+    text-decoration: underline;
+  }
+}

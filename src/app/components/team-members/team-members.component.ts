@@ -11,7 +11,13 @@ import { MatTableDataSource } from '@angular/material/table';
 export class TeamMembersComponent  {
 
   user: any;
-  teamMembers: any = {}
+  teamMembers: any = {
+    title: 'Users',
+    dataSource: [],
+    displayedColumns: ['firstName', 'lastName', 'gender', 'id', 'email', 'role'],
+    displayedHeaders: ['First Name', 'Last Name', 'Gender', 'ID', 'Email', 'Role']
+  }
+
   teamMemberData: any;
   dataSource!: MatTableDataSource<any>;
 

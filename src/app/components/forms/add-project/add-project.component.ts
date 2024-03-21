@@ -25,7 +25,7 @@ export class AddProjectComponent {
   constructor(private dialogRef: MatDialogRef<AddProjectComponent>, private sharedService: SharedService,
     private api: ApiService, private snackbar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) private _project: any) {
-    this.loggedInUser = sharedService.get('currentUser','session');
+    this.loggedInUser = sharedService.get('currentUser', 'session');
     this.userName = `${this.loggedInUser.firstName} ${this.loggedInUser.lastName}`
     this.api.genericGet('/get-users')
       .subscribe({
