@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from '../change-password/change-password.component';
 import { SharedService } from 'src/app/services/shared.service';
 
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',

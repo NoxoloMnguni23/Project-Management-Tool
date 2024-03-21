@@ -14,44 +14,49 @@
  
   color: #e87033;
 }
-#drawer{
+.full-width{
+  width: 100%;
+}
+
+#drawer {
   display: flex;
   justify-content: center !important;
   align-items: center !important;
 }
-.leftTool{
+
+.leftTool {
   height: 190px;
   color:  #e87033;
 
-  .userPic{
-      height: 20%;
-      width: 80%;
-      margin-top: 54px;
-      cursor: pointer;
+  .userPic {
+    height: 20%;
+    width: 80%;
+    margin-top: 54px;
+    cursor: pointer;
 
-      mat-icon{
-          height: 100%;
-          width: 100%;
-          font-size: 60px;
-      }
+    mat-icon {
+      height: 100%;
+      width: 100%;
+      font-size: 60px;
+    }
 
-      img{
-          border-radius: 50%;
-      }
+    img {
+      border-radius: 50%;
+    }
   }
 
-  .userDetails{
-      height: 20%;
-      width: 100%;
+  .userDetails {
+    height: 20%;
+    width: 100%;
 
-      p{
-          margin-bottom: 0;
-      }
+    p {
+      margin-bottom: 0;
+    }
 
-      small{
-          margin-top: 0;
-          font-size: 12px;
-      }
+    small {
+      margin-top: 0;
+      font-size: 12px;
+    }
   }
 }
 mat-nav-list{
@@ -72,6 +77,8 @@ a:hover {
   background-color: #f19a6f;
   color: white;
 }
+
+
 button:hover{
   background-color: #f19a6f;
   color: white;
@@ -81,7 +88,7 @@ a:hover mat-icon {
   color: white;
 }
 
-.userPic{
+.userPic {
   width: 80%;
   height: 80%;
 }
@@ -114,11 +121,12 @@ a:hover mat-icon {
   flex-direction: column;
 }
 
-.allSide{
+.allSide {
 
   width: 80%;
   background-color: white;
 }
+
 .center-center {
   justify-content: center !important;
   align-items: center !important;
@@ -146,15 +154,19 @@ a:hover mat-icon {
   cursor: pointer;
 
   mat-icon {
-      font-size: 50px;
-      height: 45px;
-      width: 60px;
+    font-size: 50px;
+    height: 45px;
+    width: 60px;
   }
 }
 
 .userName {
   height: 100%;
   width: 10%;
+}
+.width60
+{
+  width: 60%;
 }
 
 .pClass {
@@ -169,12 +181,12 @@ a:hover mat-icon {
   width: 5%;
 
   img {
-      height: 80%;
-      width: 80%;
+    height: 80%;
+    width: 80%;
   }
 }
 
-.changedName{
+.changedName {
   display: none;
 }
 
@@ -184,17 +196,17 @@ a:hover mat-icon {
 
 @media screen and (max-width: 765px) {
 
-  .systemName{
-      display: none;
+  .systemName {
+    display: none;
   }
 
-  .changedName{
-      display: block;
+  .changedName {
+    display: block;
   }
-  
+
 }
 
-.routed-content{
+.routed-content {
   overflow-y: hidden;
   // margin: 20px;
   width: 90%;
@@ -202,13 +214,14 @@ a:hover mat-icon {
   // background-color: yellow;
 }
 
-.content{
+.content {
   // background-color: red;
   width: 90%;
   height: 95%;
   // overflow: hidden;
 }
-img{
+
+img {
   width: 5%;
   border-radius: 2px;
 }
@@ -217,4 +230,36 @@ img{
   background-color: #f19a6f;
   color: white !important;
   border-radius: 5px;
+}
+
+.icons {
+  position: relative;
+  right: 6%;
+}
+.Heading{
+  text-align: center;
+}
+.icons2 {
+  position: relative;
+  right: 18%;
+}
+                  
+.icons3 {
+  position: relative;
+  right: 12%;
+}
+.icons4{
+  position: relative;
+  right: 18%;
+}
+.icons5{
+  position: relative;
+  left:5%;
+}
+.icons6{
+  position: relative;
+  right: 23%;
+}
+.btnTask span{
+  text-align:left;  
 }

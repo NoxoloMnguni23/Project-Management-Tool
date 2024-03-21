@@ -1,89 +1,87 @@
-.title {
-    font-weight: 700;
-    font-size: 18px;
-    color: #333;
-    letter-spacing: .54px;
-    text-align: center;
-
-}
-
-.flex {
-    display: flex;
-}
-.column{
+.column {
     flex-direction: column;
 }
-
-.center {
-    align-items: center;
-}
-
-.center-center {
-    align-items: center;
-    justify-content: center;
-}
-
-.btn {
+.container {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    :hover {
+        cursor: pointer;
+    }
+}
+
+.padding-1em {
+    padding: 2em;
+}
+
+.gap1em {
     gap: 1em;
 }
 
-.gap-2em {
-    gap: 2em;
-}
-.gap1em{
-    gap:1em;
-}
-
-.wrap {
-    flex-direction: column;
-}
-
-.space-between {
+.center {
+    display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
 }
 
-.space-around {
-    align-items: center;
-    justify-content: space-around;
+.info-half {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 400px;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.5);
+    background-image: url("../.././../assets/user.png");
+    background-size: 400px 400px;
+
 }
 
 .full-width {
     width: 100%;
 }
 
-.half-width {
-    width: 50%;
-}
+.form-half {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 400px;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.5);
+
+    h1 {
+        margin-left: 150px;
+        height: 10px;
+
+    }
+
+    mat-form-field {
+        width: 350px;
+        padding-left: 30px;
+
+    }
+
+    p {
+        padding-left: 32px;
+
+        .span {
 
 
-.profile-img img {
-   
-        height: 100px;
-        width: 100px;
-        border-radius: 50px;
-    
-}
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
 
-.user-details {
-    display: flex;
-    gap: 1em;
-    width: 100%;
-    
+    button {
+        margin-left: 32px;
+    }
 
+    button:hover {
+        background-color: #7575FF;
+        color: white;
+    }
 }
-.add-btn{
-    border-radius: 50%;
-    border: #7575FF;
-}
-.column{
-    flex-direction: column;
-}
-button:hover{
-    background-color: #7575FF;
-    color: white;
-}
-
-

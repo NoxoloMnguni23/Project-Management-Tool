@@ -1,24 +1,28 @@
+<<<<<<< HEAD
 <div class="flex full-height center-center">
     <mat-card>
         <mat-card-content>
             <h1 class="title ">User Details</h1>
+=======
+<div class="container">
+    <div class="info-half">
+    </div>
+    <div class="form-half">
+        <h1 class="">Profile</h1><br>
+>>>>>>> 466d8e4245c62812a5c26924167c55d1b3faab89
 
-            <div class="flex center-center gap1em">
-                <div class="profile-img flex column">
-                    <img src="../../../assets/profileImage/images.png" alt="">
+        
+        <div class="flex column gap1em padding-1em full-width">
+            <span><b class="title">ID :</b> {{user.id}}</span>
+            <span><b class="title">Name :</b>{{user.lastName}} {{user.firstName}} </span>
+            <span><b class="title">Gender :</b> {{user.gender}} </span>
+            <!-- <span><b class="title">Mobile Number :</b> {{user.phoneNumber}}</span> -->
+            <span><b class="title">Email :</b> {{user.email}}</span>
+            <span><b class="title">Role :</b> {{user.role}}</span>
+            <button mat-raised-button color="warm" (click)="changePassword()"><mat-icon class="icons5"
+                    aria-hidden="false" aria-label="Example home icon" fontIcon="lock"></mat-icon>Change
+                Password</button>
 
-                </div>
-                <div class="profile-details">
-                    <p><b class="title">ID :</b>{{user.id}}</p>
-                    <p><b class="title">Name :</b>{{user.name}}</p>
-                    <p><b class="title">Gender :</b>{{user.gender}} </p>
-                    <p><b class="title">Mobile Number :</b>{{user.phoneNumber}}</p>
-                    <p><b class="title">Email :</b>{{user.email}}</p>
-                    <p><b class="title">Role :</b>{{user.role}}</p>
-                </div>
-            </div>
-            <button mat-raised-button color="warm" (click)="changePassword()">Change Password</button>
-
-        </mat-card-content>
-    </mat-card>
+        </div>
+    </div>
 </div>
