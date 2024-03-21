@@ -7,11 +7,11 @@
     </mat-form-field>
     <div class="flex a-center gap-1em">
       <div class="flex a-center gap-1em">
-        <div (click)="openDialog()" title="Upload One" class="add flex center-center pointer">
+        <div *ngIf="this.currentUser.role === 'admin'" (click)="openDialog()" title="Upload One" class="add flex center-center pointer">
           <mat-icon class="color-white">person</mat-icon>
           <mat-icon class="color-white">add</mat-icon>
         </div>
-        <input class="relative" title="Upload multiple" matSuffix type="file" (change)="onFileChange($event)">
+        <input  *ngIf="this.currentUser.role === 'admin'" class="relative" title="Upload multiple" matSuffix type="file" (change)="onFileChange($event)">
       </div>
     </div>
   </div>
