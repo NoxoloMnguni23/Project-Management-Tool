@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ApiService } from 'src/app/services/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddUserFormComponent } from '../add-user-form/add-user-form.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SharedService } from 'src/app/services/shared.service';
 import { AddTaskComponent } from '../forms/add-task/add-task.component';
 import * as XLSX from 'xlsx';
@@ -133,7 +133,8 @@ export class TableComponent implements OnChanges, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private apiService: ApiService, private snackBar: MatSnackBar, private dialog: MatDialog,
-    private sharedService: SharedService, private snackbar: MatSnackBar, private api: ApiService) {
+    private sharedService: SharedService, private snackbar: MatSnackBar, private api: ApiService,
+    private dialogRef: MatDialogRef<TableComponent>) {
     this.currentUser = this.sharedService.get('currentUser', 'session');
     console.log("currentUser", this.currentUser)
     if (this.currentUser.role === 'team member') {
@@ -218,12 +219,14 @@ export class TableComponent implements OnChanges, OnInit {
         this.apiService.genericDelete(`/delete-task/${row._id}`)
           .subscribe({
             next: (res) => {
+              this.snackBar.open('Task deleted successfully', 'Ok', { duration: 3000 });
+              // Close dialog
               this.apiService.genericGet('/get-tasks').subscribe((res: any) => {
-                if (res.length < 1) {
-                  this.snackBar.open('Task deleted successfully', 'Ok', { duration: 3000 });
-                  this.sharedService.updateNoTasksWatch();
+                if (res.length === 0) {
+                  this.dialogRef.close();
                 }
                 this.progressSpinner('hide');
+                this.sharedService.updateNoTasksWatch();
                 this.dataSource = new MatTableDataSource<any>(res);
               });
             },

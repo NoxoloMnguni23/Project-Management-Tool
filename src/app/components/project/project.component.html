@@ -11,60 +11,51 @@
     <div class="tasks flex column">
         <div class="teamMembers">
             <div class="flex column">
-                <div class="flex a-center gap-1em">
-                    <h2 class="no-margin color-blue assignHeading">Assign Tasks</h2>
-                    <button *ngIf="hasChangedAssignments" (click)="saveTaskAssignments()" mat-raised-button
-                        color="primary" class="color-white pointer">Save</button>
+                <div class="flex gap-1em">
+                    <div class="flex a-center gap-1em">
+                        <h2 class="no-margin color-blue assignHeading">Assign Tasks</h2>
+                        <button *ngIf="hasChangedAssignments" (click)="saveTaskAssignments()" mat-raised-button
+                            color="primary" class="color-white pointer">Save</button>
+                    </div>
+                    <div class="flex gap-1em a-center">
+                        <h3 (click)="seeProjectTasks()" class="tasks-list pointer">Tasks List</h3>
+                        <div (click)="addNewTask()" class="add-container pointer flex center-center">
+                            <mat-icon>add</mat-icon>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex">
                     <div class="board">
                         <div class="column-cont" (dragover)="onDragOver($event)" (drop)="onDrop($event,'Not Set')">
                             <h2>Team Members</h2>
-                            <div draggable="true" (dragstart)="onDragStart(item)" *ngFor="let item of fitlerTasks('Not Set')" class="card"><small class="comment pointer">comment</small>
+                            <div draggable="true" (dragstart)="onDragStart(item)"
+                                *ngFor="let item of fitlerTasks('Not Set')" class="card"><small
+                                    class="comment pointer">comment</small>
                                 <br>
-                                {{item.employeeName}}
+                                {{item.employeeName | titlecase}}
                             </div>
                         </div>
-                        <div class="column-cont" (dragover)="onDragOver($event)" (drop)="onDrop($event,'Authentication')">
-                            <h2>Authentication Task</h2>
-                            <div draggable="true" (dragstart)="onDragStart(item)" *ngFor="let item of fitlerTasks('Authentication')" class="card"><small class="comment pointer">comment</small>
+                        <div class="column-cont" (dragover)="onDragOver($event)"
+                            (drop)="onDrop($event,'Register Page')">
+                            <h2>Register Page Task</h2>
+                            <div draggable="true" (dragstart)="onDragStart(item)"
+                                *ngFor="let item of fitlerTasks('Register Page')" class="card"><small
+                                    class="comment pointer">comment</small>
                                 <br>
-                                {{item.employeeName}}
+                                {{item.employeeName | titlecase}}
                             </div>
                         </div>
-                        <div class="column-cont" (dragover)="onDragOver($event)" (drop)="onDrop($event,'Landing Page')">
-                            <h2>Landing Page Task</h2>
-                            <div draggable="true" (dragstart)="onDragStart(item)" *ngFor="let item of fitlerTasks('Landing Page')" class="card"><small class="comment pointer">comment</small>
+                        <div class="column-cont" (dragover)="onDragOver($event)"
+                            (drop)="onDrop($event,'Login Page Duplicate')">
+                            <h2>Login Page Duplicate Task</h2>
+                            <div draggable="true" (dragstart)="onDragStart(item)"
+                                *ngFor="let item of fitlerTasks('Login Page Duplicate')" class="card"><small
+                                    class="comment pointer">comment</small>
                                 <br>
-                                {{item.employeeName}}
+                                {{item.employeeName | titlecase}}
                             </div>
                         </div>
                     </div>
-                    <!-- <div cdkDropListGroup>
-                        <div class="example-container">
-                            <h3>Team Members</h3>
-                            <div cdkDropList [cdkDropListData]="usersList" class="example-list"
-                                (cdkDropListDropped)="drop($event)">
-                                <div *ngFor="let user of usersList" class="example-box gap-2em" cdkDrag>
-                                    <p class="no-margin">{{user.firstName | titlecase}}</p>
-                                    <p class="no-margin">{{user.lastName | titlecase}}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="example-container">
-                            <div class="flex gap-1em a-center">
-                                <h3 (click)="seeProjectTasks()" class="tasks-list pointer">Tasks List</h3>
-                                <div (click)="addNewTask()" class="add-container pointer flex center-center">
-                                    <mat-icon>add</mat-icon>
-                                </div>
-                            </div>
-                            <div cdkDropList [cdkDropListData]="tasksList" (cdkDropListDropped)="drop($event)"
-                                class="example-list">
-                                <div *ngFor="let task of tasksList; track task" class="example-box" cdkDrag>
-                                    {{task.taskTitle | titlecase}}</div>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="actions flex column space-between">
                         <div class="flex column gap-1em">
                             <div class="flex column gap-05em">
@@ -81,12 +72,14 @@
                             </div>
                             <div class="flex column gap-05em">
                                 <div class="flex j-end">
-                                    <p class="no-margin">Completion</p>
+                                    <p class="no-margin">Status</p>
                                 </div>
-                                <button mat-stroked-button
-                                    [color]="pendingProjectTasksCount === projectTasksCount ? 'primary': 'warn'"
-                                    [disabled]="pendingProjectTasksCount !== projectTasksCount">{{pendingProjectTasksCount}}/{{projectTasksCount}}
-                                    <mat-icon>tasks</mat-icon>Tasks</button>
+                                <div [matMenuTriggerFor]="statusMenu" title="Change status" class="project-status flex center-center pointer">{{viewedProject.status | titlecase}}
+                                </div>
+                                <mat-menu class="absolute" #statusMenu="matMenu">
+                                    <button mat-menu-item (click)="changeStatus(status)"
+                                        *ngFor="let status of projectStatuses">{{status}}</button>
+                                </mat-menu>
                             </div>
                             <button (click)="downloadSpreadsheet()" mat-stroked-button color="primary">
                                 <mat-icon>download</mat-icon>

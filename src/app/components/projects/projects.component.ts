@@ -29,6 +29,14 @@ export class ProjectsComponent {
           complete: () => { }
         })
     })
+    this.projectsLoad()
+
+    this.sharedService.watchProjectsUpdate().subscribe((updates: any) => {
+      this.projectsLoad()
+    })
+  }
+
+  projectsLoad() {
     this.api.genericGet('/get-projects')
       .subscribe({
         next: (res: any) => {
@@ -40,6 +48,7 @@ export class ProjectsComponent {
         error: (err) => console.log(err),
         complete: () => { }
       })
+
   }
 
   addProject(): void {

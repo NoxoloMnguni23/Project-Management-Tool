@@ -77,6 +77,13 @@ $blue: blue;
   .title {
     font-weight: 500;
   }
+
+  .project-status {
+    padding: 8px;
+    background-color: $blue;
+    border-radius: 9px;
+    color: white;
+  }
 }
 
 .example-container {
@@ -139,8 +146,6 @@ $blue: blue;
 }
 
 // Kanban
-
-
 .column-cont {
   flex: 1;
   background-color: #f0f0f0;
