@@ -29,7 +29,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   april: any = 4;
   march: any = 4;
 
-
+  
 
   ngOnInit(): void {
     this.createLineChart();
@@ -93,7 +93,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
                   break;
                 case 2:
                   this.monthlyProjectsCounts.mar++;
-                  console.log("this.monthlyProjectsCounts", this.monthlyProjectsCounts)
+            
                   break;
                 case 3:
                   this.monthlyProjectsCounts.apr++;
@@ -146,7 +146,6 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     })
   }
 
-  
 
   private createLineChart(): void {
     const ctx = this.lineChartRef?.nativeElement?.getContext('2d');
