@@ -13,10 +13,11 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./add-user-form.component.scss']
 })
 export class AddUserFormComponent {
-  roles: string[] = ['project manager', 'team member']
+  roles: string[] = ['team member']
   genders: string[] = ['male', 'female']
   isEditting: boolean = false;
   users: any = [];
+  gender : any;
 
   addUser: FormGroup;
 
@@ -113,45 +114,20 @@ export class AddUserFormComponent {
     this.dialogRef.close();
   }
 
-
-  verifySouthAfricanID(idNumber: string): any {
+  verifySouthAfricanID(idNumber: string): void {
     // Check if ID number length is correct
-    idNumber = this.addUser.value.id;
-
-    console.log("recevied", idNumber)
     if (idNumber.length !== 13) {
-      return false;
+      return; // Exit the function if ID number length is incorrect
     }
 
-    // Extract date components from the ID number
-    const year = parseInt(idNumber.substring(0, 2));
-    const month = parseInt(idNumber.substring(2, 4));
-    const day = parseInt(idNumber.substring(4, 6));
+    // Extract gender information
+    const genderDigit = parseInt(idNumber.charAt(6));
 
-    // Parse the date
-    const dob = new Date(year, month - 1, day);
+    // Determine gender based on gender digit
+    this.gender = genderDigit < 5 ? 'Female' : 'Male';
 
-    // Check if date is valid
-    if (isNaN(dob.getTime())) {
-      return false;
-    }
-
-    // Perform additional checks if needed, such as citizenship, gender, etc.
-
-    // Calculate checksum digit
-    const checkSumDigit = parseInt(idNumber.charAt(12));
-
-    // Perform checksum validation
-    const checkSum = idNumber
-      .substring(0, 12)
-      .split('')
-      .map((digit, index) => parseInt(digit) * (index % 2 === 0 ? 1 : 2))
-      .join('')
-      .split('')
-      .map(digit => parseInt(digit))
-      .reduce((acc, curr) => acc + curr, 0) % 10;
-
-    return (checkSum === 0 ? 0 : 10 - checkSum) === checkSumDigit;
+    // Update the value of the gender form control
+    this.addUser.controls['gender'].setValue(this.gender);
   }
 }
 
