@@ -20,19 +20,18 @@
             <!-- ID Number -->
             <mat-form-field class="example-full-width">
                 <mat-label>ID Number</mat-label>
-                <input type="text" matInput formControlName="id" placeholder="9801115169080" required maxlength="13">
+                <input type="text" matInput formControlName="id" placeholder="9801115169080" required maxlength="13"
+                    (input)="verifySouthAfricanID(addUser.get('id')?.value)">
                 <mat-error *ngIf="addUser.get('id')?.hasError('required')">ID number is required</mat-error>
-                <mat-error *ngIf="addUser.get('id')?.hasError('minlength') || addUser.get('id')?.hasError('maxlength')">ID
+                <mat-error
+                    *ngIf="addUser.get('id')?.hasError('minlength') || addUser.get('id')?.hasError('maxlength')">ID
                     Number should have 13 numbers</mat-error>
             </mat-form-field>
 
             <!-- Gender -->
             <mat-form-field class="example-full-width">
                 <mat-label>Gender</mat-label>
-                <mat-select formControlName="gender">
-                    <mat-option *ngFor="let gender of genders" [value]="gender">
-                        {{gender | titlecase}}</mat-option>
-                </mat-select>
+                <input type="text" matInput formControlName="gender" [value]="gender" readonly />
             </mat-form-field>
 
             <!-- Email -->
@@ -60,7 +59,8 @@
         <!-- Submit and Cancel Buttons -->
         <div class="flex j-center gap-1em buttons">
             <button mat-raised-button color="warn" (click)="close()">Cancel</button>
-            <button mat-raised-button [disabled]="addUser.invalid" (click)="submit()">{{isEditting ? 'Save': 'Submit'}}</button>
+            <button mat-raised-button [disabled]="addUser.invalid" (click)="submit()">{{isEditting ? 'Save':
+                'Submit'}}</button>
         </div>
     </form>
 </mat-card>
