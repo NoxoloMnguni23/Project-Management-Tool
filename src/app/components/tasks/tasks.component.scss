@@ -1,3 +1,5 @@
+$project: blue;
+
 .padding-10px {
     padding: 10px;
 }
@@ -13,5 +15,5 @@
 }
 
 .download {
-    margin-right: 13px;
+    color: $project;
 }

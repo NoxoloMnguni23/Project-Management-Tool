@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AddProjectComponent } from '../forms/add-project/add-project.component';
 import {
   CdkDragDrop,
@@ -26,11 +26,10 @@ export class ProjectComponent implements OnInit {
 
   displayedColumns: string[] = ['todayDate', 'projectName', 'startDate', 'endDate', 'status', 'teamMembers', 'tasks'];
   projectHealths: string[] = ['Good', 'At Risk', 'Needs Attension'];
+  projectStatuses: string[] = ['Completed', 'Cancelled'];
   dataSource!: any;
   hasChangedAssignments: boolean = false;
   projectTasks: any;
-  projectTasksCount: any;
-  pendingProjectTasksCount: any;
   usersList: any[] = [];
   tasksList: any[] = [];
   existingMembersTasksList: any[] = [];
@@ -39,8 +38,12 @@ export class ProjectComponent implements OnInit {
   viewedProject: any;
   projectHealth: any = 'Needs Attension';
   spinnerElement: any;
+  toAssignTasks: any[] = [];
+  tasksArr: any[] = [];
+  currentItem: any;
+  taskDropContainer: any[] = []
   constructor(@Inject(MAT_DIALOG_DATA) private _project: any, private dialog: MatDialog,
-    private api: ApiService, private apiService: ApiService,
+    private api: ApiService, private apiService: ApiService, private dialogRef: MatDialogRef<ProjectComponent>,
     private snackbar: MatSnackBar, private sharedService: SharedService) {
     this.viewedProject = _project._project;
     // To download
@@ -55,7 +58,7 @@ export class ProjectComponent implements OnInit {
           complete: () => { }
         })
     })
-
+    this.getTasks()
     this.getAssignedTasks();
 
     // Get all tasks
@@ -63,8 +66,6 @@ export class ProjectComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.projectTasks = res;
-          this.projectTasksCount = this.projectTasks.length
-          this.pendingProjectTasksCount = this.projectTasks.filter((task: any) => task.status.toLowerCase() === 'completed').length;
         },
         error: (err) => console.log(err),
         complete: () => { }
@@ -79,7 +80,7 @@ export class ProjectComponent implements OnInit {
         error: (err) => console.log(err),
         complete: () => { }
       })
-      this.prepareTasksData();
+    this.prepareTasksData();
   }
 
   prepareTasksData() {
@@ -87,86 +88,39 @@ export class ProjectComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.usersList = res.filter((user: any) => user.role.toLowerCase() === 'team member');
-          console.log("this.usersList",this.usersList)
-        },
-        error: (err) => console.log(err),
-        complete: () => { }
-      })
-
-    this.api.genericGet('/get-tasks')
-      .subscribe({
-        next: (res: any) => {
-          this.tasksList = res;
-          console.log("this.tasksList",this.tasksList)
-
+          this.usersList.forEach((teamMember: any) => {
+            this.tasksArr.push({
+              email: teamMember.email,
+              employeeName: `${teamMember.firstName} ${teamMember.lastName}`,
+              task: 'Not Set'
+            })
+          })
         },
         error: (err) => console.log(err),
         complete: () => { }
       })
   }
-
-  currentItem: any;
-
-  tasksArr: any[] = [{
-    email: 'thapeloghothini1@gmail.com',
-    employeeName: 'Thapelo Mokotelakoena',
-    task: 'Not Set'
-  }, {
-    email: 'thapeloghothini2@gmail.com',
-    employeeName: 'Thabiso Theza',
-    task: 'Not Set'
-  }, {
-    email: 'thapeloghothini3@gmail.com',
-    employeeName: 'Olerato Phelo',
-    task: 'Not Set'
-  }, {
-    email: 'thapeloghothini4@gmail.com',
-    employeeName: 'Thulani Motlatsi',
-    task: 'Not Set'
-  }, {
-    email: 'thapeloghothini6@gmail.com',
-    employeeName: 'Kevin Matuta',
-    task: 'Landing Page'
-  }, {
-    email: 'thapeloghothini7@gmail.com',
-    employeeName: 'Lesego Tlatsi',
-    task: 'Landing Page'
-  }, {
-    email: 'thapeloghothini8@gmail.com',
-    employeeName: 'Tumisang John',
-    task: 'Not Set'
-  }, {
-    email: 'thapeloghothini9@gmail.com',
-    employeeName: 'Phala Trinity',
-    task: 'Authentication'
-  }, {
-    email: 'thapeloghothini10@gmail.com',
-    employeeName: 'Tlotlo Katleho',
-    task: 'Authentication'
-  }]
 
   fitlerTasks(task: any) {
     return this.tasksArr.filter((taskItem: any) => taskItem.task === task)
   }
 
   onDragStart(item: any) {
-    console.log("item", item)
     this.currentItem = item;
 
   }
 
   onDrop(e: any, task: any) {
-    console.log("onDrop e", e)
-    const record = this.tasksArr.find((ticket: any) => ticket.email === this.currentItem.email)
+    const record = this.tasksArr.find((task: any) => task.email === this.currentItem.email)
     if (record) {
       record.task = task;
     }
-    // this.currentItem = null;
+    this.toAssignTasks.push(record);
+    this.hasChangedAssignments = true;
   }
 
   onDragOver(e: any) {
     e.preventDefault();
-    // console.log("onDrag e",e)
   }
 
   ngOnInit(): void {
@@ -174,6 +128,7 @@ export class ProjectComponent implements OnInit {
   }
 
   editProject(): void {
+    this.dialogRef.close();
     this.dialog.open(AddProjectComponent, {
       data: {
         _project: this.viewedProject
@@ -184,39 +139,59 @@ export class ProjectComponent implements OnInit {
   saveTaskAssignments(): void {
     const confirmDelete = prompt('type confirm to assign tasks');
     if (confirmDelete?.toLowerCase() === 'confirm') {
-      this.addAssignedTasks();
-      this.snackbar.open('Tasks assigned successfully', 'Ok', { duration: 3000 });
-      // Refresh
-      this.getAssignedTasks();
+      let tasksList: any;
+      this.api.genericGet('/get-tasks')
+        .subscribe({
+          next: (res: any) => {
+            tasksList = res;
+            this.toAssignTasks.forEach((task: any) => {
+              const isFoundUser = this.usersList.find((user: any) => user.email = task.email)
+              const isFound = tasksList.find((_task: any) => _task.taskTitle = task.task)
+              if (isFound && isFoundUser) {
+                const memberAndTask = {
+                  "teamMember": isFoundUser,
+                  "task": isFound
+                }
+                // Get existing users task
+                this.api.genericGet('/assigned-tasks').subscribe((res: any) => {
+                })
+
+                this.addAssignedTasks(memberAndTask);
+              }
+            })
+          },
+          error: (err) => console.log(err),
+          complete: () => { }
+        })
+      // // Refresh
+      // this.getAssignedTasks();
     } else {
       this.snackbar.open('Action cancelled', 'Ok', { duration: 3000 })
     }
   }
 
-  addAssignedTasks(): void {
-    this.membersTasksList.forEach((memberAndTask: any) => {
-      // Save member task
-      this.api.genericPost('/assign-task', memberAndTask)
-        .subscribe({
-          next: (res: any) => {
-            const sendPoints: any = {
-              "subject": "Task Assignment",
-              "firstName": memberAndTask.teamMember.firstName,
-              "email": memberAndTask.teamMember.email
-            }
-            this.api.genericPost('/forgotPassword', sendPoints)
-              .subscribe({
-                next: (res) => {
-                  this.snackbar.open('Tasks assigment emails sent successfully', 'Ok', { duration: 3000 });
-                },
-                error: (err) => { console.log(err) },
-                complete: () => { }
-              })
-          },
-          error: (err) => console.log(err),
-          complete: () => { }
-        })
-    });
+  addAssignedTasks(memberAndTask: any): void {
+    // Save member task
+    this.api.genericPost('/assign-task', memberAndTask)
+      .subscribe({
+        next: (res: any) => {
+          this.snackbar.open('Tasks assigned successfully', 'Ok', { duration: 3000 });
+          this.hasChangedAssignments = false;
+          const emailPoints: any = {
+            "task": memberAndTask.task.taskTitle,
+            "email": memberAndTask.teamMember.email
+          }
+          this.api.genericPost('/taskEmail', emailPoints)
+            .subscribe({
+              next: (res) => {
+              },
+              error: (err) => { console.log(err) },
+              complete: () => { }
+            })
+        },
+        error: (err) => console.log(err),
+        complete: () => { }
+      })
     this.hasChangedAssignments = false;
   }
 
@@ -236,6 +211,17 @@ export class ProjectComponent implements OnInit {
       })
   }
 
+  getTasks(){
+    this.api.genericGet('/get-tasks')
+      .subscribe({
+        next: (res: any) => {
+          this.taskDropContainer = res;
+        },
+        error: (err) => console.log(err),
+        complete: () => { }
+      })
+  }
+
   addNewTask(): void {
     this.dialog.open(AddTaskComponent, { data: this.viewedProject });
   }
@@ -248,15 +234,12 @@ export class ProjectComponent implements OnInit {
           this.existingMembersTasksList = res;
           // temp
           let temp: any = [];
-          console.log("this.existingMembersTasksList onInit", this.existingMembersTasksList)
           this.existingMembersTasksList.forEach((membersTasksList: any, indx: any) => {
             if (indx === 0) {
               temp.push({ projectName: this.viewedProject.projectName, startDate: this.viewedProject.startDate, endDate: this.viewedProject.endDate, status: this.viewedProject.status, teamMembers: `${membersTasksList.teamMember.firstName} ${membersTasksList.teamMember.lastName} `, tasks: membersTasksList.task.taskTitle })
 
-              console.log("temp", temp)
               return;
             }
-            console.log("temp", temp)
             temp.push({ projectName: null, startDate: null, endDate: null, status: null, teamMembers: `${membersTasksList.teamMember.firstName} ${membersTasksList.teamMember.lastName} `, tasks: membersTasksList.task.taskTitle })
           })
           this.dataSource = temp;
@@ -291,7 +274,6 @@ export class ProjectComponent implements OnInit {
     this.api.genericGet('/assigned-tasks').subscribe((res: any) => {
       this.newMembersTasksList = [];
       // Try swap loops
-      console.log("assinged task res", this.membersTasksList)
       this.membersTasksList.forEach((memberTaskList: any) => {
         res.forEach((res: any) => {
           if (memberTaskList.teamMember.email === res.teamMember.email && memberTaskList.task.taskDescription === memberTaskList.task.taskDescription) {
@@ -301,10 +283,6 @@ export class ProjectComponent implements OnInit {
         })
       })
     })
-    console.log("this.membersTasksList whick", this.membersTasksList)
-    console.log("this.newMembersTasksList which", this.newMembersTasksList)
-    // No changes made
-    // if (this.membersTasksList === prevMembersTasksList) return;
     this.hasChangedAssignments = true;
   }
 
@@ -313,6 +291,19 @@ export class ProjectComponent implements OnInit {
   }
 
   changeHealth(health: any): void {
+    this.api.genericGet('/assigned-tasks').subscribe((res: any) => {
+      const isFound = res.filter((memberAndTask: any) => memberAndTask.task.project === this.viewedProject._id);
+      isFound.forEach((member: any) => {
+        const emailPoints = {
+          "healthStatus": health,
+          "email": member.teamMember.email
+        }
+        this.api.genericPost('/projectHealthEmail',emailPoints).subscribe((res: any) => {
+          console.log('Email health',res);
+        })
+
+      })
+    })
     this.projectHealth = health;
     this.viewedProject.projectHealth = health;
     // Get all tasks
@@ -324,6 +315,23 @@ export class ProjectComponent implements OnInit {
         error: (err) => console.log(err),
         complete: () => { }
       })
+  }
+
+  changeStatus(status: any) {
+    this.viewedProject.status = status;
+    this.api.genericPost('/update-project',this.viewedProject).subscribe((res: any) => {
+      this.snackbar.open('Status updated successfully','OK',{duration: 3000});
+    })
+    this.api.genericGet('/assigned-tasks').subscribe((res: any) => {
+      const isFound = res.filter((memberAndTask: any) => memberAndTask.task.project === this.viewedProject._id);
+      isFound.forEach((member: any) => {
+        const emailPoints = {
+          "status": status,
+          "email": member.teamMember.email
+        }
+        this.api.genericPost('/projectStatusEmail',emailPoints).subscribe((res: any) => {})
+      })
+    })
   }
 
   progressSpinner(action: any) {

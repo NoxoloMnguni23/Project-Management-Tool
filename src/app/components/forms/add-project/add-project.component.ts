@@ -78,6 +78,7 @@ export class AddProjectComponent {
           next: (res) => {
             console.log("res", res)
             this.snackbar.open('Project updated succesfully', 'OK', { duration: 3000 });
+            this.sharedService.updateProjectsWatch();
             this.dialogRef.close();
           },
           error: (err) => console.log(err),

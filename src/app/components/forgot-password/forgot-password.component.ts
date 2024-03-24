@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators, FormsModule, Form } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class ForgotPasswordComponent {
 
   forgotPasswordForm: FormGroup;
 
-  constructor(private snackBar: MatSnackBar, private apiService: ApiService) {
+  constructor(private snackBar: MatSnackBar, private apiService: ApiService, private router: Router) {
 
     this.forgotPasswordForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.pattern(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/)])
@@ -27,15 +28,12 @@ export class ForgotPasswordComponent {
         this.snackBar.open("Account doesn't exist", 'Ok', { duration: 3000 });
         return;
       }
-      console.log("isFound", isFound)
-      const sendPoints = {
-        "subject": "Reset Password",
-        "firstName": isFound[0].firstName,
-        "user": this.forgotPasswordForm.value
-      }
-      this.apiService.genericPost('/forgotPassword', sendPoints)
+      this.apiService.genericPost('/forgot-password', isFound[0])
         .subscribe({
-          next: (res) => { console.log(res) },
+          next: (res) => {
+            this.snackBar.open('Check email for temporary password','Ok',{duration: 3000});
+            this.router.navigate(['/login']);
+           },
           error: (err) => { console.log(err) },
           complete: () => { }
         })

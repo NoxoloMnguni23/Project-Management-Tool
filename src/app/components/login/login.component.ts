@@ -18,23 +18,9 @@ export class LoginComponent implements OnInit {
 
   constructor(private sharedService: SharedService, private router: Router, private snackBar: MatSnackBar,
     private api: ApiService) {
-
-    const Admin = {
-      "firstName": "Administrator",
-      "lastName": "Admin",
-      "gender": "male",
-      "id": "4564545645645",
-      "email": "admin@gmail.com",
-      "role": "admin",
-      "password": "123"
-    }
-
-    this.api.genericGet('/get-users').subscribe((res: any) => {
-      const isAdminFound = res.find((user: any) => user.email === Admin.email)
-      if (isAdminFound) return;
-      this.api.genericPost('/add-user', Admin)
-        .subscribe((res) => console.log('Admin acc added.'))
-    })
+    this.api.genericGet('/add-management-accounts').subscribe((res:any) => {
+      console.log("Addded...",res)
+    });
 
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.pattern(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/)]),

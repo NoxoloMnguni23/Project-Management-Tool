@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ApiService } from 'src/app/services/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddUserFormComponent } from '../add-user-form/add-user-form.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SharedService } from 'src/app/services/shared.service';
 import { AddTaskComponent } from '../forms/add-task/add-task.component';
 import * as XLSX from 'xlsx';
@@ -32,7 +32,8 @@ export class TableComponent implements OnChanges, OnInit {
   currentUser: any;
   foundUser: any;
   usersTableDataOnly: boolean = false;
-
+  newUsers: any[] = [];
+  showSpinner: boolean = false;
 
 
   // add user form
@@ -52,37 +53,30 @@ export class TableComponent implements OnChanges, OnInit {
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { raw: false });
       this.users = jsonData;
-      console.log("file data", this.users);
       // Add password field for every user
       this.users.forEach((fileUser: any, indx: any) => {
         this.users[indx]['password'] = 'test123';
       })
-      console.log("file data users with passwords", this.users);
       this.api.genericGet('/get-users').subscribe({
         next: async (res: any) => {
           this.users.forEach((fileUser: any, indx: any) => {
+            this.showSpinner = true;
+            if(indx === this.users.length - 1 && this.newUsers.length > 0){
+              this.dataSource = new MatTableDataSource<any>(this.newUsers);
+              this.tableDataAvailable = 'Users';
+              this.showSpinner = false;
+              this.snackBar.open('File uploaded successfully', 'Ok', { duration: 3000 });
+            }
             let userExists = false;
             res.forEach((user: any) => {
               if (fileUser.id === user.id) {
-                console.log('User already exists:', fileUser.id);
                 userExists = true;
                 return;
               }
             });
             if (!userExists) {
-              console.log('Adding user:', fileUser.id);
+              this.newUsers.push(fileUser)
               this.addUserApi(fileUser);
-              this.progressSpinner('show')
-              this.sharedService.updateUsersWatch();
-              // Update users table
-              this.sendEmailApi(fileUser);
-              // this.apiService.genericGet('/get-users').subscribe((res: any) => {
-              //   this.progressSpinner('hide');
-              //   res = res.filter((user: any) => user.role.toLowerCase() !== 'admin');
-              //   this.dataSource = new MatTableDataSource<any>(res);
-              //   this.tableDataAvailable = 'Users';
-              // });
-              this.snackBar.open('File uploaded successfully', 'Ok', { duration: 3000 });
             }
           });
         },
@@ -97,7 +91,6 @@ export class TableComponent implements OnChanges, OnInit {
   }
 
   addUserApi(fileUserToStore: any) {
-    console.log("fileUserToStore", fileUserToStore)
     this.api.genericPost('/add-user', fileUserToStore).subscribe({
       next: (res) => {
         const sendPoints = {
@@ -115,19 +108,8 @@ export class TableComponent implements OnChanges, OnInit {
       error: (err) => {
         console.error('Error adding user:', err);
       },
-      complete: () => {
-        console.log('Completed adding user.');
-      }
+      complete: () => {}
     });
-  }
-
-  sendEmailApi(email: any) {
-    this.api.genericPost('/sendPassword', email)
-      .subscribe({
-        next: (res) => { console.log(res) },
-        error: (err) => { console.log(err) },
-        complete: () => { }
-      })
   }
 
   @ViewChild(MatPaginator, { static: false })
@@ -138,15 +120,15 @@ export class TableComponent implements OnChanges, OnInit {
   }
 
   constructor(private apiService: ApiService, private snackBar: MatSnackBar, private dialog: MatDialog,
-    private sharedService: SharedService, private snackbar: MatSnackBar, private api: ApiService) {
+    private sharedService: SharedService, private snackbar: MatSnackBar, private api: ApiService,
+    private dialogRef: MatDialogRef<TableComponent>) {
     this.currentUser = this.sharedService.get('currentUser', 'session');
-    console.log("currentUser", this.currentUser)
     if (this.currentUser.role === 'team member') {
       this.canEditTask = true;
     }
     this.sharedService.watchUsersUpdate().subscribe((usersUpdated: boolean) => {
       this.apiService.genericGet('/get-users').subscribe((res: any) => {
-        this.progressSpinner('hide');
+        this.showSpinner = false;
         res = res.filter((user: any) => user.role.toLowerCase() !== 'admin');
         this.dataSource = new MatTableDataSource<any>(res);
         this.tableDataAvailable = 'Users';
@@ -208,13 +190,13 @@ export class TableComponent implements OnChanges, OnInit {
   deleteRow(row: any) {
     const confirmDelete = prompt('type delete to confirm');
     if (confirmDelete?.toLowerCase() === 'delete') {
-      this.progressSpinner('show');
+      this.showSpinner = true;
       // If delete confirmed
       if (this.tableData.title === 'Users') {
         this.apiService.genericDelete(`/delete-user/${row.email}`)
           .subscribe({
             next: (res) => {
-              this.progressSpinner('hide');
+              this.showSpinner = true;
               // Fetch user data from API
               this.refreshUsers()
               this.snackBar.open('User deleted successfully', 'Ok', { duration: 3000 });
@@ -228,12 +210,14 @@ export class TableComponent implements OnChanges, OnInit {
         this.apiService.genericDelete(`/delete-task/${row._id}`)
           .subscribe({
             next: (res) => {
+              this.snackBar.open('Task deleted successfully', 'Ok', { duration: 3000 });
+              // Close dialog
               this.apiService.genericGet('/get-tasks').subscribe((res: any) => {
-                if (res.length < 1) {
-                  this.snackBar.open('Task deleted successfully', 'Ok', { duration: 3000 });
-                  this.sharedService.updateNoTasksWatch();
+                if (res.length === 0) {
+                  this.dialogRef.close();
                 }
-                this.progressSpinner('hide');
+                this.showSpinner = false;
+                this.sharedService.updateNoTasksWatch();
                 this.dataSource = new MatTableDataSource<any>(res);
               });
             },
@@ -267,23 +251,18 @@ export class TableComponent implements OnChanges, OnInit {
     });
   }
 
-  progressSpinner(action: any) {
-    switch (action) {
-      case 'show':
-        this.spinnerElement.classList.remove('hide');
-        break;
-      case 'hide':
-        this.spinnerElement.classList.add('hide');
-        break;
-      default:
-        break;
+  changeStatus(taskStatus: any,task: any) {
+    console.log("task",task);
+    const emailPoints = {
+      "status": taskStatus,
+      "email": this.currentUser.email,
+      "task": task.taskTitle
     }
-  }
-
-  changeStatus(taskStatus: any) {
     this.foundUser[0].task.status = taskStatus;
     this.api.genericPost('/update-assigned-task', this.foundUser[0]).subscribe((res: any) => {
-      console.log(res);
+    })
+    this.api.genericPost('/taskStatusEmail',emailPoints).subscribe((res: any) => {
+      console.log('Email send send')
     })
     console.log(this.foundUser[0].task)
     this.api.genericPost('/update-task', this.foundUser[0].task).subscribe((res: any) => {

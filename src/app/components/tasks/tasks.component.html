@@ -1,10 +1,10 @@
 <div class="flex column relative">
     <div class="flex a-center padding-10px border-box space-between">
-        <h2 class="no-margin">Tasks</h2>
-    </div>
-    <div class="flex j-end download">
-        <button (click)="downloadSpreadsheet()" mat-stroked-button color="primary">Download
-            Report</button>
+        <div class="flex a-center- gap-1em">
+            <h2 class="no-margin">Tasks</h2>
+        <mat-icon title="Download report" class="color-blue download pointer" (click)="downloadSpreadsheet()">download</mat-icon>
+        </div>
+        <p *ngIf="currentUser.role === 'project manager'" class="close absolute pointer"  (click)="close()">X</p>
     </div>
     <app-table [tableData]="tableData"></app-table>
 </div>

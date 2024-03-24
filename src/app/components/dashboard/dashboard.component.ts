@@ -141,6 +141,8 @@ export class DashboardComponent implements AfterViewInit, OnInit {
         this.numberOfCompletedTasks = res.filter((user: any) => user.task.status === 'Completed')
         this.numberOfPendingTasks = res.filter((user: any) => user.task.status === 'Pending')
         this.numberOfInProgressTasks = res.filter((user: any) => user.task.status === 'In-Progress')
+    this.pieChart.destroy();
+        
         this.createPieChart();
       }
     })
@@ -156,9 +158,9 @@ export class DashboardComponent implements AfterViewInit, OnInit {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         datasets: [{
           label: 'Monthly Projects',
-          data: [this.monthlyProjectsCounts.jan, this.monthlyProjectsCounts.feb, this.monthlyProjectsCounts.mar,
-          this.monthlyProjectsCounts.apr, this.monthlyProjectsCounts.may, this.monthlyProjectsCounts.jun,
-          this.monthlyProjectsCounts.july],
+          data: [this.monthlyProjectsCounts?.jan, this.monthlyProjectsCounts?.feb, this.monthlyProjectsCounts?.mar,
+          this.monthlyProjectsCounts?.apr, this.monthlyProjectsCounts?.may, this.monthlyProjectsCounts?.jun,
+          this.monthlyProjectsCounts?.july],
           // fill: false,
           borderColor: 'rgb(75, 192, 192)',
           // tension: 0.1
@@ -175,7 +177,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   }
 
   private createPieChart(): void {
-    const ctx = this.pieChartRef.nativeElement.getContext('2d');
+    const ctx = this.pieChartRef?.nativeElement?.getContext('2d');
     this.pieChart = new Chart(ctx, {
       type: 'pie',
       data: {

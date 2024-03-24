@@ -32,7 +32,7 @@ import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { AddTaskComponent } from './components/forms/add-task/add-task.component';
 import { LineComponent } from './components/charts/line/line.component';
 import { NgChartsModule } from 'ng2-charts';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { TeamMembersComponent } from './components/team-members/team-members.component';
 
@@ -81,7 +81,7 @@ import { TeamMembersComponent } from './components/team-members/team-members.com
     NgChartsModule,
     CdkTreeModule
   ],
-  providers: [{ provide: MAT_DIALOG_DATA, useValue: {} }],
+  providers: [{ provide: MAT_DIALOG_DATA, useValue: {} },{ provide: MatDialogRef, useValue: {} }],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })

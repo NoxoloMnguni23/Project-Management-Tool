@@ -15,7 +15,7 @@ export class AddTaskComponent {
   openTask: any;
   taskFormGroup: FormGroup;
   onEditTask: boolean = false;
-  priorities: any[] = [];
+  priorities: string[] = ['Top','Medium','Average','Less'];
   projectDetails: any;
 
   constructor(private dialogRef: MatDialogRef<AddTaskComponent>, private api: ApiService,
@@ -30,9 +30,9 @@ export class AddTaskComponent {
         project: new FormControl(row.project, [Validators.required]),
         taskTitle: new FormControl(row.taskTitle, [Validators.required]),
         taskDescription: new FormControl(row.taskDescription, [Validators.required]),
-        taskPriority: new FormControl(Number(row.taskPriority), [Validators.required]),
+        taskPriority: new FormControl(row.taskPriority, [Validators.required]),
         taskDeadline: new FormControl(row.taskDeadline, [Validators.required]),
-        status: new FormControl('Pending', [Validators.required]),
+        status: new FormControl(row.status, [Validators.required]),
       })
     } else {
       this.taskFormGroup = new FormGroup({
@@ -44,21 +44,6 @@ export class AddTaskComponent {
         status: new FormControl('Pending', [Validators.required]),
       })
     }
-    // Get all tasks
-    this.api.genericGet('/get-tasks')
-      .subscribe({
-        next: (res: any) => {
-          // Create priority using existing task
-          res.forEach((task: any, indx: any) => {
-            this.priorities.push(indx + 1);
-          })
-          if (res.length === 0) {
-            this.priorities.push(1);
-          }
-        },
-        error: (err) => console.log(err),
-        complete: () => { }
-      })
   }
 
   close(): void {
@@ -66,6 +51,7 @@ export class AddTaskComponent {
   }
 
   submit(): void {
+    if(this.taskFormGroup.invalid) return;
     if (this.onEditTask) {
       const { taskDeadline, status, taskPriority, taskDescription, taskTitle } = this.taskFormGroup.value;
       this.openTask.taskDeadline = taskDeadline;
