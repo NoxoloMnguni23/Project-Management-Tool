@@ -11,7 +11,7 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent {
-  changePasswordForm: FormGroup
+  changePasswordForm!: FormGroup
   user: any
   users: any
 

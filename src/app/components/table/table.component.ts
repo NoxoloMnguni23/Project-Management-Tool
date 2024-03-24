@@ -18,7 +18,7 @@ export class TableComponent implements OnChanges, OnInit {
 
   @Input() tableData: any;
 
-  
+
   users: any;
   isAdmin: boolean = false;
   isTeamMember: boolean = false;
@@ -34,7 +34,7 @@ export class TableComponent implements OnChanges, OnInit {
   usersTableDataOnly: boolean = false;
 
 
-  
+
   // add user form
   openDialog() {
     this.dialog.open(AddUserFormComponent);
@@ -130,7 +130,12 @@ export class TableComponent implements OnChanges, OnInit {
       })
   }
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: false })
+  set paginator(value: MatPaginator) {
+    if (this.dataSource) {
+      this.dataSource.paginator = value;
+    }
+  }
 
   constructor(private apiService: ApiService, private snackBar: MatSnackBar, private dialog: MatDialog,
     private sharedService: SharedService, private snackbar: MatSnackBar, private api: ApiService,
@@ -170,6 +175,15 @@ export class TableComponent implements OnChanges, OnInit {
         });
       }
       this.tableDataAvailable = 'Tasks';
+    } else if (this.tableData.title === 'Team Members') {
+      // Fetch user data from API
+      this.apiService.genericGet('/get-users').subscribe((res: any) => {
+        res = res.filter((user: any) => user.role.toLowerCase() === 'team member');
+        this.dataSource = new MatTableDataSource<any>(res)
+        if (res.length !== 0) {
+          this.tableDataAvailable = true;
+        }
+      })
     }
     if (changes['tableData']) {
       this.dataSource = new MatTableDataSource(this.tableData.dataSource);
@@ -181,10 +195,6 @@ export class TableComponent implements OnChanges, OnInit {
 
   ngOnInit(): void {
     this.spinnerElement = document.getElementById('spinner') as HTMLElement | undefined;
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(event: Event) {

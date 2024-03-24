@@ -49,11 +49,9 @@ export class SharedService {
     sessionType === 'session' ? sessionStorage.setItem(key, JSON.stringify(value)) : localStorage.setItem(key, JSON.stringify(value));
     console.log('User stored')
   }
-  isloggedin(){
-    return 
+  isloggedin() {
+    return
   }
-
-
   downloadSpreadsheet(spreadSheetName: any, spreadSheetData: any): void {
     const fileName = `${spreadSheetName}.xlsx`;
 
