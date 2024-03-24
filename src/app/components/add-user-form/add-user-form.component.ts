@@ -36,7 +36,7 @@ export class AddUserFormComponent {
         gender: new FormControl(data.gender, [Validators.required]),
         email: new FormControl(data.email, [Validators.required, Validators.pattern(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/)]),
         role: new FormControl(data.role, [Validators.required]),
-        password: new FormControl('123', [Validators.required]),
+        password: new FormControl(data.password, [Validators.required]),
       })
     } else {
       this.addUser = new FormGroup({
@@ -46,7 +46,7 @@ export class AddUserFormComponent {
         gender: new FormControl('', [Validators.required]),
         email: new FormControl('', [Validators.required, Validators.pattern(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/)]),
         role: new FormControl('', [Validators.required]),
-        password: new FormControl('123', [Validators.required]),
+        password: new FormControl('test123', [Validators.required]),
       })
     }
   }
@@ -59,6 +59,7 @@ export class AddUserFormComponent {
           next: (res) => {
             this.snackbar.open('User updated succesfully', 'Ok', { duration: 3000 });
             this.dialogRef.close();
+            this.sharedService.updateUsersWatch();
           },
           error: (err) => {
             this.snackbar.open('User was not updated, try again!', 'Ok', { duration: 3000 });

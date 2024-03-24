@@ -1,5 +1,5 @@
 <div class="main-container relative">
-  <mat-spinner id="spinner" class="absolute spinner hide"></mat-spinner>
+  <mat-spinner *ngIf="showSpinner" class="absolute spinner"></mat-spinner>
   <div class="flex space-between a-center">
     <mat-form-field>
       <mat-label>Search {{ isAdmin ? 'Users' : 'Tasks' }}</mat-label>
@@ -41,7 +41,7 @@
               <p class="no-margin">{{ row[header] |titlecase }}</p>
             </div>
             <mat-menu class="absolute" #menu="matMenu">
-              <button mat-menu-item (click)="changeStatus(taskStatus)"
+              <button mat-menu-item (click)="changeStatus(taskStatus,row)"
                 *ngFor="let taskStatus of taskStatuses">{{taskStatus}}</button>
             </mat-menu>
             <mat-icon class="pointer" *ngIf="header === 'action'" (click)="editRow(row)">edit</mat-icon>

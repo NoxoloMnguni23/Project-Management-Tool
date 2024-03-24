@@ -106,7 +106,6 @@ export class ProjectComponent implements OnInit {
   }
 
   onDragStart(item: any) {
-    console.log("item", item)
     this.currentItem = item;
 
   }
@@ -122,7 +121,6 @@ export class ProjectComponent implements OnInit {
 
   onDragOver(e: any) {
     e.preventDefault();
-    // console.log("onDrag e",e)
   }
 
   ngOnInit(): void {
@@ -148,7 +146,6 @@ export class ProjectComponent implements OnInit {
             tasksList = res;
             this.toAssignTasks.forEach((task: any) => {
               const isFoundUser = this.usersList.find((user: any) => user.email = task.email)
-              console.log("isFoundUser", isFoundUser);
               const isFound = tasksList.find((_task: any) => _task.taskTitle = task.task)
               if (isFound && isFoundUser) {
                 const memberAndTask = {
@@ -157,10 +154,9 @@ export class ProjectComponent implements OnInit {
                 }
                 // Get existing users task
                 this.api.genericGet('/assigned-tasks').subscribe((res: any) => {
-                  console.log("Already assigned task",res);
                 })
 
-                // this.addAssignedTasks(memberAndTask);
+                this.addAssignedTasks(memberAndTask);
               }
             })
           },
@@ -180,6 +176,7 @@ export class ProjectComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.snackbar.open('Tasks assigned successfully', 'Ok', { duration: 3000 });
+          this.hasChangedAssignments = false;
           const emailPoints: any = {
             "task": memberAndTask.task.taskTitle,
             "email": memberAndTask.teamMember.email
@@ -219,7 +216,6 @@ export class ProjectComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.taskDropContainer = res;
-          console.log("this.taskDropContainer",this.taskDropContainer)
         },
         error: (err) => console.log(err),
         complete: () => { }
@@ -238,15 +234,12 @@ export class ProjectComponent implements OnInit {
           this.existingMembersTasksList = res;
           // temp
           let temp: any = [];
-          console.log("this.existingMembersTasksList onInit", this.existingMembersTasksList)
           this.existingMembersTasksList.forEach((membersTasksList: any, indx: any) => {
             if (indx === 0) {
               temp.push({ projectName: this.viewedProject.projectName, startDate: this.viewedProject.startDate, endDate: this.viewedProject.endDate, status: this.viewedProject.status, teamMembers: `${membersTasksList.teamMember.firstName} ${membersTasksList.teamMember.lastName} `, tasks: membersTasksList.task.taskTitle })
 
-              console.log("temp", temp)
               return;
             }
-            console.log("temp", temp)
             temp.push({ projectName: null, startDate: null, endDate: null, status: null, teamMembers: `${membersTasksList.teamMember.firstName} ${membersTasksList.teamMember.lastName} `, tasks: membersTasksList.task.taskTitle })
           })
           this.dataSource = temp;
@@ -281,7 +274,6 @@ export class ProjectComponent implements OnInit {
     this.api.genericGet('/assigned-tasks').subscribe((res: any) => {
       this.newMembersTasksList = [];
       // Try swap loops
-      console.log("assinged task res", this.membersTasksList)
       this.membersTasksList.forEach((memberTaskList: any) => {
         res.forEach((res: any) => {
           if (memberTaskList.teamMember.email === res.teamMember.email && memberTaskList.task.taskDescription === memberTaskList.task.taskDescription) {
@@ -291,10 +283,6 @@ export class ProjectComponent implements OnInit {
         })
       })
     })
-    console.log("this.membersTasksList whick", this.membersTasksList)
-    console.log("this.newMembersTasksList which", this.newMembersTasksList)
-    // No changes made
-    // if (this.membersTasksList === prevMembersTasksList) return;
     this.hasChangedAssignments = true;
   }
 

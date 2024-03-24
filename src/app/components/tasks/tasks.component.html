@@ -4,7 +4,7 @@
             <h2 class="no-margin">Tasks</h2>
         <mat-icon title="Download report" class="color-blue download pointer" (click)="downloadSpreadsheet()">download</mat-icon>
         </div>
-        <p  class="close absolute pointer">X</p>
+        <p *ngIf="currentUser.role === 'project manager'" class="close absolute pointer"  (click)="close()">X</p>
     </div>
     <app-table [tableData]="tableData"></app-table>
 </div>

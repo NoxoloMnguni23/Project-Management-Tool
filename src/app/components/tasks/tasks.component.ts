@@ -12,10 +12,11 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class TasksComponent {
   tableData: any;
+  currentUser: any;
   constructor(private api: ApiService, private snackbar: MatSnackBar, private sharedService: SharedService,
-    ) {
-    const currentUser = this.sharedService.get('currentUser','session');
-    if(currentUser.role === 'team member') {
+    private dialogRef: MatDialogRef<TasksComponent>) {
+    this.currentUser = this.sharedService.get('currentUser','session');
+    if(this.currentUser.role === 'team member') {
       this.tableData = {
         title: 'Tasks',
         displayedColumns: ['taskTitle', 'taskPriority', 'taskDeadline', 'status'],
@@ -46,6 +47,10 @@ export class TasksComponent {
     let  docDefination={
       
     }
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 
  }

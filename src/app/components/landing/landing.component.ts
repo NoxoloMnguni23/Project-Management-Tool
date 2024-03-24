@@ -29,7 +29,7 @@ export class LandingComponent {
       this.menuItems = [
         { label: 'dashboard', icon: 'dashboard', route: '/landing/dashboard' },
         { label: 'profile', icon: 'person', route: '/landing/profile' },
-        { label: 'projects', icon: 'hub', route: '/landing/schedules' },
+        { label: 'projects', icon: 'hub', route: '/landing/projects' },
         { label: 'users', icon: 'group', route: '/landing/users' },
       ]
     } else if (this.user.role === 'project manager') {

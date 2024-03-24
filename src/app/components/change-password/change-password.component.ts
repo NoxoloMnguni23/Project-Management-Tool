@@ -29,6 +29,7 @@ export class ChangePasswordComponent {
     })
   }
   save() {
+    if(this.changePasswordForm.invalid) return;
     let currentPassword = this.user.password
     this.apiService.genericPost(`/checkPassword`, {
       plainPassword: this.changePasswordForm.value.currentPassword,
@@ -38,7 +39,6 @@ export class ChangePasswordComponent {
         this.snackBar.open('Your current password is incorrect', 'OK', { duration: 3000 })
       } else {
         if (this.changePasswordForm['controls']['confirmPassword'].value === this.changePasswordForm['controls']['newPassword'].value) {
-          console.log("this.user.email", this.user.email)
           this.users.forEach((user: any, indx: number) => {
             if(user.email === this.user.email) {
               user.password = this.changePasswordForm['controls']['newPassword'].value
@@ -48,9 +48,8 @@ export class ChangePasswordComponent {
                  } });
             }
           })
-          console.log("this.users.email", this.users.email)
           this.close()
-          this.snackBar.open('Your password, hass been changed successfully', 'OK', { duration: 3000 })
+          this.snackBar.open('Your password, has been changed successfully', 'OK', { duration: 3000 })
   
         } else {
           this.snackBar.open('New password and confirm password doesn\'t match', 'OK', { duration: 3000 })
