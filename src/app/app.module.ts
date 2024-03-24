@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -34,6 +34,7 @@ import { LineComponent } from './components/charts/line/line.component';
 import { NgChartsModule } from 'ng2-charts';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { TeamMembersComponent } from './components/team-members/team-members.component';
 
 
 
@@ -56,7 +57,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     ProjectComponent,
     AddTaskComponent,
     LineComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    TeamMembersComponent
   ],
   imports: [
     BrowserModule,
@@ -79,8 +81,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     NgChartsModule,
     CdkTreeModule
   ],
-  providers: [{provide: MAT_DIALOG_DATA, useValue: {}}],
-  // schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [{ provide: MAT_DIALOG_DATA, useValue: {} }],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
