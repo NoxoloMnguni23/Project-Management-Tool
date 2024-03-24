@@ -9,7 +9,6 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { UsersComponent } from './components/users/users.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { ProjectsComponent } from './components/projects/projects.component';
-import { NewProjectComponent } from './components/new-project/new-project.component';
 import { ManagerGuard } from './guards/manager.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { LandingGuard } from './guards/landing.guard';
@@ -24,9 +23,8 @@ const routes: Routes = [{ path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'profile', component: ProfileComponent },
     { path: 'users', component: UsersComponent },
     { path: 'tasks', component: TasksComponent },
-    { path: 'projects', component: ProjectsComponent },  
-    { path: 'team-members', component: TeamMembersComponent }, 
-    { path: 'new-project', component: NewProjectComponent }]
+    { path: 'projects', component: ProjectsComponent }, 
+  ]
 },
 { path: '**', component: PageNotFoundComponent },];
 

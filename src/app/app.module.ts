@@ -26,7 +26,6 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { NewProjectComponent } from './components/new-project/new-project.component';
 import { ProjectComponent } from './components/project/project.component';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
@@ -55,7 +54,6 @@ import { TeamMembersComponent } from './components/team-members/team-members.com
     AddProjectComponent,
     TableComponent,
     AddUserFormComponent,
-    NewProjectComponent,
     ProjectComponent,
     AddTaskComponent,
     LineComponent,

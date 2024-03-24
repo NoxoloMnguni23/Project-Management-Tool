@@ -1,12 +1,19 @@
-.image{
-    width: 100vw; 
-    height: 100vh;
-    object-fit: cover;
+.image {
+    background-image: url("../../../assets/pageNotFound/404-status-code.png");
     position: relative;
+    background-size: cover;
+    background-position: center; 
+    width: 100vw; 
+    height: 100vh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+
 }
-.button{
-    position:absolute;
-margin-left: 10px;
-   top: 10px;
-   left: 0;
+
+.button {
+    position: absolute;
+    margin-left: 10px;
+    top: 10px;
+    left: 0;
 }
