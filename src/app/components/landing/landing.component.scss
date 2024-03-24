@@ -263,3 +263,18 @@ img {
 .btnTask span{
   text-align:left;  
 }
+.absolute{
+  position: absolute;
+  left:30px;
+  bottom: -15px;
+}
+.link:hover{
+  background-color: #e87033;
+  color: black;
+  cursor: pointer;
+}
+.link{
+  color: black;
+  width: 80%;
+  height: 50%;
+}

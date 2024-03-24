@@ -15,37 +15,15 @@
                     </div>
                 </mat-toolbar>
                 <hr>
-                <mat-nav-list class="mtop6em flex column gap1em">
-                    <button *ngIf="user.role === 'project manager' || user.role==='admin' || user.role==='team member'"
-                        mat-raised-button color="warm" routerLinkActive="active" [routerLink]="'dashboard'">
-                        Dashboard<mat-icon class="icons" aria-hidden="false" aria-label="Example home icon"
-                            fontIcon="home"></mat-icon></button>
-                    <button *ngIf="user.role === 'project manager' || user.role==='admin' || user.role==='team member'"
-                        mat-raised-button color="warm" [routerLink]="'profile'"><mat-icon class="icons2"
-                            aria-hidden="false" aria-label="Example home icon" fontIcon="account_box"></mat-icon>
-                        Profile</button>
-                    <button *ngIf="user.role === 'project manager' || user.role==='admin'" routerLinkActive="active"
-                        mat-raised-button color="warm" [routerLink]="'projects'"><mat-icon class="icons3"
-                            aria-hidden="false" aria-label="Example home icon" fontIcon="hub"></mat-icon>
-                        Projects</button>
-                    <button *ngIf="user.role === 'admin'" mat-raised-button color="warm" routerLinkActive="active"
-                        [routerLink]="'users'"><mat-icon class="icons4" aria-hidden="false"
-                            aria-label="Example home icon" fontIcon="group"></mat-icon>
-                        Users</button>
-                 
-                    <button *ngIf="user.role ==='team member'" mat-raised-button color="warm" [routerLink]="'tasks'"
-                        routerLinkActive="active"><mat-icon class="icons6" aria-hidden="false"
-                            aria-label="Example home icon" fontIcon="task"></mat-icon>Task </button>
-
-                    <button *ngIf="user.role === 'project manager'" mat-raised-button color="warm"
-                        routerLinkActive="active" [routerLink]="'team-members'"> <mat-icon class="icons5"
-                            aria-hidden="false" aria-label="Example home icon" fontIcon="task"></mat-icon> Team
-                        Members</button>
-
+                <mat-nav-list *ngFor="let menu of menuItems">
+                    <a mat-list-item class="flex center-center " routerLinkActive="active" [routerLink]="menu.route">
+                        <mat-icon>{{menu.icon}}</mat-icon>
+                        {{menu.label | titlecase}}</a>
+                </mat-nav-list>
+                <mat-nav-list>
                     <a mat-list-item class="flex center-center" (click)="logout()">
                         <mat-icon>logout</mat-icon>
-                        Logout
-                    </a>
+                        Logout</a>
                 </mat-nav-list>
             </div>
         </div>
@@ -58,12 +36,8 @@
             </button>
             <div class="Heading">
                 <span class="systemName">Project Management Tool</span>
-
             </div>
-
         </mat-toolbar>
         <router-outlet></router-outlet>
-        <!-- Add Content Here -->
-
     </mat-sidenav-content>
 </mat-sidenav-container>

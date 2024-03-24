@@ -13,6 +13,7 @@ import { NewProjectComponent } from './components/new-project/new-project.compon
 import { ManagerGuard } from './guards/manager.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { LandingGuard } from './guards/landing.guard';
+import { TeamMembersComponent } from './components/team-members/team-members.component';
 
 const routes: Routes = [{ path: '', redirectTo: '/login', pathMatch: 'full' },
 { path: 'login', component: LoginComponent },
@@ -23,7 +24,8 @@ const routes: Routes = [{ path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'profile', component: ProfileComponent },
     { path: 'users', component: UsersComponent },
     { path: 'tasks', component: TasksComponent },
-    { path: 'projects', component: ProjectsComponent }, 
+    { path: 'projects', component: ProjectsComponent },  
+    { path: 'team-members', component: TeamMembersComponent }, 
     { path: 'new-project', component: NewProjectComponent }]
 },
 { path: '**', component: PageNotFoundComponent },];

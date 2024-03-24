@@ -7,11 +7,13 @@
     </mat-form-field>
     <div class="flex a-center gap-1em">
       <div class="flex a-center gap-1em">
-        <div *ngIf="this.currentUser.role === 'admin'" (click)="openDialog()" title="Upload One" class="add flex center-center pointer">
+        <div *ngIf="this.currentUser.role === 'admin'" (click)="openDialog()" title="Upload One"
+          class="add flex center-center pointer">
           <mat-icon class="color-white">person</mat-icon>
           <mat-icon class="color-white">add</mat-icon>
         </div>
-        <input  *ngIf="this.currentUser.role === 'admin'" class="relative" title="Upload multiple" matSuffix type="file" (change)="onFileChange($event)">
+        <input *ngIf="this.currentUser.role === 'admin'" class="relative" title="Upload multiple" matSuffix type="file"
+          (change)="onFileChange($event)">
       </div>
     </div>
   </div>
@@ -47,31 +49,12 @@
           </div>
         </td>
       </ng-container>
-
-      <!-- <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
-        <td mat-cell *matCellDef="let row" class="text-center">
-          <button mat-icon-button color="primary" (click)="editRow(row)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="deleteRow(row)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container> -->
-
-
       <!-- Header row -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <!-- Row -->
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-      <!-- Row shown when there is no matching data //colspan This is often used for table cells that need to span multiple columns. -->
-      <!-- <tr class="mat-row" *matNoDataRow> -->
-      <!-- <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data matching the filter "{{ input.value }}"</td>    </tr> -->
     </table>
 
     <mat-paginator *ngIf="tableDataAvailable" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons
       aria-label="Select page of tableData.dataSource"></mat-paginator>
   </div>
-</div>
