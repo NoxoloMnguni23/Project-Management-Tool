@@ -41,6 +41,7 @@ export class ProjectComponent implements OnInit {
   toAssignTasks: any[] = [];
   tasksArr: any[] = [];
   currentItem: any;
+  taskDropContainer: any[] = []
   constructor(@Inject(MAT_DIALOG_DATA) private _project: any, private dialog: MatDialog,
     private api: ApiService, private apiService: ApiService, private dialogRef: MatDialogRef<ProjectComponent>,
     private snackbar: MatSnackBar, private sharedService: SharedService) {
@@ -57,7 +58,7 @@ export class ProjectComponent implements OnInit {
           complete: () => { }
         })
     })
-
+    this.getTasks()
     this.getAssignedTasks();
 
     // Get all tasks
@@ -154,7 +155,12 @@ export class ProjectComponent implements OnInit {
                   "teamMember": isFoundUser,
                   "task": isFound
                 }
-                this.addAssignedTasks(memberAndTask);
+                // Get existing users task
+                this.api.genericGet('/assigned-tasks').subscribe((res: any) => {
+                  console.log("Already assigned task",res);
+                })
+
+                // this.addAssignedTasks(memberAndTask);
               }
             })
           },
@@ -202,6 +208,18 @@ export class ProjectComponent implements OnInit {
             return;
           };
           this.dialog.open(TasksComponent, { data: this.viewedProject })
+        },
+        error: (err) => console.log(err),
+        complete: () => { }
+      })
+  }
+
+  getTasks(){
+    this.api.genericGet('/get-tasks')
+      .subscribe({
+        next: (res: any) => {
+          this.taskDropContainer = res;
+          console.log("this.taskDropContainer",this.taskDropContainer)
         },
         error: (err) => console.log(err),
         complete: () => { }
@@ -314,7 +332,7 @@ export class ProjectComponent implements OnInit {
   changeStatus(status: any) {
     this.viewedProject.status = status;
     this.api.genericPost('/update-project',this.viewedProject).subscribe((res: any) => {
-      console.log("Updating project res",res);
+      this.snackbar.open('Status updated successfully','OK',{duration: 3000});
     })
     this.api.genericGet('/assigned-tasks').subscribe((res: any) => {
       const isFound = res.filter((memberAndTask: any) => memberAndTask.task.project === this.viewedProject._id);

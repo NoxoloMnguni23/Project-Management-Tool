@@ -80,10 +80,18 @@ $blue: blue;
 
   .project-status {
     padding: 8px;
-    background-color: $blue;
+    width: 153px;
     border-radius: 9px;
     color: white;
   }
+
+  .download {
+    font-size: x-large;
+  }
+}
+
+.bg-blue {
+  background-color: $blue;
 }
 
 .example-container {

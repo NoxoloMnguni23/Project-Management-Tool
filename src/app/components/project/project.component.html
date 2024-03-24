@@ -18,7 +18,7 @@
                             color="primary" class="color-white pointer">Save</button>
                     </div>
                     <div class="flex gap-1em a-center">
-                        <h3 (click)="seeProjectTasks()" class="tasks-list pointer">Tasks List</h3>
+                        <h3 (click)="seeProjectTasks()" class="tasks-list pointer">Added Tasks List</h3>
                         <div (click)="addNewTask()" class="add-container pointer flex center-center">
                             <mat-icon>add</mat-icon>
                         </div>
@@ -29,8 +29,7 @@
                         <div class="column-cont" (dragover)="onDragOver($event)" (drop)="onDrop($event,'Not Set')">
                             <h2>Team Members</h2>
                             <div draggable="true" (dragstart)="onDragStart(item)"
-                                *ngFor="let item of fitlerTasks('Not Set')" class="card"><small
-                                    class="comment pointer">comment</small>
+                                *ngFor="let item of fitlerTasks('Not Set')" class="card">
                                 <br>
                                 {{item.employeeName | titlecase}}
                             </div>
@@ -39,8 +38,7 @@
                             (drop)="onDrop($event,'Register Page')">
                             <h2>Register Page Task</h2>
                             <div draggable="true" (dragstart)="onDragStart(item)"
-                                *ngFor="let item of fitlerTasks('Register Page')" class="card"><small
-                                    class="comment pointer">comment</small>
+                                *ngFor="let item of fitlerTasks('Register Page')" class="card">
                                 <br>
                                 {{item.employeeName | titlecase}}
                             </div>
@@ -49,8 +47,7 @@
                             (drop)="onDrop($event,'Login Page Duplicate')">
                             <h2>Login Page Duplicate Task</h2>
                             <div draggable="true" (dragstart)="onDragStart(item)"
-                                *ngFor="let item of fitlerTasks('Login Page Duplicate')" class="card"><small
-                                    class="comment pointer">comment</small>
+                                *ngFor="let item of fitlerTasks('Login Page Duplicate')" class="card">
                                 <br>
                                 {{item.employeeName | titlecase}}
                             </div>
@@ -62,9 +59,11 @@
                                 <div class="flex j-end">
                                     <p class="no-margin">Project Health</p>
                                 </div>
-                                <button mat-raised-button [matMenuTriggerFor]="menu"
-                                    [class]="viewedProject.projectHealth === 'Not Set' ? 'color-unset-health': viewedProject.projectHealth === 'Good' ? 'color-good':
-                                viewedProject.projectHealth === 'Needs Attension' ? 'color-need-attension': 'color-at-risk'">{{viewedProject.projectHealth}}</button>
+                                <div class="flex j-end">
+                                    <div class="project-status flex center-center pointer" [matMenuTriggerFor]="menu"
+                                        [class]="viewedProject.projectHealth === 'Not Set' ? 'color-unset-health': viewedProject.projectHealth === 'Good' ? 'color-good':
+                                    viewedProject.projectHealth === 'Needs Attension' ? 'color-need-attension': 'color-at-risk'">{{viewedProject.projectHealth}}</div>
+                                </div>
                                 <mat-menu class="absolute" #menu="matMenu">
                                     <button mat-menu-item (click)="changeHealth(health)"
                                         *ngFor="let health of projectHealths">{{health}}</button>
@@ -74,17 +73,17 @@
                                 <div class="flex j-end">
                                     <p class="no-margin">Status</p>
                                 </div>
-                                <div [matMenuTriggerFor]="statusMenu" title="Change status" class="project-status flex center-center pointer">{{viewedProject.status | titlecase}}
+                                <div class="flex j-end">
+                                    <div [matMenuTriggerFor]="statusMenu" title="Change status"
+                                        class="project-status bg-blue flex center-center pointer">{{viewedProject.status |
+                                        titlecase}}
+                                    </div>
                                 </div>
                                 <mat-menu class="absolute" #statusMenu="matMenu">
                                     <button mat-menu-item (click)="changeStatus(status)"
                                         *ngFor="let status of projectStatuses">{{status}}</button>
                                 </mat-menu>
                             </div>
-                            <button (click)="downloadSpreadsheet()" mat-stroked-button color="primary">
-                                <mat-icon>download</mat-icon>
-                                Download
-                                Report</button>
                         </div>
                         <div class="flex gap-1em">
                             <div class="flex column gap-1em">
@@ -96,6 +95,8 @@
                                 <p class="no-margin">End Date</p>
                                 <h4 class="no-margin">{{viewedProject.endDate | date}}</h4>
                             </div>
+                            <mat-icon title="Download report" (click)="downloadSpreadsheet()"
+                                class="pointer download color-blue">downloads</mat-icon>
                         </div>
                     </div>
                 </div>
