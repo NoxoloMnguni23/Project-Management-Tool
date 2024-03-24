@@ -17,7 +17,30 @@
                         color="primary" class="color-white pointer">Save</button>
                 </div>
                 <div class="flex">
-                    <div cdkDropListGroup>
+                    <div class="board">
+                        <div class="column-cont" (dragover)="onDragOver($event)" (drop)="onDrop($event,'Not Set')">
+                            <h2>Team Members</h2>
+                            <div draggable="true" (dragstart)="onDragStart(item)" *ngFor="let item of fitlerTasks('Not Set')" class="card"><small class="comment pointer">comment</small>
+                                <br>
+                                {{item.employeeName}}
+                            </div>
+                        </div>
+                        <div class="column-cont" (dragover)="onDragOver($event)" (drop)="onDrop($event,'Authentication')">
+                            <h2>Authentication Task</h2>
+                            <div draggable="true" (dragstart)="onDragStart(item)" *ngFor="let item of fitlerTasks('Authentication')" class="card"><small class="comment pointer">comment</small>
+                                <br>
+                                {{item.employeeName}}
+                            </div>
+                        </div>
+                        <div class="column-cont" (dragover)="onDragOver($event)" (drop)="onDrop($event,'Landing Page')">
+                            <h2>Landing Page Task</h2>
+                            <div draggable="true" (dragstart)="onDragStart(item)" *ngFor="let item of fitlerTasks('Landing Page')" class="card"><small class="comment pointer">comment</small>
+                                <br>
+                                {{item.employeeName}}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div cdkDropListGroup>
                         <div class="example-container">
                             <h3>Team Members</h3>
                             <div cdkDropList [cdkDropListData]="usersList" class="example-list"
@@ -41,7 +64,7 @@
                                     {{task.taskTitle | titlecase}}</div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="actions flex column space-between">
                         <div class="flex column gap-1em">
                             <div class="flex column gap-05em">

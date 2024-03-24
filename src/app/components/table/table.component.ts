@@ -17,6 +17,8 @@ import * as XLSX from 'xlsx';
 export class TableComponent implements OnChanges, OnInit {
 
   @Input() tableData: any;
+
+  
   users: any;
   isAdmin: boolean = false;
   isTeamMember: boolean = false;
@@ -31,6 +33,8 @@ export class TableComponent implements OnChanges, OnInit {
   foundUser: any;
   usersTableDataOnly: boolean = false;
 
+
+  
   // add user form
   openDialog() {
     this.dialog.open(AddUserFormComponent);
@@ -52,8 +56,6 @@ export class TableComponent implements OnChanges, OnInit {
       // Add password field for every user
       this.users.forEach((fileUser: any, indx: any) => {
         this.users[indx]['password'] = 'test123';
-
-
       })
       console.log("file data users with passwords", this.users);
       this.api.genericGet('/get-users').subscribe({
@@ -70,18 +72,19 @@ export class TableComponent implements OnChanges, OnInit {
             if (!userExists) {
               console.log('Adding user:', fileUser.id);
               this.addUserApi(fileUser);
+              this.progressSpinner('show')
+              this.sharedService.updateUsersWatch();
               // Update users table
               this.sendEmailApi(fileUser);
+              // this.apiService.genericGet('/get-users').subscribe((res: any) => {
+              //   this.progressSpinner('hide');
+              //   res = res.filter((user: any) => user.role.toLowerCase() !== 'admin');
+              //   this.dataSource = new MatTableDataSource<any>(res);
+              //   this.tableDataAvailable = 'Users';
+              // });
+              this.snackBar.open('File uploaded successfully', 'Ok', { duration: 3000 });
             }
           });
-          this.progressSpinner('show')
-          this.apiService.genericGet('/get-users').subscribe((res: any) => {
-            this.progressSpinner('hide');
-            res = res.filter((user: any) => user.role.toLowerCase() !== 'admin');
-            this.dataSource = new MatTableDataSource<any>(res);
-            this.tableDataAvailable = 'Users';
-          });
-          this.snackBar.open('File uploaded successfully', 'Ok', { duration: 3000 });
         },
         error: (err) => {
           console.error('Error fetching users:', err);
@@ -137,7 +140,6 @@ export class TableComponent implements OnChanges, OnInit {
       this.canEditTask = true;
     }
     this.sharedService.watchUsersUpdate().subscribe((usersUpdated: boolean) => {
-      this.progressSpinner('show')
       this.apiService.genericGet('/get-users').subscribe((res: any) => {
         this.progressSpinner('hide');
         res = res.filter((user: any) => user.role.toLowerCase() !== 'admin');
