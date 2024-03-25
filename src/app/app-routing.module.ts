@@ -23,9 +23,8 @@ const routes: Routes = [{ path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'profile', component: ProfileComponent },
     { path: 'users', component: UsersComponent },
     { path: 'tasks', component: TasksComponent },
-    { path: 'projects', component: ProjectsComponent }, 
-    { path: 'team-members', component: TeamMembersComponent, }, 
-  ]
+    { path: 'projects', component: ProjectsComponent },
+    { path: 'team-members', component: TeamMembersComponent }]
 },
 { path: '**', component: PageNotFoundComponent },];
 
